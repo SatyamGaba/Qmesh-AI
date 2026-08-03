@@ -1,14 +1,20 @@
 {
-  "name": "qmesh-tmp",
+  "name": "qmesh-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
+    "@assistant-ui/react": "^0.15.2",
+    "@assistant-ui/react-markdown": "^0.14.8",
+    "@serwist/next": "^9.5.12",
+    "dexie": "^4.4.4",
+    "dexie-react-hooks": "^4.4.0",
+    "lucide-react": "^1.28.0",
     "next": "16.3.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"
@@ -20,6 +26,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
+    "serwist": "^9.5.12",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
