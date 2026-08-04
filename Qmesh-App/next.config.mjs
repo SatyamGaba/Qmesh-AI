@@ -8,6 +8,6 @@ const withSerwist = withSerwistInit({
 });
 
 /** @type {import("next").NextConfig} */
-const nextConfig = {};
+const nextConfig = { reactStrictMode: false };
 
 export default withSerwist(nextConfig);
