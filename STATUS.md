@@ -5,7 +5,9 @@
 next, and open questions.
 
 **Last updated:** 2026-08-04
-**Overall state:** validated on one machine (loopback CPU split) — pre-two-device.
+**Overall state:** RPC split validated on one machine (loopback CPU); the **app→engine
+chat plane is now proven cross-device** — the PWA streams live tokens from the laptop
+llama-server over real Wi-Fi. The RPC *split* plane across two devices is still pre-two-device.
 **Current fallback rung (see ARCHITECTURE_PLAN §5):** L3 (both-CPU) proven on loopback;
 targeting L1 (both-NPU). See [Next steps](#next-steps).
 
@@ -76,10 +78,41 @@ side (~9% decode penalty on loopback); Oryon CPU decodes 4B Q4_0 at 37.5 t/s
 projection ~22–29 t/s decode for the two-device split; prefill is the phase that
 will feel Wi-Fi first (214→122 on loopback already).
 
-**NOT yet tested:** anything across two real devices; anything on the phone;
-Hexagon NPU through rpc-server (`--device HTP0` — undocumented for RPC, unverified)
-— the single remaining L1 unknown; llama.cpp on the phone (GenieX-on-phone is not a
-path — no Android server, see ARCHITECTURE_PLAN §4).
+### Client / app plane (NEW, 2026-08-04) — real chat streaming cross-device
+
+The PWA's inference seam is no longer a mock. Track A step 4's core is done and
+**verified end-to-end over real Wi-Fi**:
+
+- **Adapter:** replaced the mock-only path with a config-selected `ChatModelAdapter`
+  (`src/lib/openaiModel.ts`, OpenAI-compatible `/v1/chat/completions` SSE — buffered
+  chunk parsing, `[DONE]` terminator, `abortSignal`, readable network/HTTP errors).
+  `src/lib/config.ts` resolves the engine from localStorage → `NEXT_PUBLIC_*` env →
+  mock fallback, so the target repoints at runtime with no rebuild
+  (`qmeshSetEngine({...})` on `window`). Mock retained as the offline floor.
+- **Engine under test:** laptop **llama-server b10270** (same `split_rpc_validation\bin`),
+  `Qwen3-4B-Instruct-2507 Q4_0`, launched `--host 0.0.0.0 --port 8082 --alias qwen3-4b
+  -c 4096 --sse-ping-interval 15 --cors-origins * --no-cors-credentials`. Base URL
+  `http://10.73.51.58:8082/v1` (laptop LAN IP), model id `qwen3-4b`, **no auth**.
+  `--no-cors-credentials` is load-bearing: default `Allow-Credentials:true` + `Origin:*`
+  is spec-invalid and Chrome rejects it (looks fine in curl, fails in-browser).
+- **Verified:** phone (S25) → laptop `GET /v1/models` **HTTP 200 in 17 ms**; SSE stream
+  from the phone shows incremental `delta.content` → `[DONE]`; browser round-trip returned
+  a real model answer ("Tokyo", not the canned mock string), no console errors. Laptop
+  measured 88 tok/s prefill / 37.6 tok/s decode (matches `FINDINGS.md` baseline). No Wi-Fi
+  AP/client isolation on this network (laptop→phone ping 3/3; phone→laptop HTTP confirms
+  the reverse direction the ping alone can't).
+- **Dev-env bug fixed (dev-only):** the composer was stuck disabled under `next dev` —
+  React Strict Mode's double-mount raced `useLocalRuntime`'s `history.load()` and left the
+  thread `isLoading:true` (typing rejected, Send disabled, empty state missing). Set
+  `reactStrictMode:false`; `npm build && start` was never affected (Strict double-invoke is
+  dev-only). Commit `453b0ec`.
+
+**NOT yet tested:** the RPC **split** across two real devices (this session tested the
+*chat/HTTP* plane, not the split plane); anything running *on* the phone as an engine
+(llama.cpp on-device — the phone here is a **client**, hitting the laptop engine);
+production-build PWA behavior (Serwist SW is disabled in dev — offline/installable
+untested this session); Hexagon NPU through rpc-server (`--device HTP0` — undocumented for
+RPC, unverified) — the single remaining L1 unknown.
 
 ---
 
@@ -102,11 +135,13 @@ B1's corp-policy answer determines whether L1 or L2.5 is the NPU ceiling.
    mode, zero building (NPU swap arrives via Track B).
 3. **Wire `all_remote` (GenieX on laptop):** already proven (~42 tok/s), no signing — a free
    early *real-NPU* mode that doesn't depend on the split.
-4. **Client:** replace `mockModel.ts` (the single `ChatModelAdapter`) with a real
-   OpenAI-compatible SSE streaming adapter + a mode picker mapping `/local /split /remote`;
-   stand up the phone loopback proxy (serves the PWA + fans out to the 3 engines); wrap in a
-   thin **WebView APK** (`usesCleartextTraffic` for localhost). PWA host: `output: 'export'`
-   static bundle served by the proxy is simplest.
+4. **Client:** ~~replace `mockModel.ts` with a real OpenAI-compatible SSE streaming adapter~~
+   **✅ DONE (2026-08-04)** — adapter live and verified cross-device (see *Client / app plane*
+   above). **Remaining:** mode picker UI mapping `/local /split /remote` (switching is
+   console-only via `qmeshSetEngine` today); phone loopback proxy (serves the PWA + fans out
+   to the 3 engines — today the browser calls the laptop engine directly via CORS); thin
+   **WebView APK** (`usesCleartextTraffic` for localhost). PWA host: `output: 'export'` static
+   bundle served by the proxy is simplest.
 5. **→ End-to-end system demo-ready** (3 modes; split + all_local on CPU, all_remote on NPU).
    This is the floor — never regress below it.
 
@@ -146,3 +181,11 @@ B1's corp-policy answer determines whether L1 or L2.5 is the NPU ceiling.
 4. Later: bigger model (8B split = "only possible together") or pipelined speculation for speedup?
 5. Later (out of scope): WireGuard 2-peer mesh to encrypt both planes and make the "private mesh"
    story literal — validated as practical but deferred past the hackathon.
+6. **Open (found 2026-08-04):** laptop port 8082 is currently open to the **whole Wi-Fi**
+   (Public profile), not just the phone. Pre-existing any-port/any-remote Windows Firewall
+   inbound rules for `llama-server.exe` (auto-created during earlier split-RPC work) OR-override
+   the phone-scoped rule that was added. Acceptable on a trusted demo LAN; before untrusted Wi-Fi,
+   disable the broad rules (needs elevation): `Get-NetFirewallRule -DisplayName "llama-server.exe"
+   | ? Direction -eq Inbound | Disable-NetFirewallRule`. Also: laptop engine is **not** reachable
+   from the WSL dev box under a phone-scoped rule, and won't survive a laptop reboot (launched
+   detached, PID-tracked).
