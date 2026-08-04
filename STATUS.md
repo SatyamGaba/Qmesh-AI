@@ -11,6 +11,45 @@ targeting L1 (both-NPU). See [Next steps](#next-steps).
 
 ---
 
+## Devices — live ADB connection (as of 2026-08-04)
+
+Phone (the target MAIN device, Track A step 1) is connected to the WSL2 dev box over
+**wireless ADB**:
+
+| Field | Value |
+|---|---|
+| Model | Samsung **SM-S938U1** (Galaxy S25 Ultra) |
+| Android | 16 |
+| adb serial | `R3CXC08036V` (product `pa3quew`, device `pa3q`) |
+| Connect address | `10.73.51.75:38159` (main Wireless-debugging port) |
+| State | `device` (authorized) |
+
+**adb binaries present:** `/usr/bin/adb` (apt, v1.0.41 / 34.0.4) and
+`~/platform-tools/adb` (v37.0.1, Google latest). Either works.
+
+**Networking note (WSL2):** the dev box is WSL2 in **NAT mode** (`172.20.63.192/20`,
+gateway `172.20.48.1`). It **cannot** reach the phone's `192.168.1.50` LAN address, but the
+`10.73.51.75` interface **is** reachable — pairing/connecting only works via that address.
+
+**To reconnect after a drop/reboot** (pairing keys survive; only the connect step is needed —
+the **port changes each time** Wireless debugging restarts, so re-read it from the phone's
+Wireless-debugging screen):
+
+```bash
+export PATH="$HOME/platform-tools:$PATH"
+adb connect 10.73.51.75:<current-port>
+adb devices -l
+```
+
+If it says *unpaired*, redo pairing (one-time code + a **separate** pairing port from the
+phone's "Pair device with pairing code" dialog): `adb pair 10.73.51.75:<pair-port> <6-digit-pin>`.
+
+For PWA testing once connected: `adb reverse tcp:3000 tcp:3000`, then open
+`http://localhost:3000` in Chrome on the phone (localhost = secure context → service workers /
+installable PWA work without HTTPS).
+
+---
+
 ## What is TESTED (as of 2026-08-04)
 
 Same-machine validation, `QMesh_AI\split_rpc_validation\` (official llama.cpp
