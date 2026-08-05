@@ -51,6 +51,30 @@ model family/revision as the GenieX NPU deployment) and
 .\bench_split.ps1 -Rpc 127.0.0.1:50053 -NglList 32
 ```
 
+### Two-device run (A1 — phone is MAIN, this laptop is the worker)
+
+```powershell
+# laptop: LAN-exposed worker, weights cached so restarts skip the re-transfer
+.\start_worker.ps1 -BindHost 0.0.0.0 -Cache -Threads 10
+
+# scope the inbound rule to the phone (elevated; DHCP-reserve the phone IP)
+New-NetFirewallRule -DisplayName "qmesh-rpc-worker" -Direction Inbound `
+  -Protocol TCP -LocalPort 50052 -RemoteAddress <phone-ip> -Action Allow
+```
+
+The phone side is driven over adb from the dev box — see
+[`../scripts/phone_split.sh`](../scripts/phone_split.sh):
+
+```bash
+./scripts/phone_split.sh preflight <laptop-ip>   # phone->laptop reachability first
+./scripts/phone_split.sh serve     <laptop-ip>   # MAIN on :8081, last 32/36 layers remote
+./scripts/phone_split.sh bench     <laptop-ip>   # pp128/tg32 vs the loopback table
+```
+
+`-Cache` matters here: MAIN streams the weights of every offloaded layer to the
+worker at load (~1.9 GiB at `-ngl 32`), which is invisible on loopback and
+minutes over Wi-Fi. With `-c` only the first load pays it.
+
 `requirements.txt`/`run.ps1` exist for QUAD-workspace convention; there are no
 Python dependencies (native binaries only).
 

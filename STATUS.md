@@ -5,43 +5,44 @@
 in [`docs/FEATURES.md`](./docs/FEATURES.md); this file tracks what's tested, what's next,
 and open questions.
 
-**Last updated:** 2026-08-04
-**Overall state:** RPC split validated on one machine (loopback CPU); the **app→engine
-chat plane is proven cross-device** (PWA streams live tokens from the laptop over Wi-Fi) and
-**all_local now runs on the phone itself** — llama.cpp on-device, radio-off, ~10 t/s decode,
-wired into the picker. Two of three demo modes (remote + on-device) are live. The RPC *split*
-plane across two devices is still pre-two-device.
-**Current fallback rung (see ARCHITECTURE_PLAN §5):** L3 (both-CPU) proven on loopback;
-targeting L1 (both-NPU). See [Next steps](#next-steps).
+**Last updated:** 2026-08-05
+**Overall state:** **The two-device RPC split is live over real Wi-Fi** (phone MAIN →
+laptop worker, Track A1 done): 84 t/s prefill / 15.5 t/s decode through the split. Headline
+caveat: the phone alone re-benched at **25.5 t/s decode** (2.4× yesterday's number — state-
+dependent, see FINDINGS), so at 4B the split is a *capability/privacy* story, not a speedup;
+the 25 ms/token Wi-Fi RTT is the binding constraint. Chat plane cross-device and all_local
+on-phone remain live. All three demo planes now proven; remaining work is wiring + NPU.
+**Current fallback rung (see ARCHITECTURE_PLAN §5):** **L3 (both-CPU) proven across two real
+devices**; targeting L1 (both-NPU). See [Next steps](#next-steps).
 
 ---
 
-## Devices — live ADB connection (as of 2026-08-04)
+## Devices — live connections (as of 2026-08-05)
 
-Phone (the target MAIN device, Track A step 1) is connected to the WSL2 dev box over
-**wireless ADB**:
+**Dev box is now this MacBook Pro** (the WSL2 setup is retired). It sits on the same
+Wi-Fi LAN as both devices — no NAT caveats. Per-device IPs/MACs live in
+`LOCAL_NETWORK.md` (gitignored).
+
+Phone (the target MAIN device, Track A step 1) is connected over **wireless ADB**:
 
 | Field | Value |
 |---|---|
 | Model | Samsung **SM-S938U1** (Galaxy S25 Ultra) |
 | Android | 16 |
 | adb serial | `R3CXC08036V` (product `pa3quew`, device `pa3q`) |
-| Connect address | `10.73.51.75:38159` (main Wireless-debugging port) |
+| Connect address | `10.73.51.75:46051` (adb-over-TCP) |
 | State | `device` (authorized) |
 
-**adb binaries present:** `/usr/bin/adb` (apt, v1.0.41 / 34.0.4) and
-`~/platform-tools/adb` (v37.0.1, Google latest). Either works.
+Laptop (the RPC worker, Snapdragon X Elite, hostname `qcworkshop4`) is reachable over
+**ssh**: `qc_de@10.73.51.58` (key auth from the Mac, admin token). Remote PowerShell
+works best via `powershell -NoProfile -EncodedCommand <base64 UTF-16LE>` — plain `ssh
+host "powershell -Command ..."` lands in cmd.exe and mangles pipes/quotes.
 
-**Networking note (WSL2):** the dev box is WSL2 in **NAT mode** (`172.20.63.192/20`,
-gateway `172.20.48.1`). It **cannot** reach the phone's `192.168.1.50` LAN address, but the
-`10.73.51.75` interface **is** reachable — pairing/connecting only works via that address.
-
-**To reconnect after a drop/reboot** (pairing keys survive; only the connect step is needed —
-the **port changes each time** Wireless debugging restarts, so re-read it from the phone's
-Wireless-debugging screen):
+**To reconnect after a drop/reboot** (pairing keys survive; only the connect step is
+needed — the **port changes each time** Wireless debugging restarts, so re-read it from
+the phone's Wireless-debugging screen):
 
 ```bash
-export PATH="$HOME/platform-tools:$PATH"
 adb connect 10.73.51.75:<current-port>
 adb devices -l
 ```
@@ -69,6 +70,13 @@ pp128/tg32, loopback TCP, both roles sharing the 12-core Oryon CPU:
 | Split — first 4 on main, 32 on worker (`-ngl 32`) — **deployment shape** | 88.4 | 33.2 |
 | Two-port — A(:50052)=4 layers, B(:50053)=32, main holds none | 76.8 | 30.7 |
 | All-remote — every layer on worker | 83.3 | 34.2 |
+
+**Two-device, real Wi-Fi (2026-08-05, phone MAIN `-t 6` → laptop worker `-t 10`):**
+
+| Shape | Prefill t/s | Decode t/s |
+|---|---:|---:|
+| Phone all-local baseline (same session) | 141.3 | 25.5 |
+| **Split — first 4 on phone, 32 on laptop worker** | 84.3 ± 30.1 | 15.5 ± 0.5 |
 
 Also verified: correct generations through the splits (18-layer: 19.0 t/s cold;
 two-port 4/32: 31.5 t/s, placement confirmed via per-worker compute buffers
@@ -130,19 +138,59 @@ Termux, no root:
 - **Measured on-device (4B Q4_0):** prefill ~50–92 t/s; **decode ~9–11 t/s** (llama-bench
   tg32: 10.5 @4t, **10.6 @6t**, 8.0 @8t — decode peaks at 6 threads; all-8 is *slower*,
   efficiency-core contention). Slower than laptop (~37 t/s) but usable and fully offline.
+  **⚠ Superseded (2026-08-05):** an identical bench re-run measured **141.3 pp / 25.5 tg**
+  — uniformly ~2.4× faster, likely governor/thermal/screen state on the earlier run. The
+  phone's true CPU envelope needs a controlled re-bench (see FINDINGS §two-device, point 5).
 - **Verified in the PWA:** picker **On-device** mode lit green (reachability probe) and
   streamed a real answer end-to-end ("Earth, Jupiter, Mars", format honored), no console
-  errors. *Test caveat:* driven from the WSL browser via `adb forward tcp:8082` (WSL can't
-  reach the phone's own loopback); the true phone-browser → phone-`localhost` path (no
-  forward) is the same origin and expected to work, but hasn't been clicked through on the
-  handset yet.
+  errors. *Test caveat:* driven from the dev-box browser via `adb forward tcp:8082` (the
+  dev box can't reach the phone's own loopback); the true phone-browser → phone-`localhost`
+  path (no forward) is the same origin and expected to work, but hasn't been clicked
+  through on the handset yet.
 - **CORS note (differs from laptop):** this build echoes the specific `Origin` with
   `Allow-Credentials:true` — **spec-valid** (specific origin, not `*`), so no
   `--no-cors-credentials` needed here, unlike the laptop's `--cors-origins *` launch.
 
-**NOT yet tested:** the RPC **split** across two real devices (the *split plane*, distinct
-from the chat/HTTP plane proven above); on-device engine driven from the **phone's own
-browser** (only via `adb forward` from WSL so far); production-build PWA behavior (Serwist SW
+### Split mode wired into the picker (NEW, 2026-08-05) ✅
+
+Track A1's integration half is done. `phone_split.sh serve` runs the split MAIN
+llama-server on the phone's `:8081` (first 4 layers local, 32 → laptop worker; loads in
+**37 s warm** thanks to the worker's `-c` weight cache vs minutes cold). `Qmesh-App/.env.local`
+now maps the picker: Local→`localhost:8082`, Split→`localhost:8081`, Remote unset (greys out
+as "NOT SET UP" — correct, laptop has no chat engine or model staged). **Verified end-to-end**
+(dev-box browser + `adb forward` 8081/8082): picker shows On-device + Split green, Split
+selected, real streamed answer ("Mercury, Venus, Earth"), request confirmed in the phone-side
+`split.log`, no console errors.
+
+**UX finding:** the same short interactive request decoded at ~4.7 t/s through the split
+(212 ms/token, from `split.log` timings) vs 15.5 t/s sustained in llama-bench. Consistent
+with Wi-Fi power-save: a bench keeps the radio hot; sporadic chat requests pay radio-wake
+per token. Another reason the split story at 4B is capability/privacy, not speed — and
+another thing a better link (5 GHz close range, power-save off) would improve.
+
+### Remote mode wired — laptop llama-server on :8082 (NEW, 2026-08-05) ✅
+
+All three engine modes are now staged. The laptop runs `llama-server` (same b10270 CPU
+build, WMI-launched from `C:\Users\qc_de\QMesh_AI\split_rpc_validation\`, log
+`llama-server-8082.log`) with the proven flag recipe (`--cors-origins *
+--no-cors-credentials`). Model: byte-identical GGUF found already on the laptop in the old
+**OneDrive workspace** (`C:\Users\qc_de\OneDrive\Documents\qmesh_ai\` — which also holds the
+entire `qmesh_npu` tree: Hexagon SDK 6.6, hvx/adreno/b10150 builds, and the supervisor EXE —
+Track B's materials are all local), copied to `C:\Users\qc_de\QMesh_AI\.models\`, SHA-256
+verified against the Mac reference. **Verified from the phone** (nc HTTP through the
+firewall): `/health` 200 and a real completion ("Paris") at **121.6 pp / 37.5 tg** — the
+laptop's full-speed baseline. `.env.local` sets `NEXT_PUBLIC_ENGINE_REMOTE_URL=
+http://10.73.51.58:8082/v1`.
+
+**Firewall posture (resolves Open Question 6):** the engine runs from the *new* path, so the
+old over-broad any-remote `llama-server.exe` program rules (pinned to the OneDrive exe path)
+stay dormant; only the port rules scoped to the phone's IP admit traffic on 8082/50052. Net
+effect: **the phone sees all three modes; the Mac dev browser shows Remote red** (its probes
+are firewall-dropped — expected, not a bug). To probe from the Mac too, add `10.73.51.126`
+to the 8082 rule's `-RemoteAddress` (needs elevation, run on the laptop).
+
+**NOT yet tested:** on-device engine driven from the **phone's own
+browser** (only via `adb forward` from the dev box so far); production-build PWA behavior (Serwist SW
 is disabled in dev — offline/installable untested); Hexagon NPU through rpc-server
 (`--device HTP0` — undocumented for RPC, unverified) — the single remaining L1 unknown.
 
@@ -158,11 +206,13 @@ a config change, not an app change. **Gates:** A5 is the safety net (never lose 
 B1's corp-policy answer determines whether L1 or L2.5 is the NPU ceiling.
 
 ### Track A — App + guaranteed demo floor (sequential, low-risk)
-1. **Two-device CPU split (L3), no building:** official `b10270` android-arm64 tarball on the
-   S25 (Termux/adb) as MAIN → `--rpc <laptop-ip>:50052` to the laptop worker
-   (`start_worker.ps1 -BindHost 0.0.0.0` + firewall rule scoped to the phone IP; **pre-flight
-   ping to rule out Wi-Fi AP/client isolation**; DHCP-reserve both). Measure pp/tg over real
-   Wi-Fi vs the tested table above. *Highest-information first hour.*
+1. **Two-device CPU split (L3), no building:** ~~phone MAIN → laptop worker over Wi-Fi~~
+   **✅ DONE (2026-08-05)** — S25 MAIN (`-ngl 32`) → laptop `ggml-rpc-server:50052`, real
+   Wi-Fi: **84.3 pp / 15.5 tg** vs same-day phone-local 141.3 / 25.5 (≈39% decode penalty,
+   ≈1 RTT/token — see FINDINGS §two-device). Worker is WMI-launched via ssh (survives
+   session exit; `LOCAL_NETWORK.md` has the exact launch + gotchas), weights cached on the
+   laptop (`-c`), firewall rule pre-existed. Split serve-mode (`phone_split.sh serve`) not
+   yet wired into the picker.
 2. **Phone `all_local` on CPU:** ~~llama-server from the same tarball on `:8082`~~ **✅ DONE
    (2026-08-04)** — running on the S25, ~10 t/s decode, wired into the picker's On-device mode
    (see *all_local* above). NPU swap arrives via Track B. Remaining polish: click through from
@@ -224,5 +274,5 @@ B1's corp-policy answer determines whether L1 or L2.5 is the NPU ceiling.
    the phone-scoped rule that was added. Acceptable on a trusted demo LAN; before untrusted Wi-Fi,
    disable the broad rules (needs elevation): `Get-NetFirewallRule -DisplayName "llama-server.exe"
    | ? Direction -eq Inbound | Disable-NetFirewallRule`. Also: laptop engine is **not** reachable
-   from the WSL dev box under a phone-scoped rule, and won't survive a laptop reboot (launched
+   from the Mac dev box under a phone-scoped rule, and won't survive a laptop reboot (launched
    detached, PID-tracked).

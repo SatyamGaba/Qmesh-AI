@@ -57,6 +57,15 @@ ANDROID (S25 Ultra)                              WINDOWS (X Elite laptop)
 └────────────────────────────────┘              └──────────────────────────────────┘
 ```
 
+**Dev-control topology (current bring-up).** Three nodes on one Wi-Fi LAN (IPs and
+link measurements live in `LOCAL_NETWORK.md`, gitignored): the **Mac dev box** drives
+the **phone** over wireless adb (app + split MAIN run on the phone) and reaches the
+**laptop** over ssh (`qc_de@<laptop-ip>`, key auth) to run the RPC worker
+(`QMesh_AI\split_rpc_validation\` on the laptop). The **phone and laptop also reach
+each other directly** (AP client isolation off, verified phone→laptop) — that direct
+link carries both demo planes: chat HTTP/SSE and the ggml-rpc split. The Mac is
+control-plane only; no inference traffic transits it.
+
 **Client & proxy.** The browser only ever talks to one same-origin loopback
 endpoint (`http://localhost:PORT`), a secure context — so the service worker,
 offline cache, and SSE streaming all work, and there is no HTTPS→LAN-IP

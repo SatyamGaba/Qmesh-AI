@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "qmesh-app",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "Qmesh-App", "run", "dev"],
+      "port": 3000
+    }
+  ]
+}

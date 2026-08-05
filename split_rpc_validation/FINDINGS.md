@@ -66,8 +66,48 @@ Notes:
   (matches bench's 30.7). Verbose load log confirmed placement: compute buffers on
   BOTH workers (331 MiB on :50052, 323 MiB on :50053), 37/37 layers offloaded.
 
+## Two-device split over real Wi-Fi — phone MAIN → laptop worker (2026-08-05)
+
+**Topology:** Galaxy S25 Ultra (SM8750, `-t 6`) as MAIN with the first 4 layers +
+tokenizer/sampler; X Elite laptop as worker (`ggml-rpc-server -H 0.0.0.0 -p 50052
+-t 10 -c`, WMI-launched — see `LOCAL_NETWORK.md` for the ssh/WMI launch gotcha).
+Same b10270 builds both sides (android-arm64 / win-arm64), same GGUF. Link: Wi-Fi
+6E 6 GHz, RSSI −66 dBm, ping RTT 9–85 ms (jittery, power-save). Weight transfer
+(~2 GB at `-ngl 32`) took a few minutes; worker `-c` cache verified writing, so
+only the first load pays it.
+
+| Shape (llama-bench pp128/tg32, r=2, same session) | pp128 t/s | tg32 t/s |
+|---|---:|---:|
+| Phone all-local baseline (`-ngl 0`, no RPC) | 141.3 ± 3.3 | **25.5 ± 0.8** |
+| **Split — first 4 on phone, 32 on laptop (`-ngl 32`)** | 84.3 ± 30.1 | **15.5 ± 0.5** |
+
+**Conclusions:**
+
+1. **The split plane works across real devices** — correct placement, stable decode,
+   one command per side. Track A1's mechanism goal is met.
+2. **At 4B, the split is ~39% slower than the phone alone** (15.5 vs 25.5 tg).
+   Per-token: local = 39 ms; split = 65 ms → ~25 ms/token of network ≈ 1 avg RTT,
+   exactly the 2-crossings-per-token model. The old 22–29 t/s projection assumed a
+   ~5–15 ms LAN; this link's RTT is 2–4× that.
+3. **No 4B split shape can beat local on this link.** Best case (all-remote,
+   laptop ≈ 0.74 ms/layer) ≈ 27 ms compute + ~25 ms RTT ≈ 19 t/s < 25.5 local.
+   The split's demo story at 4B is therefore *capability/privacy* (models too big
+   for the phone, LAN-only mesh), not speed. A speedup story needs either a
+   bigger model (8B+ won't fit the phone at all) or RTT ≤ ~10 ms (5 GHz close
+   range / phone Wi-Fi power-save off).
+4. **pp jitter (±30) is the link**, matching the RTT spread; prefill remains the
+   Wi-Fi-sensitive phase as predicted.
+5. **Baseline discrepancy to re-verify:** 2026-08-04 on-device numbers (~10.6 tg,
+   50–92 pp) are ~2.4× lower than today's (25.5 / 141.3) — uniform across phases,
+   so likely governor/thermal/screen state, not measurement noise. Today's A/B is
+   same-session and internally consistent; yesterday's "phone ≈ 10 t/s"
+   characterization (and the all_local UX expectations built on it) needs a redo.
+
 ## Next
 
 - [ ] Hexagon build on this laptop (Hexagon SDK 6.6 + OpenCL SDK + TESTSIGNING) → rerun with `-Devices HTP0` (L1 proof, laptop side)
 - [ ] Android builds on the x86 box: official `android-arm64` CPU tarball first (L2), Docker Hexagon build after (L1, phone side)
-- [ ] Two-device rerun over real Wi-Fi (phone main → laptop worker), measure pp/tg vs these numbers
+- [x] Two-device rerun over real Wi-Fi (phone main → laptop worker) — see above (2026-08-05)
+- [ ] Re-bench phone all-local under controlled state (charger, screen, governor) to resolve the 10.6-vs-25.5 tg discrepancy
+- [ ] RTT knob: retry split bench at 5 GHz / close range / Wi-Fi power-save off — the only path to a 4B speedup story
+- [ ] 8B-class model split (doesn't fit the phone alone) — the "only possible together" demo
