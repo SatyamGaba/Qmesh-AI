@@ -5,9 +5,7 @@ import {
   AssistantRuntimeProvider,
   useLocalRuntime,
 } from "@assistant-ui/react";
-import { mockModelAdapter } from "@/lib/mockModel";
-import { openaiModelAdapter } from "@/lib/openaiModel";
-import { getEngine } from "@/lib/config";
+import { modelAdapter } from "@/lib/modelAdapter";
 import { createHistoryAdapter } from "@/lib/threads";
 
 /**
@@ -27,14 +25,10 @@ export function ChatRuntimeProvider({
 }) {
   const history = useMemo(() => createHistoryAdapter(threadId), [threadId]);
 
-  // Pick the adapter from config: real OpenAI-compatible engine when one is
-  // configured, else the on-device mock (the always-available offline floor).
-  const adapter = useMemo(
-    () => (getEngine().mode === "openai" ? openaiModelAdapter : mockModelAdapter),
-    [],
-  );
-
-  const runtime = useLocalRuntime(adapter, {
+  // The adapter dispatches to the active engine per-run (see modelAdapter),
+  // so switching modes in the picker applies to the next message with no
+  // remount — the conversation is preserved.
+  const runtime = useLocalRuntime(modelAdapter, {
     adapters: { history },
   });
 

@@ -1,26 +1,23 @@
 /**
  * ============================================================================
- *  ENGINE CONFIG — where the chat adapter sends inference requests
+ *  ENGINE CONFIG — the modes the chat picker offers + how each is resolved
  * ============================================================================
  * The app talks to any OpenAI-compatible chat engine (`/v1/chat/completions`).
- * For the demo that's a llama-server on the laptop; later the same interface
- * fronts the split / all_remote / all_local modes (see ARCHITECTURE_PLAN §3).
+ * These presets mirror ARCHITECTURE_PLAN §3's mode map — local / split / remote
+ * — plus a mock offline floor. A mode with no engine URL configured shows up as
+ * unavailable (greyed) in the picker until its engine is wired.
  *
- * Resolution order (first wins), so the target can change with zero rebuild:
- *   1. localStorage override  — set at runtime from the phone (see setEngine)
- *   2. NEXT_PUBLIC_* env       — baked at build time (.env.local)
- *   3. hard-coded fallback     — the mock, so the app always has a floor
- *
- * `NEXT_PUBLIC_` is required: these are read in the browser, and Next only
- * exposes env vars with that prefix to client code.
+ * Config is read in the browser, so every engine URL/model must be a
+ * `NEXT_PUBLIC_*` env var (Next only exposes those to client code). The active
+ * preset id is persisted in localStorage, so switching modes needs no rebuild.
  */
 
 export type EngineMode = "mock" | "openai";
 
 export interface EngineConfig {
-  /** Which adapter to use. "mock" = canned on-device stream (offline floor). */
+  /** "mock" = canned on-device stream (offline floor); "openai" = real engine. */
   mode: EngineMode;
-  /** OpenAI-compatible base URL, including the /v1 suffix. */
+  /** OpenAI-compatible base URL, including the /v1 suffix. Empty for mock. */
   baseUrl: string;
   /** Model id sent in the request body — must match the engine's /v1/models. */
   model: string;
@@ -28,51 +25,119 @@ export interface EngineConfig {
   apiKey: string;
 }
 
-const LS_KEY = "qmesh.engine";
+export interface EnginePreset extends EngineConfig {
+  /** Stable id, also the localStorage value: mock | local | split | remote. */
+  id: string;
+  /** Short label shown in the picker. */
+  label: string;
+  /** One-line description of what this mode routes to. */
+  hint: string;
+  /** false when this mode has no engine URL yet — shown greyed, not selectable. */
+  available: boolean;
+}
 
-const ENV_DEFAULTS: EngineConfig = {
-  mode: (process.env.NEXT_PUBLIC_ENGINE_MODE as EngineMode) || "mock",
-  baseUrl: process.env.NEXT_PUBLIC_ENGINE_BASE_URL || "",
-  model: process.env.NEXT_PUBLIC_ENGINE_MODEL || "",
-  apiKey: process.env.NEXT_PUBLIC_ENGINE_API_KEY || "",
+const MODEL = process.env.NEXT_PUBLIC_ENGINE_MODEL || "";
+const API_KEY = process.env.NEXT_PUBLIC_ENGINE_API_KEY || "";
+
+// The original single-engine var maps to the remote slot for back-compat.
+const LEGACY_URL = process.env.NEXT_PUBLIC_ENGINE_BASE_URL || "";
+
+const URLS = {
+  local: process.env.NEXT_PUBLIC_ENGINE_LOCAL_URL || "",
+  split: process.env.NEXT_PUBLIC_ENGINE_SPLIT_URL || "",
+  remote: process.env.NEXT_PUBLIC_ENGINE_REMOTE_URL || LEGACY_URL,
 };
 
-/**
- * Read the effective engine config. Safe on the server (SSR) — it just returns
- * the env defaults there, since localStorage only exists in the browser.
- */
-export function getEngine(): EngineConfig {
-  if (typeof window === "undefined") return ENV_DEFAULTS;
+function openaiPreset(
+  id: string,
+  label: string,
+  hint: string,
+  baseUrl: string,
+): EnginePreset {
+  return {
+    id,
+    label,
+    hint,
+    mode: "openai",
+    baseUrl,
+    model: MODEL,
+    apiKey: API_KEY,
+    available: baseUrl.length > 0,
+  };
+}
+
+/** All modes, in the order shown in the picker. */
+export const PRESETS: EnginePreset[] = [
+  {
+    id: "mock",
+    label: "Mock",
+    hint: "Canned reply — fully offline, no engine",
+    mode: "mock",
+    baseUrl: "",
+    model: "",
+    apiKey: "",
+    available: true,
+  },
+  openaiPreset("local", "On-device", "llama.cpp running on this phone", URLS.local),
+  openaiPreset("split", "Split", "Phone + laptop worker (RPC split)", URLS.split),
+  openaiPreset("remote", "Remote", "Engine on the laptop", URLS.remote),
+];
+
+// Default mode: honor NEXT_PUBLIC_ENGINE_MODE, landing on the first available
+// real engine when set to "openai", else the mock floor.
+const DEFAULT_ID =
+  process.env.NEXT_PUBLIC_ENGINE_MODE === "openai"
+    ? (PRESETS.find((p) => p.mode === "openai" && p.available)?.id ?? "mock")
+    : "mock";
+
+const LS_KEY = "qmesh.engine";
+
+/** Event fired when the active mode changes, so the picker can stay in sync. */
+export const ENGINE_CHANGE_EVENT = "qmesh:engine-change";
+
+/** The active preset id (falls back to the default on SSR / bad storage). */
+export function getActivePresetId(): string {
+  if (typeof window === "undefined") return DEFAULT_ID;
   try {
-    const raw = window.localStorage.getItem(LS_KEY);
-    if (raw) {
-      const override = JSON.parse(raw) as Partial<EngineConfig>;
-      return { ...ENV_DEFAULTS, ...override };
-    }
+    const id = window.localStorage.getItem(LS_KEY);
+    if (id && PRESETS.some((p) => p.id === id)) return id;
   } catch {
-    // Corrupt/blocked storage — fall back to env defaults.
+    // storage blocked — fall through to default
   }
-  return ENV_DEFAULTS;
+  return DEFAULT_ID;
 }
 
-/**
- * Persist a runtime override (e.g. from a settings screen or the console:
- * `qmeshSetEngine({ mode: "openai", baseUrl: "http://10.73.51.58:8082/v1", model: "qwen3-4b" })`).
- * Pass null to clear and fall back to env defaults.
- */
-export function setEngine(override: Partial<EngineConfig> | null): void {
+/** The active preset, coerced to a usable one (mock) if its engine is gone. */
+export function getActivePreset(): EnginePreset {
+  const id = getActivePresetId();
+  const p = PRESETS.find((x) => x.id === id);
+  if (p && (p.available || p.mode === "mock")) return p;
+  return PRESETS[0]; // mock — always available
+}
+
+/** The engine config the adapter should use right now. */
+export function getEngine(): EngineConfig {
+  const p = getActivePreset();
+  return { mode: p.mode, baseUrl: p.baseUrl, model: p.model, apiKey: p.apiKey };
+}
+
+/** Switch modes. No-op for unknown/unavailable ids. */
+export function setActivePreset(id: string): void {
   if (typeof window === "undefined") return;
-  if (override === null) {
-    window.localStorage.removeItem(LS_KEY);
-  } else {
-    window.localStorage.setItem(LS_KEY, JSON.stringify(override));
+  const p = PRESETS.find((x) => x.id === id);
+  if (!p || (!p.available && p.mode !== "mock")) return;
+  try {
+    window.localStorage.setItem(LS_KEY, id);
+    window.dispatchEvent(new CustomEvent(ENGINE_CHANGE_EVENT, { detail: id }));
+  } catch {
+    // storage blocked — nothing to persist
   }
 }
 
-// Expose a console helper for on-device tweaking without a UI yet.
+// Console helpers for tweaking without a UI: qmeshSetEngine("remote").
 if (typeof window !== "undefined") {
-  (window as unknown as { qmeshSetEngine?: typeof setEngine }).qmeshSetEngine =
-    setEngine;
-  (window as unknown as { qmeshGetEngine?: typeof getEngine }).qmeshGetEngine =
-    getEngine;
+  const w = window as unknown as Record<string, unknown>;
+  w.qmeshSetEngine = setActivePreset;
+  w.qmeshGetEngine = getEngine;
+  w.qmeshPresets = PRESETS;
 }

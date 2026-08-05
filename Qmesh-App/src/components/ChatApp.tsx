@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Menu, PenSquare } from "lucide-react";
 import { ChatRuntimeProvider } from "./ChatRuntimeProvider";
 import { HistorySidebar } from "./HistorySidebar";
+import { ModePicker } from "./ModePicker";
 import { Thread } from "./Thread";
 import { createThread } from "@/lib/threads";
 import { db } from "@/lib/db";
@@ -60,7 +61,7 @@ export function ChatApp() {
         >
           <Menu className="size-5" />
         </button>
-        <h1 className="text-sm font-semibold text-foreground">Qmesh</h1>
+        <ModePicker />
         <button
           onClick={handleNewChat}
           aria-label="New chat"
