@@ -6,8 +6,10 @@ next, and open questions.
 
 **Last updated:** 2026-08-04
 **Overall state:** RPC split validated on one machine (loopback CPU); the **app→engine
-chat plane is now proven cross-device** — the PWA streams live tokens from the laptop
-llama-server over real Wi-Fi. The RPC *split* plane across two devices is still pre-two-device.
+chat plane is proven cross-device** (PWA streams live tokens from the laptop over Wi-Fi) and
+**all_local now runs on the phone itself** — llama.cpp on-device, radio-off, ~10 t/s decode,
+wired into the picker. Two of three demo modes (remote + on-device) are live. The RPC *split*
+plane across two devices is still pre-two-device.
 **Current fallback rung (see ARCHITECTURE_PLAN §5):** L3 (both-CPU) proven on loopback;
 targeting L1 (both-NPU). See [Next steps](#next-steps).
 
@@ -107,12 +109,41 @@ The PWA's inference seam is no longer a mock. Track A step 4's core is done and
   `reactStrictMode:false`; `npm build && start` was never affected (Strict double-invoke is
   dev-only). Commit `453b0ec`.
 
-**NOT yet tested:** the RPC **split** across two real devices (this session tested the
-*chat/HTTP* plane, not the split plane); anything running *on* the phone as an engine
-(llama.cpp on-device — the phone here is a **client**, hitting the laptop engine);
-production-build PWA behavior (Serwist SW is disabled in dev — offline/installable
-untested this session); Hexagon NPU through rpc-server (`--device HTP0` — undocumented for
-RPC, unverified) — the single remaining L1 unknown.
+### all_local — llama.cpp running ON the phone (NEW, 2026-08-04) ✅
+
+The phone's own on-device engine works — **Track A step 2 done on CPU**. No building, no
+Termux, no root:
+
+- **Binary:** official prebuilt `llama-b10270-bin-android-arm64.tar.gz` (CPU, Clang 21,
+  aarch64), `adb push`'d to `/data/local/tmp/llama/` with its `.so`s (ships per-ISA CPU
+  variants armv8.0–armv9.2; SM8750 picks armv9.2). Runs via
+  `LD_LIBRARY_PATH=. ./llama-server`. Same tarball carries `libggml-rpc.so` → can double as
+  the split worker later.
+- **Model:** `qwen3-4b-instruct-2507-q4_0.gguf` (2.21 GiB) pushed to the phone (byte-exact,
+  from `/.models/`, gitignored). A GGUF is self-contained (weights + tokenizer + chat
+  template) — nothing else needed on the phone.
+- **Launch:** `./llama-server -m <gguf> --host 127.0.0.1 --port 8082 --alias qwen3-4b -c 4096
+  -t 6`. Model loads in ~24 s (cold), `listening on 127.0.0.1:8082`, `/health` → 200. Bound
+  to phone loopback = **true radio-off local**; the phone's browser hits its own `localhost`.
+- **Device:** Galaxy S25 Ultra, **Snapdragon 8 Elite (SM8750)**, 8 cores, ~11.4 GB RAM.
+- **Measured on-device (4B Q4_0):** prefill ~50–92 t/s; **decode ~9–11 t/s** (llama-bench
+  tg32: 10.5 @4t, **10.6 @6t**, 8.0 @8t — decode peaks at 6 threads; all-8 is *slower*,
+  efficiency-core contention). Slower than laptop (~37 t/s) but usable and fully offline.
+- **Verified in the PWA:** picker **On-device** mode lit green (reachability probe) and
+  streamed a real answer end-to-end ("Earth, Jupiter, Mars", format honored), no console
+  errors. *Test caveat:* driven from the WSL browser via `adb forward tcp:8082` (WSL can't
+  reach the phone's own loopback); the true phone-browser → phone-`localhost` path (no
+  forward) is the same origin and expected to work, but hasn't been clicked through on the
+  handset yet.
+- **CORS note (differs from laptop):** this build echoes the specific `Origin` with
+  `Allow-Credentials:true` — **spec-valid** (specific origin, not `*`), so no
+  `--no-cors-credentials` needed here, unlike the laptop's `--cors-origins *` launch.
+
+**NOT yet tested:** the RPC **split** across two real devices (the *split plane*, distinct
+from the chat/HTTP plane proven above); on-device engine driven from the **phone's own
+browser** (only via `adb forward` from WSL so far); production-build PWA behavior (Serwist SW
+is disabled in dev — offline/installable untested); Hexagon NPU through rpc-server
+(`--device HTP0` — undocumented for RPC, unverified) — the single remaining L1 unknown.
 
 ---
 
@@ -131,8 +162,10 @@ B1's corp-policy answer determines whether L1 or L2.5 is the NPU ceiling.
    (`start_worker.ps1 -BindHost 0.0.0.0` + firewall rule scoped to the phone IP; **pre-flight
    ping to rule out Wi-Fi AP/client isolation**; DHCP-reserve both). Measure pp/tg over real
    Wi-Fi vs the tested table above. *Highest-information first hour.*
-2. **Phone `all_local` on CPU:** llama-server from the same tarball on `:8082` — a working local
-   mode, zero building (NPU swap arrives via Track B).
+2. **Phone `all_local` on CPU:** ~~llama-server from the same tarball on `:8082`~~ **✅ DONE
+   (2026-08-04)** — running on the S25, ~10 t/s decode, wired into the picker's On-device mode
+   (see *all_local* above). NPU swap arrives via Track B. Remaining polish: click through from
+   the phone's own browser; auto-launch the server (survives reboot / boot script).
 3. **Wire `all_remote` (GenieX on laptop):** already proven (~42 tok/s), no signing — a free
    early *real-NPU* mode that doesn't depend on the split.
 4. **Client:** ~~replace `mockModel.ts` with a real OpenAI-compatible SSE streaming adapter +
