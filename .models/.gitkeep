@@ -1,0 +1,4 @@
+# Local GGUF model weights live here (gitignored — see /.gitignore).
+# Expected files, fetched out-of-band, not committed:
+#   qwen3-4b-instruct-2507-q4_0.gguf   (~2.3 GB) — deployment model
+#   qwen2.5-0.5b-q4_0.gguf             (~409 MB) — fast smoke-test model
