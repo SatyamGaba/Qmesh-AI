@@ -1,8 +1,9 @@
 # QMesh — Status & Next Steps (live)
 
 **This is the working doc — update it as things change.** Durable design lives in
-[`ARCHITECTURE_PLAN.md`](./ARCHITECTURE_PLAN.md); this file tracks what's tested, what's
-next, and open questions.
+[`ARCHITECTURE_PLAN.md`](./ARCHITECTURE_PLAN.md); demo-facing capabilities + talking points
+in [`docs/FEATURES.md`](./docs/FEATURES.md); this file tracks what's tested, what's next,
+and open questions.
 
 **Last updated:** 2026-08-04
 **Overall state:** RPC split validated on one machine (loopback CPU); the **app→engine
