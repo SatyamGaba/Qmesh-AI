@@ -1,0 +1,3 @@
+# No Python dependencies.
+# This project runs native llama.cpp binaries only (bin\*.exe).
+# run.ps1 is included for QUAD-workspace convention; it is a no-op setup here.
