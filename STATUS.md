@@ -135,13 +135,16 @@ B1's corp-policy answer determines whether L1 or L2.5 is the NPU ceiling.
    mode, zero building (NPU swap arrives via Track B).
 3. **Wire `all_remote` (GenieX on laptop):** already proven (~42 tok/s), no signing — a free
    early *real-NPU* mode that doesn't depend on the split.
-4. **Client:** ~~replace `mockModel.ts` with a real OpenAI-compatible SSE streaming adapter~~
-   **✅ DONE (2026-08-04)** — adapter live and verified cross-device (see *Client / app plane*
-   above). **Remaining:** mode picker UI mapping `/local /split /remote` (switching is
-   console-only via `qmeshSetEngine` today); phone loopback proxy (serves the PWA + fans out
-   to the 3 engines — today the browser calls the laptop engine directly via CORS); thin
-   **WebView APK** (`usesCleartextTraffic` for localhost). PWA host: `output: 'export'` static
-   bundle served by the proxy is simplest.
+4. **Client:** ~~replace `mockModel.ts` with a real OpenAI-compatible SSE streaming adapter +
+   a mode picker~~ **✅ DONE (2026-08-04)** — adapter live and verified cross-device (see
+   *Client / app plane* above); **mode picker shipped** (`ModePicker.tsx`) — header dropdown for
+   mock / on-device / split / remote with a live per-mode reachability dot, modes with no URL show
+   "not set up", switching applies to the next message with no remount (adapter dispatches
+   per-run). Verified: Remote→"42" / Mock→canned / Remote real, one thread, no errors.
+   **Remaining:** phone loopback proxy (serves the PWA + fans out to the 3 engines — today the
+   browser calls the laptop engine directly via CORS); thin **WebView APK**
+   (`usesCleartextTraffic` for localhost). PWA host: `output: 'export'` static bundle served by
+   the proxy is simplest.
 5. **→ End-to-end system demo-ready** (3 modes; split + all_local on CPU, all_remote on NPU).
    This is the floor — never regress below it.
 
