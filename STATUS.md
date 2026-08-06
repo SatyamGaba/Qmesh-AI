@@ -482,7 +482,11 @@ Launcher: `qmesh_npu\run_npu_server.ps1` (Qwen3-4B Q4_0, `--device HTP0 -ngl 99`
 pre-existing any-port firewall rules would otherwise expose it to the whole Wi-Fi).
 Model loads in ~2.6 s, `/health` ok in 4 s, `/completion` returns correct text.
 
-**Device attribution had to be done by measurement, not logs.** `llama-server` installs its
+**Device attribution had to be done by measurement, not logs.** *(Superseded 2026-08-06 —
+`telemetry.sh` probes / `run_npu_server.ps1 -GgmlProfile` now attribute CPU/NPU/GPU
+directly via `GGML_HEXAGON_PROFILE=1` + `-v` per-op evidence, validated on both devices.
+Fingerprinting remains the fallback where profiling overhead is unacceptable.)*
+`llama-server` installs its
 own ggml log callback and swallows the `ggml-hex:` backend lines, so the session/hwinfo
 output visible under `llama-bench` never appears — even with `GGML_HEXAGON_VERBOSE=2`.
 `--list-devices` also prints nothing (same cosmetic listing bug as the `--device` error

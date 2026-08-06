@@ -4,12 +4,19 @@
       powershell -NoProfile -ExecutionPolicy Bypass -File live_stats.ps1
       powershell ... -File live_stats.ps1 -IntervalSec 1
 
-  Backend attribution is evidence-based, not flag-based:
-    NPU  process holds an open fd on /dev/fastrpc-cdsp  (kernel-level truth)
-    GPU  libggml-opencl.so mapped, no fastrpc fd
-    CPU  neither
+  Backend attribution is two-layered:
+    ACTUAL column -- kernel evidence (attachment):
+      NPU  process holds an open fd on /dev/fastrpc-cdsp  (kernel-level truth)
+      GPU  libggml-opencl.so mapped, no fastrpc fd
+      CPU  neither
+    Probe verdicts (bottom panel) -- GGML profiling flag (execution):
+      telemetry.sh probes run llama-bench with GGML_HEXAGON_PROFILE=1 -v;
+      NPU = "profile-op" lines (one per DSP-executed op), GPU = "OpenCL ...
+      buffer size =" allocations, CPU = neither. This is where ops actually
+      RAN, not just what the process is attached to.
   The requested device from the command line is shown alongside, so you can
   see a mismatch between what was asked for and what is actually attached.
+  PROF shows the GGML_HEXAGON_PROFILE value the process was launched with.
 
   Power needs the phone UNPLUGGED -- on AC the charging current swamps the
   discharge reading and `current now` clamps to a couple of fixed buckets.
@@ -40,10 +47,11 @@ while ($true) {
         Start-Sleep -Seconds $IntervalSec; continue
     }
 
-    $kv = @{}; $procs = @()
+    $kv = @{}; $procs = @(); $verdicts = @()
     foreach ($line in $raw) {
         $l = "$line".Trim()
         if ($l -like 'PROC=*') { $procs += $l.Substring(5) }
+        elseif ($l -like 'VERDICT=*') { $verdicts += $l.Substring(8) }
         elseif ($l -match '^(\w+)=(.*)$') { $kv[$Matches[1]] = $Matches[2] }
     }
 
@@ -70,7 +78,7 @@ while ($true) {
 
     # ---- inference processes ---------------------------------------------
     Write-Host ""
-    Write-Host ("  {0,-6} {1,-16} {2,-6} {3,>8}  {4}" -f "PID","PROCESS","ACTUAL","RSS MB","REQUESTED / PORT") -ForegroundColor Gray
+    Write-Host ("  {0,-6} {1,-16} {2,-6} {3,-6} {4,8}  {5}" -f "PID","PROCESS","ACTUAL","PROF","RSS MB","REQUESTED / PORT") -ForegroundColor Gray
     Write-Host ("  " + ("-" * 96)) -ForegroundColor DarkGray
 
     if (-not $procs) {
@@ -79,7 +87,15 @@ while ($true) {
     foreach ($p in $procs) {
         $f = $p -split '\|'
         if ($f.Count -lt 5) { continue }
-        $pid_ = $f[0]; $nm = $f[1]; $be = $f[2]; $rssMb = [math]::Round([double]$f[3]/1024); $cmd = $f[4]
+        $pid_ = $f[0]; $nm = $f[1]; $be = $f[2]; $rssMb = [math]::Round([double]$f[3]/1024)
+        if ($f.Count -ge 6) {
+            # new telemetry.sh: pid|name|actual|rss|prof:<v>|cmd
+            $prof = $f[4] -replace '^prof:', ''
+            $cmd  = $f[5..($f.Count - 1)] -join '|'
+        } else {
+            # pre-profiling telemetry.sh still deployed on the phone
+            $prof = '-'; $cmd = $f[4]
+        }
 
         # what the command line ASKED for -- may differ from what's attached
         $req = "cpu"
@@ -90,10 +106,23 @@ while ($true) {
 
         Write-Host ("  {0,-6} {1,-16} " -f $pid_, $nm) -NoNewline
         Write-Host ("{0,-6}" -f $be) -ForegroundColor (Color $be) -NoNewline
-        Write-Host (" {0,8}  {1}  :{2}" -f $rssMb, $req, $port)
+        Write-Host (" {0,-6} {1,8}  {2}  :{3}" -f $prof, $rssMb, $req, $port)
+    }
+
+    # ---- flag-based verdicts from telemetry.sh probes ---------------------
+    if ($verdicts.Count -gt 0) {
+        Write-Host ""
+        Write-Host "  GGML-profiled probes (GGML_HEXAGON_PROFILE -- where ops actually ran):" -ForegroundColor Gray
+        foreach ($v in $verdicts) {
+            $g = $v -split '\|'
+            if ($g.Count -lt 2) { continue }
+            Write-Host ("  {0,-14} " -f $g[0]) -NoNewline
+            Write-Host ("{0,-4}" -f $g[1]) -ForegroundColor (Color $g[1]) -NoNewline
+            Write-Host ("  " + (($g | Select-Object -Skip 2) -join '  '))
+        }
     }
 
     Write-Host ""
-    Write-Host "  ACTUAL is from /proc/<pid>/fd -- NPU means an open fd on /dev/fastrpc-cdsp." -ForegroundColor DarkGray
+    Write-Host "  ACTUAL = /proc/<pid>/fd evidence (attachment). Probe verdicts = GGML profiling flag (execution)." -ForegroundColor DarkGray
     Start-Sleep -Seconds $IntervalSec
 }
