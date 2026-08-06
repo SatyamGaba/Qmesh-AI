@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      Light only, to match the web app. Without this the shell follows the device
+      theme: a dark window background flashes before the WebView paints, and the
+      status-bar icons stay white-on-white over the now-light page.
+    -->
+    <style name="QMeshTheme" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:navigationBarColor">@android:color/white</item>
+        <!-- Dark icons on the light bars (windowLightNavigationBar is API 27+, ignored below). -->
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <!-- Android 12+ splash: white, so it does not flash dark before the page paints. -->
+        <item name="android:windowSplashScreenBackground">@android:color/white</item>
+    </style>
+</resources>

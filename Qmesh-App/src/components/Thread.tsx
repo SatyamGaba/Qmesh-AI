@@ -64,7 +64,7 @@ function EmptyState() {
             key={s}
             prompt={s}
             send={false}
-            className="rounded-2xl border border-zinc-200 px-4 py-3 text-left text-sm text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-900"
+            className="rounded-2xl border border-zinc-200 px-4 py-3 text-left text-sm text-zinc-700 transition-colors hover:bg-zinc-50"
           >
             {s}
           </ThreadPrimitive.Suggestion>
@@ -90,7 +90,6 @@ function AssistantMessage() {
       <div
         className={cn(
           "max-w-[85%] rounded-3xl rounded-bl-md bg-zinc-100 px-4 py-2.5 text-foreground",
-          "dark:bg-zinc-800",
           // prose-ish spacing for markdown output
           "[&_p]:my-1 [&_pre]:my-2 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:bg-black/80 [&_pre]:p-3 [&_pre]:text-xs [&_pre]:text-zinc-100 [&_code]:font-mono [&_ul]:my-1 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-1 [&_ol]:list-decimal [&_ol]:pl-5",
         )}
@@ -103,8 +102,8 @@ function AssistantMessage() {
 
 function Composer() {
   return (
-    <div className="border-t border-zinc-200 bg-background px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] dark:border-zinc-800">
-      <ComposerPrimitive.Root className="mx-auto flex w-full max-w-2xl items-end gap-2 rounded-3xl border border-zinc-300 bg-white px-3 py-2 focus-within:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-900">
+    <div className="border-t border-zinc-200 bg-background px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+      <ComposerPrimitive.Root className="mx-auto flex w-full max-w-2xl items-end gap-2 rounded-3xl border border-zinc-300 bg-white px-3 py-2 focus-within:border-zinc-400">
         <ComposerPrimitive.Input
           autoFocus
           rows={1}

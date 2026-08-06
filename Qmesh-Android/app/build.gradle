@@ -1,0 +1,46 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'ai.qmesh.app'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "ai.qmesh.app"
+        minSdk 26
+        // 34, not 35, on purpose. targetSdk 35 forces edge-to-edge on Android 15+, which
+        // makes the window ignore `adjustResize`: the WebView keeps full height when the
+        // keyboard opens, so 100dvh never shrinks and the composer ends up under the
+        // keyboard. At 34 the window resizes classically and the chat layout follows.
+        targetSdk 34
+        versionCode 1
+        versionName "0.1"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            // Demo build: sign release with the debug key so `assembleRelease`
+            // produces an installable APK without a keystore ceremony.
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    androidResources {
+        // AGP's default asset ignore list contains `<dir>_*`, which silently drops every
+        // directory whose name starts with an underscore — including Next's `_next/`, i.e.
+        // all the JS and CSS. Same list, minus that one entry.
+        ignoreAssetsPattern '!.svn:!.git:!.gitignore:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+// No dependencies: the shell serves assets/www itself (see MainActivity#serveFromAssets),
+// so androidx.webkit's WebViewAssetLoader is not needed.
+dependencies {
+}

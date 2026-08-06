@@ -191,9 +191,57 @@ effect: **the phone sees all three modes; the Mac dev browser shows Remote red**
 are firewall-dropped — expected, not a bug). To probe from the Mac too, add `10.73.51.126`
 to the 8082 rule's `-RemoteAddress` (needs elevation, run on the laptop).
 
-**NOT yet tested:** on-device engine driven from the **phone's own
-browser** (only via `adb forward` from the dev box so far); production-build PWA behavior (Serwist SW
-is disabled in dev — offline/installable untested); Hexagon NPU through rpc-server
+### Native APK shell — the UI now lives ON the phone (NEW, 2026-08-05) ✅
+
+Track A step 4 is fully done. `Qmesh-Android/` is a ~2.2 MB single-Activity WebView APK
+(`ai.qmesh.app`, package **QMesh**) that **bundles the Next static export** and serves it to its
+own WebView. One command builds and installs it:
+
+```bash
+cd Qmesh-Android && ./build-apk.sh --install
+```
+
+Why this mattered: until now the PWA reached the phone only via `adb reverse tcp:3000` from the
+dev box, so **the MacBook was silently in the demo path even for "On-device, radio off"**. The
+free workarounds were both dead ends — llama-server `b10270` has no `--path`/static-serve flag
+(checked on-device), and an installable PWA needs a secure context (HTTPS or `localhost`), which
+serving from the laptop's LAN IP is not. The APK was the only route to UI-on-phone.
+
+- **Toolchain (Mac, all no-sudo):** `brew install openjdk@17` + `brew install --cask
+  android-commandlinetools` (SDK root `/opt/homebrew/share/android-commandlinetools`), platform
+  35/36 + build-tools. Gradle **wrapper pinned to 8.9** with **AGP 8.7.3**, compileSdk 35,
+  minSdk 26 — deliberately boring; brew's Gradle 9.6.1 is only used to generate the wrapper.
+- **Asset origin:** the export is served at `http://appassets.androidplatform.net` from
+  `assets/www` via `shouldInterceptRequest`. **http, not https, on purpose** — the engines are
+  plain-http, so an https page would hit mixed-content blocking; same scheme leaves only ordinary
+  CORS, which the engines already satisfy. Cost: not a secure context, so the Serwist SW does not
+  register — irrelevant, since the bundle is already local.
+- **Two traps, both hit and fixed:**
+  1. **`aapt` silently drops asset directories starting with `_`** (default ignore pattern
+     `<dir>_*`), so Next's entire `_next/` tree — all JS and CSS — was missing from the APK. The
+     page still *rendered*, because the export's prerendered HTML needs no JS, so it looked like a
+     styling bug. Fixed with an `androidResources { ignoreAssetsPattern ... }` list minus that entry.
+  2. Assets are served with an **explicit MIME map**; Chrome enforces `text/css` on stylesheets
+     and silently drops anything else.
+- **The APK does not start the engines.** Android blocks apps from exec'ing binaries out of
+  `/data/local/tmp`, so llama-server / the split are still adb-launched. Embedding them via JNI
+  stays post-demo, as planned.
+- **Verified** with `adb reverse` removed and no dev server: app loads from its own assets, no
+  console errors, no asset misses; picker shows **all four modes green** (Mock, On-device, Split,
+  Remote) from inside the WebView; On-device streamed a real answer ("Earth, Mars, Jupiter");
+  thread history persists in IndexedDB across reinstalls.
+
+### Light mode only (NEW, 2026-08-05)
+
+Dark mode was removed rather than defaulted-away: the `prefers-color-scheme: dark` block is gone
+from `globals.css` (replaced by `color-scheme: light`), all 15 `dark:` utilities are stripped from
+the components, and `themeColor` / manifest colors are `#ffffff`. The Android shell matches —
+`QMeshTheme` is `DeviceDefault.Light.NoActionBar` with white status/nav bars, dark bar icons, and
+a white Android-12 splash; the launcher icon is a blue mesh on white.
+
+**NOT yet tested:** Split and Remote were confirmed *reachable* (green probe dots) from inside the
+APK but a full generation through each was not clicked through end-to-end; production PWA-in-Chrome
+behavior (Serwist SW) remains untested and is now moot for the demo; Hexagon NPU through rpc-server
 (`--device HTP0` — undocumented for RPC, unverified) — the single remaining L1 unknown.
 
 ---
@@ -227,10 +275,10 @@ B1's corp-policy answer determines whether L1 or L2.5 is the NPU ceiling.
    mock / on-device / split / remote with a live per-mode reachability dot, modes with no URL show
    "not set up", switching applies to the next message with no remount (adapter dispatches
    per-run). Verified: Remote→"42" / Mock→canned / Remote real, one thread, no errors.
-   **Remaining:** phone loopback proxy (serves the PWA + fans out to the 3 engines — today the
-   browser calls the laptop engine directly via CORS); thin **WebView APK**
-   (`usesCleartextTraffic` for localhost). PWA host: `output: 'export'` static bundle served by
-   the proxy is simplest.
+   ~~**Remaining:** phone loopback proxy; thin **WebView APK**~~ **✅ DONE (2026-08-05)** — the
+   **QMesh APK** ships the static export inside itself and serves it to its own WebView, so no
+   proxy was needed and the dev box is out of the demo path entirely (see *Native APK shell*
+   above).
 5. **→ End-to-end system demo-ready** (3 modes; split + all_local on CPU, all_remote on NPU).
    This is the floor — never regress below it.
 

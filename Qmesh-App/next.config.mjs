@@ -8,6 +8,11 @@ const withSerwist = withSerwistInit({
 });
 
 /** @type {import("next").NextConfig} */
-const nextConfig = { reactStrictMode: false };
+const nextConfig = {
+  reactStrictMode: false,
+  // QMESH_EXPORT=1 emits a static `out/` bundle for the Android shell to serve
+  // from assets. Left off, `npm run dev` / `next start` behave exactly as before.
+  ...(process.env.QMESH_EXPORT ? { output: "export" } : {}),
+};
 
 export default withSerwist(nextConfig);

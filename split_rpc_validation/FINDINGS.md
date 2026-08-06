@@ -148,14 +148,29 @@ Findings, in the order discovered:
    value is capability (models beyond the phone) + privacy, full stop. A speed story
    would need protocol batching upstream in llama.cpp, wired transport, or a much
    bigger model where compute dwarfs the fixed ~50 ms/token network tax.
-5. Ops notes from the experiment: llama-bench **silently falls back to CPU-only**
-   ("Failed to connect" + backend column = CPU, no `ngl`) — always check the
-   backend column before believing a "split" number. A worker killed mid-session can
-   leave one "Remote RPC server crashed or returned malformed response" load
-   failure; fresh worker relaunch cleared it (weight cache survived intact). Keep
-   the phone radio held during any session: screen on (`settings put system
-   screen_off_timeout 600000`) + a 5 pps keepalive ping; `svc power stayon true`
-   only holds while charging.
+5. Ops notes from the experiment (hard-won):
+   - llama-bench **silently falls back to CPU-only** when the worker is unreachable
+     ("Failed to connect" + backend column = CPU, no `ngl`) — always check the
+     backend column before believing a "split" number.
+   - **The worker serves exactly one client.** ggml-rpc-server accepts serially; a
+     second MAIN llama-server pointed at the same worker (e.g. a zombie serve
+     script still holding its instance while a new one launches) stalls the loser's
+     RPC calls into `send failed (bytes_sent=0)` → "Remote RPC server crashed or
+     returned malformed response" → abort. Most "mystery crashes" during bring-up
+     were this, not the link. One llama-server per worker, ever; kill with
+     `pkill -f 'llama-serve[r]'` (bracket avoids the pkill matching its own
+     command line — twice bitten).
+   - One genuine **silent worker death** occurred (no stderr, no WER/Defender
+     event, log ends mid-stream; cause unknown). The worker now runs inside a
+     `for /l` cmd restart loop that stamps `[worker exited N]` into `worker.log` —
+     0 exits since.
+   - The phone-side MAIN **aborts (no reconnect) whenever the worker connection
+     breaks** — llama.cpp RPC has no retry. Demo recovery = relaunch the phone
+     server (worker weight cache makes reload ~40 s).
+   - Keep the phone radio held during sessions: screen on (`settings put system
+     screen_off_timeout 600000`) + a looped 5 pps keepalive ping; `svc power
+     stayon true` only holds while charging; Android's low-latency Wi-Fi mode is
+     shell-blocked on this Samsung build.
 
 **Demo topology decision (2026-08-05):** the demo runs on the **laptop hotspot**
 (2.4 GHz, SSID `QCWORKSHOP4 4333`, laptop `192.168.137.1`, phone `192.168.137.2`) —

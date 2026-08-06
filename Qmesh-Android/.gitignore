@@ -1,0 +1,9 @@
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+.DS_Store
+
+# Rung 2: the Next static export is a build product, copied in by build-apk.sh
+app/src/main/assets/www/

@@ -52,7 +52,7 @@ export function HistorySidebar({
           <button
             onClick={onClose}
             aria-label="Close history"
-            className="grid size-8 place-items-center rounded-full text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            className="grid size-8 place-items-center rounded-full text-zinc-500 hover:bg-zinc-100"
           >
             <X className="size-5" />
           </button>
@@ -61,7 +61,7 @@ export function HistorySidebar({
         <div className="px-3 pb-2">
           <button
             onClick={onNewChat}
-            className="flex w-full items-center gap-2 rounded-xl border border-zinc-200 px-3 py-2.5 text-sm font-medium text-foreground hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
+            className="flex w-full items-center gap-2 rounded-xl border border-zinc-200 px-3 py-2.5 text-sm font-medium text-foreground hover:bg-zinc-50"
           >
             <Plus className="size-4" />
             New chat
@@ -80,8 +80,8 @@ export function HistorySidebar({
               className={cn(
                 "group flex items-center gap-2 rounded-lg px-2 py-2",
                 t.id === activeThreadId
-                  ? "bg-zinc-100 dark:bg-zinc-800"
-                  : "hover:bg-zinc-50 dark:hover:bg-zinc-900",
+                  ? "bg-zinc-100"
+                  : "hover:bg-zinc-50",
               )}
             >
               <button

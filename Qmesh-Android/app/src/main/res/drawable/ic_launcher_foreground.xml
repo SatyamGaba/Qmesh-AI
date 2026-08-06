@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Three nodes, fully connected: the mesh. Kept inside the 72dp adaptive-icon safe zone.
+     Blues are dark enough to read on the light icon background and on the white splash. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <path
+        android:pathData="M54,36 L36,70 M54,36 L72,70 M36,70 L72,70"
+        android:strokeColor="#0284C7"
+        android:strokeWidth="4"
+        android:strokeLineCap="round" />
+
+    <path
+        android:fillColor="#0369A1"
+        android:pathData="M54,28 a8,8 0 1,0 0.01,0 z" />
+    <path
+        android:fillColor="#0284C7"
+        android:pathData="M36,62 a8,8 0 1,0 0.01,0 z" />
+    <path
+        android:fillColor="#0284C7"
+        android:pathData="M72,62 a8,8 0 1,0 0.01,0 z" />
+</vector>

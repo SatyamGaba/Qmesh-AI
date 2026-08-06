@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, PenSquare } from "lucide-react";
+import { Menu, PenSquare, Settings } from "lucide-react";
 import { ChatRuntimeProvider } from "./ChatRuntimeProvider";
 import { HistorySidebar } from "./HistorySidebar";
 import { ModePicker } from "./ModePicker";
+import { SettingsSheet } from "./SettingsSheet";
 import { Thread } from "./Thread";
 import { createThread } from "@/lib/threads";
 import { db } from "@/lib/db";
@@ -17,6 +18,7 @@ import { db } from "@/lib/db";
 export function ChatApp() {
   const [threadId, setThreadId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   // On first load, resume the most recent thread or create a fresh one.
   useEffect(() => {
@@ -53,22 +55,35 @@ export function ChatApp() {
 
   return (
     <div className="flex h-[100dvh] flex-col overflow-hidden bg-background">
-      <header className="flex items-center justify-between border-b border-zinc-200 px-2 pb-2 pt-[max(0.5rem,env(safe-area-inset-top))] dark:border-zinc-800">
+      {/* Three columns rather than justify-between: the outer 1fr tracks keep
+          the picker centered now that the right side carries two buttons. */}
+      <header className="grid grid-cols-[1fr_auto_1fr] items-center border-b border-zinc-200 px-2 pb-2 pt-[max(0.5rem,env(safe-area-inset-top))]">
         <button
           onClick={() => setSidebarOpen(true)}
           aria-label="Open history"
-          className="grid size-9 place-items-center rounded-full text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+          className="grid size-9 place-items-center justify-self-start rounded-full text-zinc-600 hover:bg-zinc-100"
         >
           <Menu className="size-5" />
         </button>
+
         <ModePicker />
-        <button
-          onClick={handleNewChat}
-          aria-label="New chat"
-          className="grid size-9 place-items-center rounded-full text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
-        >
-          <PenSquare className="size-5" />
-        </button>
+
+        <div className="flex items-center justify-self-end">
+          <button
+            onClick={() => setSettingsOpen(true)}
+            aria-label="Settings"
+            className="grid size-9 place-items-center rounded-full text-zinc-600 hover:bg-zinc-100"
+          >
+            <Settings className="size-5" />
+          </button>
+          <button
+            onClick={handleNewChat}
+            aria-label="New chat"
+            className="grid size-9 place-items-center rounded-full text-zinc-600 hover:bg-zinc-100"
+          >
+            <PenSquare className="size-5" />
+          </button>
+        </div>
       </header>
 
       <main className="min-h-0 flex-1">
@@ -90,6 +105,11 @@ export function ChatApp() {
         onClose={() => setSidebarOpen(false)}
         onSelect={handleSelect}
         onNewChat={handleNewChat}
+      />
+
+      <SettingsSheet
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
       />
     </div>
   );

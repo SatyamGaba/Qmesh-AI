@@ -3,11 +3,14 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Check, ChevronDown } from "lucide-react";
 import {
-  PRESETS,
+  ENV_PRESETS,
   getActivePresetId,
+  getPresets,
+  probeEngine,
   setActivePreset,
-  ENGINE_CHANGE_EVENT,
+  subscribeConfig,
   type EnginePreset,
+  type Reach,
 } from "@/lib/config";
 import { cn } from "@/lib/cn";
 
@@ -18,45 +21,33 @@ import { cn } from "@/lib/cn";
  */
 function useActivePresetId(): string {
   return useSyncExternalStore(
-    (onChange) => {
-      window.addEventListener(ENGINE_CHANGE_EVENT, onChange);
-      window.addEventListener("storage", onChange);
-      return () => {
-        window.removeEventListener(ENGINE_CHANGE_EVENT, onChange);
-        window.removeEventListener("storage", onChange);
-      };
-    },
+    subscribeConfig,
     () => getActivePresetId(),
-    () => PRESETS[0].id,
+    () => ENV_PRESETS[0].id,
   );
 }
 
-type Reach = "unknown" | "checking" | "up" | "down";
+/**
+ * The presets with any Settings overrides applied. Same subscription, so saving
+ * a new endpoint URL flips that mode from greyed to selectable immediately.
+ * getPresets() caches its array, which keeps the snapshot reference stable.
+ */
+function usePresets(): EnginePreset[] {
+  return useSyncExternalStore(subscribeConfig, getPresets, () => ENV_PRESETS);
+}
 
 /** Probe an engine's /v1/models with a short timeout. mock is always "up". */
 async function probe(p: EnginePreset): Promise<Reach> {
   if (p.mode === "mock") return "up";
   if (!p.available) return "down";
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 4000);
-  try {
-    const res = await fetch(`${p.baseUrl.replace(/\/$/, "")}/models`, {
-      headers: p.apiKey ? { Authorization: `Bearer ${p.apiKey}` } : undefined,
-      signal: ctrl.signal,
-    });
-    return res.ok ? "up" : "down";
-  } catch {
-    return "down"; // network error / CORS / offline
-  } finally {
-    clearTimeout(timer);
-  }
+  return probeEngine(p.baseUrl, p.apiKey);
 }
 
 const DOT: Record<Reach, string> = {
   up: "bg-green-500",
   down: "bg-red-500",
   checking: "bg-amber-400 animate-pulse",
-  unknown: "bg-zinc-300 dark:bg-zinc-600",
+  unknown: "bg-zinc-300",
 };
 
 /**
@@ -68,23 +59,25 @@ const DOT: Record<Reach, string> = {
 export function ModePicker() {
   const [open, setOpen] = useState(false);
   const activeId = useActivePresetId();
+  const presets = usePresets();
   const [reach, setReach] = useState<Record<string, Reach>>({});
   const ref = useRef<HTMLDivElement>(null);
 
-  // Probe reachability whenever the menu opens. The "checking" marker is set
-  // inside the async task (not synchronously in the effect body) so opening the
-  // menu doesn't trigger a cascading render.
+  // Probe reachability whenever the menu opens — or whenever an endpoint is
+  // edited in Settings, since the old verdict no longer describes the new URL.
+  // The "checking" marker is set inside the async task (not synchronously in
+  // the effect body) so opening the menu doesn't trigger a cascading render.
   useEffect(() => {
     if (!open) return;
     let cancelled = false;
     (async () => {
       setReach((r) => {
         const next = { ...r };
-        for (const p of PRESETS) if (p.mode !== "mock") next[p.id] = "checking";
+        for (const p of presets) if (p.mode !== "mock") next[p.id] = "checking";
         return next;
       });
       await Promise.all(
-        PRESETS.map(async (p) => {
+        presets.map(async (p) => {
           const status = await probe(p);
           if (!cancelled) setReach((r) => ({ ...r, [p.id]: status }));
         }),
@@ -93,7 +86,7 @@ export function ModePicker() {
     return () => {
       cancelled = true;
     };
-  }, [open]);
+  }, [open, presets]);
 
   // Close on outside click.
   useEffect(() => {
@@ -105,7 +98,7 @@ export function ModePicker() {
     return () => document.removeEventListener("mousedown", onDoc);
   }, [open]);
 
-  const active = PRESETS.find((p) => p.id === activeId) ?? PRESETS[0];
+  const active = presets.find((p) => p.id === activeId) ?? presets[0];
 
   function choose(p: EnginePreset) {
     if (!p.available && p.mode !== "mock") return;
@@ -117,7 +110,7 @@ export function ModePicker() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-sm font-semibold text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800"
+        className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-sm font-semibold text-foreground hover:bg-zinc-100"
         aria-haspopup="menu"
         aria-expanded={open}
       >
@@ -132,9 +125,9 @@ export function ModePicker() {
       {open && (
         <div
           role="menu"
-          className="absolute left-1/2 top-full z-30 mt-1 w-64 -translate-x-1/2 rounded-2xl border border-zinc-200 bg-white p-1.5 shadow-lg dark:border-zinc-700 dark:bg-zinc-900"
+          className="absolute left-1/2 top-full z-30 mt-1 w-64 -translate-x-1/2 rounded-2xl border border-zinc-200 bg-white p-1.5 shadow-lg"
         >
-          {PRESETS.map((p) => {
+          {presets.map((p) => {
             const disabled = !p.available && p.mode !== "mock";
             return (
               <button
@@ -147,7 +140,7 @@ export function ModePicker() {
                   "flex w-full items-start gap-2.5 rounded-xl px-2.5 py-2 text-left",
                   disabled
                     ? "cursor-not-allowed opacity-40"
-                    : "hover:bg-zinc-100 dark:hover:bg-zinc-800",
+                    : "hover:bg-zinc-100",
                 )}
               >
                 <span
