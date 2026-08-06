@@ -1,0 +1,32 @@
+=== ab_hvx 2026-08-05T12:51:06.3145266-07:00 ===
+power: BatteryStatus=1 charge=74% (2 = on AC)
+r1_htp_q4_base	pp128	
+r1_htp_q4_base	tg32	
+r1_htp_q4_oppoll	pp128	
+r1_htp_q4_oppoll	tg32	
+r1_htp_q4_nofusion	pp128	
+r1_htp_q4_nofusion	tg32	
+r1_cpu_q4	pp128	
+r1_cpu_q4	tg32	
+r1_htp_mxfp4_oppoll	pp128	
+r1_htp_mxfp4_oppoll	tg32	
+r1_cpu_mxfp4	pp128	
+r1_cpu_mxfp4	tg32	
+r2_htp_q4_base	pp128	
+r2_htp_q4_base	tg32	
+r2_htp_q4_oppoll	pp128	
+r2_htp_q4_oppoll	tg32	
+r2_htp_q4_nofusion	pp128	
+r2_htp_q4_nofusion	tg32	
+r2_cpu_q4	pp128	
+r2_cpu_q4	tg32	
+r2_htp_mxfp4_oppoll	pp128	
+r2_htp_mxfp4_oppoll	tg32	
+r2_cpu_mxfp4	pp128	
+r2_cpu_mxfp4	tg32	
+r3_htp_q4_base	pp128	
+r3_htp_q4_base	tg32	
+r3_htp_q4_oppoll	pp128	
+r3_htp_q4_oppoll	tg32	
+r3_htp_q4_nofusion	pp128	
+r3_htp_q4_nofusion	tg32	

@@ -1,0 +1,24 @@
+=== START 2026-08-05T11:52:38.2356225-07:00 ===
+--- installing Windows SDK 10.0.26100 ---
+Found Windows Software Development Kit - Windows 10.0.26100.4188 [Microsoft.WindowsSDK.10.0.26100] Version 10.0.26100.7705
+This application is licensed to you by its owner.
+Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.
+Downloading https://download.microsoft.com/download/f4b30f2a-4fc3-430e-9b03-c842b5f5f9f1/KIT_BUNDLE_WINDOWSSDK_MEDIACREATION/winsdksetup.exe
+Successfully verified installer hash
+Starting package install...
+Successfully installed
+
+SDK exit: 0
+--- installing Windows Driver Kit 10.0.26100 ---
+Found Windows Driver Kit - Windows 10.0.26100.6584 [Microsoft.WindowsWDK.10.0.26100] Version 10.1.26100.6584
+This application is licensed to you by its owner.
+Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.
+Downloading https://download.microsoft.com/download/41fb59c2-1723-45f9-a270-96b73ad58233/KIT_BUNDLE_WDK_MEDIACREATION/wdksetup.exe
+Successfully verified installer hash
+Starting package install...
+Successfully installed
+
+WDK exit: 0
+--- searching for inf2cat.exe ---
+FOUND: C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\Inf2Cat.exe
+=== DONE 2026-08-05T11:55:39.7198521-07:00 ===

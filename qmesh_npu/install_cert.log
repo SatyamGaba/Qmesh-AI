@@ -1,0 +1,32 @@
+=== install_cert 2026-08-05T12:29:35.6259655-07:00 ===
+--- bcdedit ---
+
+Windows Boot Loader
+-------------------
+identifier              {current}
+device                  partition=C:
+path                    \Windows\system32\winload.efi
+description             Windows 11
+locale                  en-US
+inherit                 {bootloadersettings}
+recoverysequence        {de1f26fb-737e-11ef-a079-f5fdde569167}
+displaymessageoverride  Recovery
+recoveryenabled         Yes
+testsigning             Yes
+isolatedcontext         Yes
+allowedinmemorysettings 0x15000075
+osdevice                partition=C:
+systemroot              \Windows
+resumeobject            {b005d49d-7378-11ef-9f4e-df1e2075f810}
+nx                      OptIn
+bootmenupolicy          Standard
+hypervisorlaunchtype    Auto
+
+--- importing into LocalMachine\Root ---
+OK: CN=GGML.HTP.v1 / D08824C5A089E1B62CC2ED0706C5DBD5C50AC88F
+--- importing into LocalMachine\TrustedPublisher ---
+OK: CN=GGML.HTP.v1 / D08824C5A089E1B62CC2ED0706C5DBD5C50AC88F
+--- verify ---
+Root : PRESENT (D08824C5A089E1B62CC2ED0706C5DBD5C50AC88F)
+TrustedPublisher : PRESENT (D08824C5A089E1B62CC2ED0706C5DBD5C50AC88F)
+=== done ===

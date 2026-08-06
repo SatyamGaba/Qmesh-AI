@@ -1,0 +1,44 @@
+# qmesh_npu — what is and isn't versioned
+#
+# Versioned: the build/verify/bench scripts, their logs, and the runnable
+# `hvx/` package (llama.cpp b10288 built with the native Hexagon HVX backend).
+# Everything below is either re-downloadable, re-buildable, third-party, or
+# secret.
+
+# --- Qualcomm Hexagon SDK (3.3 GB extracted + 818 MB tarball) -----------------
+# Re-download: https://github.com/snapdragon-toolchain/hexagon-sdk/releases
+#              /download/v6.6.0.0/hexagon-sdk-v6.6.0.0-arm64-wos.tar.xz
+hexagon-sdk-wos/
+*.tar.xz
+
+# --- llama.cpp source clone (has its own .git; would become a broken gitlink) -
+# Re-clone at tag b10288 (commit 360e134) and apply CMakeUserPresets.json.
+llama.cpp/
+
+# --- build + install outputs (regenerate with build_hvx.ps1 / stage_hvx.ps1) --
+pkg-hvx/
+pkg-snapdragon/
+pkg-signed/
+build-*/
+
+# --- third-party prebuilt binaries, re-downloadable ---------------------------
+b10150/
+adreno/
+tools/
+*.zip
+
+# --- SECRET: HTP code-signing private key. Never commit. ----------------------
+# The public cert (ggml-htp-v1.cer) IS committed so the signed libggml-htp.cat
+# can be verified; the .pfx that signs it must stay local.
+certs/*.pfx
+certs/*.pvk
+
+# --- runtime scratch ----------------------------------------------------------
+npu_server.pid
+npu_server.out
+npu_server.err
+v.out
+v.err
+rpc_out.txt
+rpc_err.txt
+ab/

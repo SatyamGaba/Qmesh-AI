@@ -1,0 +1,138 @@
+=== verify_hvx 2026-08-05T12:33:28.0301101-07:00 ===
+--- 1. device enumeration (llama-bench --list-devices) ---
+llama-bench.exe : ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+At C:\Users\qc_de\AppData\Local\qmesh_npu\verify_hvx.ps1:19 char:2
++ (& "$dst\llama-bench.exe" --list-devices 2>&1 | Out-String) | Add-Con ...
++  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ggml_opencl: se...Snapdragon(TM)':String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+ggml_opencl: device: 'Qualcomm(R) Adreno(TM) X1-85 GPU (OpenCL 3.0 Qualcomm(R) Adreno(TM) X1-85 GPU)'
+ggml_opencl: default device: 'Qualcomm(R) Adreno(TM) X1-85 GPU (OpenCL 3.0 Qualcomm(R) Adreno(TM) X1-85 GPU)'
+ggml-hex: Loading driver C:\Windows\System32\DriverStore\FileRepository\qcnspmcdm8380.inf_arm64_e663a92a933cab52\libcdsprpc.dll
+ggml-hex: Hexagon backend (experimental) : allocating new registry : ndev 1
+ggml-hex: Hexagon Arch version v73
+ggml-hex: HTP0 allocating new session
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP0 new session : session-id 0 domain-id 3 uri 
+file:///libggml-htp-v73.so?htp_iface_skel_handle_invoke&_modver=1.0&_dom=cdsp&_session=0 handle 0xb5717f60
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+
+--- 2. hexagon backend init, verbose, small model ---
+llama-bench.exe : ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+At C:\Users\qc_de\AppData\Local\qmesh_npu\verify_hvx.ps1:23 char:2
++ (& "$dst\llama-bench.exe" -m $small -p 64 -n 16 -r 1 --device HTP0 2> ...
++  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ggml_opencl: se...Snapdragon(TM)':String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+ggml_opencl: device: 'Qualcomm(R) Adreno(TM) X1-85 GPU (OpenCL 3.0 Qualcomm(R) Adreno(TM) X1-85 GPU)'
+ggml_opencl: default device: 'Qualcomm(R) Adreno(TM) X1-85 GPU (OpenCL 3.0 Qualcomm(R) Adreno(TM) X1-85 GPU)'
+ggml-hex: Loading driver C:\Windows\System32\DriverStore\FileRepository\qcnspmcdm8380.inf_arm64_e663a92a933cab52\libcdsprpc.dll
+ggml-hex: Hexagon backend (experimental) : allocating new registry : ndev 1
+ggml-hex: Hexagon Arch version v73
+ggml-hex: HTP0 allocating new session
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP0 new session : session-id 0 domain-id 3 uri 
+file:///libggml-htp-v73.so?htp_iface_skel_handle_invoke&_modver=1.0&_dom=cdsp&_session=0 handle 0x7271a350
+ggml-hex: HTP0 allocated buffer: base 0000025F7A000000 size 13637632 fd 27 pinned 1
+ggml-hex: HTP0 mapped buffer: base 0000025F7A000000 size 13637632 fd 27 pinned 1
+ggml-hex: HTP0 allocated op-queue : batch-size 1024 depth 16 shm-size 13637632 shm-block-size 852352
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+| model                          |       size |     params | backend    | ngl | dev          |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------------ | --------------: | -------------------: |
+| qwen2 1B Q4_0                  | 403.20 MiB |   630.17 M | OpenCL,HTP |  -1 | HTP0         |            pp64 |       1470.74 ± 0.00 |
+| qwen2 1B Q4_0                  | 403.20 MiB |   630.17 M | OpenCL,HTP |  -1 | HTP0         |            tg16 |         53.54 ± 0.00 |
+
+--- 3. Qwen3-4B Q4_0 on HTP0 (pp128/tg32) ---
+llama-bench.exe : ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+At C:\Users\qc_de\AppData\Local\qmesh_npu\verify_hvx.ps1:27 char:2
++ (& "$dst\llama-bench.exe" -m $model -p 128 -n 32 -r 2 --device HTP0 2 ...
++  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ggml_opencl: se...Snapdragon(TM)':String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+ggml_opencl: device: 'Qualcomm(R) Adreno(TM) X1-85 GPU (OpenCL 3.0 Qualcomm(R) Adreno(TM) X1-85 GPU)'
+ggml_opencl: default device: 'Qualcomm(R) Adreno(TM) X1-85 GPU (OpenCL 3.0 Qualcomm(R) Adreno(TM) X1-85 GPU)'
+ggml-hex: Loading driver C:\Windows\System32\DriverStore\FileRepository\qcnspmcdm8380.inf_arm64_e663a92a933cab52\libcdsprpc.dll
+ggml-hex: Hexagon backend (experimental) : allocating new registry : ndev 1
+ggml-hex: Hexagon Arch version v73
+ggml-hex: HTP0 allocating new session
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP0 new session : session-id 0 domain-id 3 uri 
+file:///libggml-htp-v73.so?htp_iface_skel_handle_invoke&_modver=1.0&_dom=cdsp&_session=0 handle 0x6b71a3b0
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+| model                          |       size |     params | backend    | ngl | dev          |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------------ | --------------: | -------------------: |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |           pp128 |       433.43 ± 31.38 |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |            tg32 |         12.23 ± 1.34 |
+
+--- 4. Qwen3-4B Q4_0 on CPU (baseline, same build, -ngl 0) ---
+llama-bench.exe : ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+At C:\Users\qc_de\AppData\Local\qmesh_npu\verify_hvx.ps1:30 char:2
++ (& "$dst\llama-bench.exe" -m $model -p 128 -n 32 -r 2 -ngl 0 2>&1 | O ...
++  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ggml_opencl: se...Snapdragon(TM)':String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+ggml_opencl: device: 'Qualcomm(R) Adreno(TM) X1-85 GPU (OpenCL 3.0 Qualcomm(R) Adreno(TM) X1-85 GPU)'
+ggml_opencl: default device: 'Qualcomm(R) Adreno(TM) X1-85 GPU (OpenCL 3.0 Qualcomm(R) Adreno(TM) X1-85 GPU)'
+ggml-hex: Loading driver C:\Windows\System32\DriverStore\FileRepository\qcnspmcdm8380.inf_arm64_e663a92a933cab52\libcdsprpc.dll
+ggml-hex: Hexagon backend (experimental) : allocating new registry : ndev 1
+ggml-hex: Hexagon Arch version v73
+ggml-hex: HTP0 allocating new session
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP0 new session : session-id 0 domain-id 3 uri 
+file:///libggml-htp-v73.so?htp_iface_skel_handle_invoke&_modver=1.0&_dom=cdsp&_session=0 handle 0x7e718200
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+| model                          |       size |     params | backend    | ngl |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | --------------: | -------------------: |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |   0 |           pp128 |       363.33 ± 14.01 |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |   0 |            tg32 |         33.62 ± 3.38 |
+
+--- 5. OPEN QUESTION #2: rpc-server --device HTP0 ---
+rpc-server ALIVE (pid 772) after 6s
+--- rpc stdout ---
+
+--- rpc stderr ---
+ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+
+ggml_opencl: device: 'Qualcomm(R) Adreno(TM) X1-85 GPU (OpenCL 3.0 Qualcomm(R) Adreno(TM) X1-85 GPU)'
+ggml_opencl: default device: 'Qualcomm(R) Adreno(TM) X1-85 GPU (OpenCL 3.0 Qualcomm(R) Adreno(TM) X1-85 GPU)'
+ggml-hex: Loading driver C:\Windows\System32\DriverStore\FileRepository\qcnspmcdm8380.inf_arm64_e663a92a933cab52\libcdsprpc.dll
+ggml-hex: Hexagon backend (experimental) : allocating new registry : ndev 1
+ggml-hex: Hexagon Arch version v73
+ggml-hex: HTP0 allocating new session
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP0 new session : session-id 0 domain-id 3 uri file:///libggml-htp-v73.so?htp_iface_skel_handle_invoke&_modver=1.0&_dom=cdsp&_session=0 handle 0x416f1260
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+
+--- 6. split over loopback RPC with HTP0 worker (small model) ---
+llama-bench.exe : ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+At C:\Users\qc_de\AppData\Local\qmesh_npu\verify_hvx.ps1:49 char:6
++     (& "$dst\llama-bench.exe" -m $small -p 64 -n 16 -r 1 --rpc 127.0. ...
++      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ggml_opencl: se...Snapdragon(TM)':String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+ggml_opencl: device: 'Qualcomm(R) Adreno(TM) X1-85 GPU (OpenCL 3.0 Qualcomm(R) Adreno(TM) X1-85 GPU)'
+ggml_opencl: default device: 'Qualcomm(R) Adreno(TM) X1-85 GPU (OpenCL 3.0 Qualcomm(R) Adreno(TM) X1-85 GPU)'
+ggml-hex: Loading driver C:\Windows\System32\DriverStore\FileRepository\qcnspmcdm8380.inf_arm64_e663a92a933cab52\libcdsprpc.dll
+ggml-hex: Hexagon backend (experimental) : allocating new registry : ndev 1
+ggml-hex: Hexagon Arch version v73
+ggml-hex: HTP0 allocating new session
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP0 new session : session-id 0 domain-id 3 uri 
+file:///libggml-htp-v73.so?htp_iface_skel_handle_invoke&_modver=1.0&_dom=cdsp&_session=0 handle 0xe571a350
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+| model                          |       size |     params | backend    | ngl |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | --------------: | -------------------: |
+| qwen2 1B Q4_0                  | 403.20 MiB |   630.17 M | OpenCL,HTP,RPC |  99 |            pp64 |       1165.63 ± 0.00 |
+| qwen2 1B Q4_0                  | 403.20 MiB |   630.17 M | OpenCL,HTP,RPC |  99 |            tg16 |         35.45 ± 0.00 |
+
+=== done ===

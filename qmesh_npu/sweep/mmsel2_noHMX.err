@@ -1,0 +1,11 @@
+ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+
+ggml_opencl: device: 'Qualcomm(R) Adreno(TM) X1-85 GPU (OpenCL 3.0 Qualcomm(R) Adreno(TM) X1-85 GPU)'
+ggml_opencl: default device: 'Qualcomm(R) Adreno(TM) X1-85 GPU (OpenCL 3.0 Qualcomm(R) Adreno(TM) X1-85 GPU)'
+ggml-hex: Loading driver C:\Windows\System32\DriverStore\FileRepository\qcnspmcdm8380.inf_arm64_e663a92a933cab52\libcdsprpc.dll
+ggml-hex: Hexagon backend (experimental) : allocating new registry : ndev 1
+ggml-hex: Hexagon Arch version v73
+ggml-hex: HTP0 allocating new session
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP0 new session : session-id 0 domain-id 3 uri file:///libggml-htp-v73.so?htp_iface_skel_handle_invoke&_modver=1.0&_dom=cdsp&_session=0 handle 0x577182c0
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
