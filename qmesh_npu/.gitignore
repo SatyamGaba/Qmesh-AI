@@ -37,6 +37,9 @@ certs/*.pvk
 npu_server.pid
 npu_server.out
 npu_server.err
+rpc_worker.pid
+rpc_worker.out
+rpc_worker.err
 v.out
 v.err
 rpc_out.txt

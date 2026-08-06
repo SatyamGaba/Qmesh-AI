@@ -8,10 +8,11 @@ import {
   ENV_PRESETS,
   getActivePresetId,
   getPresets,
-  probeEngine,
+  probeBackend,
   setActivePreset,
   subscribeConfig,
   type EnginePreset,
+  type EngineStatus,
   type Reach,
 } from "@/lib/config";
 import { db } from "@/lib/db";
@@ -39,10 +40,21 @@ function usePresets(): EnginePreset[] {
   return useSyncExternalStore(subscribeConfig, getPresets, () => ENV_PRESETS);
 }
 
-/** Probe an engine's /v1/models with a short timeout. */
-async function probe(p: EnginePreset): Promise<Reach> {
-  if (!p.available) return "down";
-  return probeEngine(p.baseUrl, p.apiKey);
+/**
+ * Reachability + what the engine reports about itself, in one pass. 4s budget.
+ * Uses probeBackend (not the lighter probeEngine) because the picker also wants
+ * the backend badge; the reach field is derived from the same request.
+ */
+async function probe(p: EnginePreset): Promise<EngineStatus> {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 4000);
+  try {
+    return await probeBackend(p, ctrl.signal);
+  } catch {
+    return { reach: "down", backend: "unknown" };
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 const DOT: Record<Reach, string> = {
@@ -51,6 +63,34 @@ const DOT: Record<Reach, string> = {
   checking: "bg-amber-400 animate-pulse",
   unknown: "bg-zinc-300",
 };
+
+/**
+ * Backend badge. Deliberately says "reported by engine", not "verified":
+ * llama-server exposes no device field, so this reflects the alias the
+ * launcher chose, not something the app measured. See config.ts.
+ */
+function BackendBadge({ status }: { status?: EngineStatus }) {
+  if (!status || status.reach !== "up" || status.backend === "unknown") return null;
+  const accel = status.backend !== "cpu";
+  return (
+    <span
+      title={
+        `Backend reported by engine: ${status.backend.toUpperCase()}` +
+        (status.buildInfo ? ` · build ${status.buildInfo}` : "") +
+        (status.modelId ? ` · ${status.modelId}` : "") +
+        "\n(reported by the engine's alias, not independently verified)"
+      }
+      className={cn(
+        "rounded px-1 py-px text-[10px] font-semibold uppercase tracking-wide",
+        accel
+          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300"
+          : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400",
+      )}
+    >
+      {status.backend}
+    </span>
+  );
+}
 
 /**
  * Header control that shows the active engine mode and lets you switch between
@@ -69,6 +109,7 @@ export function ModePicker({ threadId }: { threadId?: string | null }) {
   const activeId = useActivePresetId();
   const presets = usePresets();
   const [reach, setReach] = useState<Record<string, Reach>>({});
+  const [status, setStatus] = useState<Record<string, EngineStatus>>({});
   const ref = useRef<HTMLDivElement>(null);
   const pinnedId = useLiveQuery(
     async () =>
@@ -90,9 +131,13 @@ export function ModePicker({ threadId }: { threadId?: string | null }) {
         return next;
       });
       await Promise.all(
+        // presets (not the old static PRESETS): upstream made these dynamic so
+        // Settings overrides re-probe the edited URL.
         presets.map(async (p) => {
-          const status = await probe(p);
-          if (!cancelled) setReach((r) => ({ ...r, [p.id]: status }));
+          const st = await probe(p);
+          if (cancelled) return;
+          setReach((r) => ({ ...r, [p.id]: st.reach }));
+          setStatus((s) => ({ ...s, [p.id]: st }));
         }),
       );
     })();
@@ -175,6 +220,7 @@ export function ModePicker({ threadId }: { threadId?: string | null }) {
                     <span className="text-sm font-medium text-foreground">
                       {p.label}
                     </span>
+                    <BackendBadge status={status[p.id]} />
                     {disabled && (
                       <span className="text-[10px] uppercase tracking-wide text-zinc-400">
                         not set up

@@ -1,0 +1,86 @@
+﻿08-05 18:56:05.128 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/rpcmem_android.c:210: set up allocator 0xb400007b22288010 for DMA buf heap system, ION heap system, heap mask 0x2000000, flags 0x1, legacy flags 0x1
+08-05 18:56:05.128 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_config.c:336: Reading configuration file: llama-bench.debugconfig
+08-05 18:56:05.128 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_config.c:367: fastrpc_config_init: Couldn't find file llama-bench.debugconfig, errno (No such file or directory) at /data/local/tmp/llama.cpp/lib, /vendor/lib64/rfs/dsp, /vendor/lib/rfsa/adsp, 
+08-05 18:56:05.128 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:4957: fastrpc_apps_user_init done  with default domain:3 and &fastrpc_trace:0x7a4807a680
+08-05 18:56:05.128 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:5071: multidsplib_env_init: libcdsprpc.so loaded
+08-05 18:56:05.128 W/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2569:Warning: remote_handle_control: Non-domain usage of FastRPC will be deprecated, use domains to offload to DSP using FastRPC
+08-05 18:56:05.128 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2570: remote_handle_control request ID 2 received
+08-05 18:56:05.128 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2526: Info: remote_handle_control_domain capability request of attribute 6 for domain 3
+08-05 18:56:05.128 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2332: Info: remote_get_info capability of attribute 6 for domain 3 is 35961
+08-05 18:56:05.128 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3706: close_device_node: closed dev 10 on domain 3
+08-05 18:56:05.128 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2890: remote_session_control Unsigned PD enable 1 request for domain 3
+08-05 18:56:05.128 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2332: Info: remote_get_info capability of attribute 133 for domain 3 is 1
+08-05 18:56:05.128 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3706: close_device_node: closed dev 10 on domain 3
+08-05 18:56:05.128 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3868: Error 0xd: open_shell failed for domain 3 search paths used are /usr/lib/dsp/, /vendor/dsp/, /vendor/dsp/xdsp/ (errno Permission denied)
+08-05 18:56:05.128 W/libc    (23044): Access denied finding property "persist.vendor.fastrpc.process.attrs"
+08-05 18:56:05.128 W/libc    (23044): Access denied finding property "persist.vendor.fastrpc.process.clockvote"
+08-05 18:56:05.131 I/cdsprpcd( 2980): vendor/qcom/proprietary/adsprpc/src/apps_std_imp.c:1023: Successfully opened file /vendor/dsp/cdsp/fastrpc_shell_unsigned_3
+08-05 18:56:05.156 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3948: Created user PD on domain 3, dbg_trace 0x0, enabled attr=> RPC timeout:0, Dbg Mode:N, CRC:N, Unsigned:Y, Signed:N, Adapt QOS:N, PD dump: (Config:N, Dbg:N), Perf: (Kernel:N, DSP:N), Iregion:N, QTF:N, UAF:N userPD initmem len:0x500000, Log pkt: N
+08-05 18:56:05.157 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/listener_android.c:119: listener thread starting
+08-05 18:56:05.157 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3903: Error 0xffffffff: fastrpc_enable_kernel_optimizations failed for domain 3 (Bad address)
+08-05 18:56:05.157 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/log_config.c:608:Error : Unable to add watcher for folder /vendor/lib64/rfs/dsp : errno is Permission denied
+08-05 18:56:05.157 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/log_config.c:608:Error : Unable to add watcher for folder /vendor/lib/rfsa/adsp : errno is Permission denied
+08-05 18:56:05.157 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_perf.c:292: fastrpc_perf_init: enabled systrace 0x0 and RPC traces (kernel 0, dsp 0) with frequency 1000
+08-05 18:56:05.157 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2332: Info: remote_get_info capability of attribute 129 for domain 3 is 1
+08-05 18:56:05.157 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/log_config.c:360: file_watcher_thread starting for domain 3
+08-05 18:56:05.157 W/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/log_config.c:380:file_watcher_thread: Couldn't find file llama-bench.farf, errno (No such file or directory) at ;/vendor/lib64/rfs/dsp;/vendor/lib/rfsa/adsp;/vendor/lib/rfsa/dsp;/vendor/dsp;
+08-05 18:56:05.158 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/mod_table.c:701: open_mod_table_open_from_static: reverse module apps_std opened with handle 0x4807d3e8 (idx 0)
+08-05 18:56:05.158 D/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/apps_std_imp.c:382: apps_std_fopen_fd done for /data/local/tmp/llama.cpp/lib/cdsp/./libggml-htp-v79.so with       fopen:3us, read:0us, rpc_alloc:0us,       mmap:0us fd 0x0 error_code 0x2
+08-05 18:56:05.159 D/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/apps_std_imp.c:382: apps_std_fopen_fd done for /data/local/tmp/llama.cpp/lib/./libggml-htp-v79.so with       fopen:18us, read:218us, rpc_alloc:28us,       mmap:302us fd 0x12 error_code 0x0
+08-05 18:56:05.159 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/apps_std_imp.c:1160: Successfully opened file /data/local/tmp/llama.cpp/lib/./libggml-htp-v79.so
+08-05 18:56:05.161 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:1800: remote_handle64_open: opened handle 0xb400007c622ed550 (remote 0x2d2f60) for file:///libggml-htp-v79.so?htp_iface_skel_handle_invoke&_modver=1.0&_dom=cdsp&_session=0 on domain 3 (spawn time 28452 us, load time 4110 us), refs 1
+08-05 18:56:05.161 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_latency.c:98: fastrpc_latency_thread_handler started for QoS with activity window 100 ms
+08-05 18:56:05.162 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2515: remote_handle_control_domain: requested QOS 1, latency 6 for domain 3 handle 0xb400007c622ed550
+08-05 18:56:05.162 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:1800: remote_handle64_open: opened handle 0xb400007c622ed590 (remote 0x2d2d60) for file:///libdspqueue_rpc_skel.so?dspqueue_rpc_skel_handle_invoke&_modver=1.0&_dom=cdsp&_session=0 on domain 3 (spawn time 0 us, load time 249 us), refs 2
+08-05 18:56:05.162 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2332: Info: remote_get_info capability of attribute 10 for domain 3 is 1
+08-05 18:56:05.162 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_notif.c:103: fastrpc_notif_domain_init: FastRPC notification worker thread launched
+08-05 18:56:05.162 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3026: remote_session_control Register PD status notification request for domain 3
+08-05 18:56:05.162 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2205: get_remote_notif_response: received status notification 0 for domain 3, session 0
+08-05 18:56:05.163 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2332: Info: remote_get_info capability of attribute 130 for domain 3 is 1
+08-05 18:56:05.163 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2332: Info: remote_get_info capability of attribute 259 for domain 3 is 1
+08-05 18:56:05.163 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2332: Info: remote_get_info capability of attribute 257 for domain 3 is 1
+08-05 18:56:05.163 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:1477: Error 0x80000414: remote_handle64_invoke failed for handle 0xb400007c622ed590, interface libdspqueue_rpc_skel.so method 3 on domain 3 (sc 0x3010100) (errno Success) (user err 0x80000414)
+08-05 18:56:05.164 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/dspqueue/dspqueue_cpu.c:642: dspqueue_create: created Queue 0, 0xb400007b2228bd50, DSP 0x00000000 for domain 3
+08-05 18:56:05.169 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/mod_table.c:701: open_mod_table_open_from_static: reverse module apps_mem opened with handle 0x4807d4e8 (idx 1)
+08-05 18:56:05.169 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2332: Info: remote_get_info capability of attribute 258 for domain 3 is 1
+08-05 18:56:08.022 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:4532: close_dev: unloading library libcdsprpc.so
+08-05 18:56:08.022 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 0: dev -1
+08-05 18:56:08.022 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 1: dev -1
+08-05 18:56:08.022 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 2: dev -1
+08-05 18:56:08.022 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 3: dev 10
+08-05 18:56:08.022 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/dspsignal.c:123: dspsignal_domain_deinit done for domain 3
+08-05 18:56:08.022 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:2205: get_remote_notif_response: received status notification 1 for domain 3, session 0
+08-05 18:56:08.022 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/dspqueue/dspqueue_cpu.c:2214: dspqueue_notif_callback for domain 3, session 0, status 1
+08-05 18:56:08.022 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/dspsignal.c:275::Error: 0xd: (ds = signals->domain_signals[domain]) != NULL
+08-05 18:56:08.022 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/dspsignal.c:292: Error 0xd: dspsignal_cancel_wait failed (domain 3, ID 0) errno Success
+08-05 18:56:08.022 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/dspsignal.c:275::Error: 0xd: (ds = signals->domain_signals[domain]) != NULL
+08-05 18:56:08.022 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/dspsignal.c:292: Error 0xd: dspsignal_cancel_wait failed (domain 3, ID 1) errno Success
+08-05 18:56:08.022 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/dspsignal.c:275::Error: 0xd: (ds = signals->domain_signals[domain]) != NULL
+08-05 18:56:08.022 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/dspsignal.c:292: Error 0xd: dspsignal_cancel_wait failed (domain 3, ID 2) errno Success
+08-05 18:56:08.022 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/dspsignal.c:275::Error: 0xd: (ds = signals->domain_signals[domain]) != NULL
+08-05 18:56:08.022 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/dspsignal.c:292: Error 0xd: dspsignal_cancel_wait failed (domain 3, ID 3) errno Success
+08-05 18:56:08.022 E/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_notif.c:56:Error 0xc: notif_fastrpc_thread FastRPC notification worker thread exited for domain 3 (errno Success), notif_domain_deinit started 0
+08-05 18:56:08.023 W/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/log_config.c:394:Warning: file_watcher_thread received exit for domain 3, file llama-bench.farf
+08-05 18:56:08.023 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/log_config.c:446: file_watcher_thread exiting for domain 3
+08-05 18:56:08.023 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_latency.c:157: FastRPC latency thread for QoS exited
+08-05 18:56:08.023 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_latency.c:69: latency thread joined
+08-05 18:56:08.023 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_notif.c:72: fastrpc_notif_domain_deinit: Waiting for FastRPC notification worker thread to join
+08-05 18:56:08.023 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_notif.c:80: fastrpc_notif_domain_deinit: Fastrpc notification worker thread joined
+08-05 18:56:08.023 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/mod_table.c:792: open_mod_table_close: closed reverse module apps_mem with handle 0x4807d4e8
+08-05 18:56:08.023 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/mod_table.c:792: open_mod_table_close: closed reverse module apps_std with handle 0x4807d3e8
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3706: close_device_node: closed dev 10 on domain 3
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3548: domain_deinit: closed device 10 on domain 3 (kill time 2070 us)
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 4: dev -1
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 5: dev -1
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 6: dev -1
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 7: dev -1
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 8: dev -1
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 9: dev -1
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 10: dev -1
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 11: dev -1
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 12: dev -1
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 13: dev -1
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 14: dev -1
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:3504: domain_deinit for domain 15: dev -1
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/rpcmem_android.c:357: rpcmem_deinit_internal done
+08-05 18:56:08.025 I/llama-bench(23044): vendor/qcom/proprietary/adsprpc/src/fastrpc_apps_user.c:4858: fastrpc_apps_user_deinit done

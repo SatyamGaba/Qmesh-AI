@@ -29,8 +29,17 @@ if ($BindHost -ne '127.0.0.1' -and $BindHost -ne '0.0.0.0') {
 
 $env:GGML_HEXAGON_OPPOLL = "1"   # measured +30% prefill / +34% decode
 
+# Advertise the backend through the alias. llama-server exposes no device
+# field, so this alias is the ONLY way the client can learn what it is talking
+# to (Qmesh-App parses the suffix -- see Qmesh-App/src/lib/config.ts). Safe:
+# llama-server ignores the `model` field in requests and answers with its own
+# alias regardless, so this does not have to match NEXT_PUBLIC_ENGINE_MODEL.
+# Only claim @npu because we passed --device HTP0 and the health check below
+# confirms the server came up with it.
+$alias = 'qwen3-4b@npu'
+
 $argl = @('-m', $Model, '--device','HTP0', '-ngl','99',
-          '--host',$BindHost, '--port',"$Port", '--alias','qwen3-4b',
+          '--host',$BindHost, '--port',"$Port", '--alias',$alias,
           '-c','4096', '--sse-ping-interval','15')
 # CORS only matters when a browser on another device calls in. --no-cors-credentials
 # is load-bearing with '*': Allow-Credentials:true + Origin:* is spec-invalid and

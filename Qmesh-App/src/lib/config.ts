@@ -350,6 +350,95 @@ export function getEngine(): EngineConfig {
   return { baseUrl: p.baseUrl, model: p.model, apiKey: p.apiKey };
 }
 
+/* ===========================================================================
+ *  BACKEND REPORTING — which compute device is the engine actually using?
+ * ===========================================================================
+ * llama-server exposes NO device field. `/props` returns build_info,
+ * model_alias, model_ftype, model_path, n_ctx; `/v1/models` returns vocab /
+ * ctx / params / ftype. Neither says CPU vs NPU vs GPU, and llama-server also
+ * swallows the `ggml-hex` backend log lines that llama-bench prints. So the app
+ * CANNOT independently verify NPU execution.
+ *
+ * What we do instead: the launcher knows what it bound (it passed
+ * `--device HTP0` and saw the HTP session open), and advertises that through
+ * `--alias` using the convention below. The app reads it back and labels it
+ * "reported by engine" — never "verified".
+ *
+ *     --alias qwen3-4b@npu     -> NPU
+ *     --alias qwen3-4b@cpu     -> CPU
+ *     --alias qwen3-4b         -> unknown (honest default)
+ *
+ * Safe to do: llama-server ignores the `model` field in requests and answers
+ * with its own alias regardless (verified 2026-08-05 — a deliberately wrong
+ * model name still returned a normal completion), so changing the alias does
+ * not break the adapter, which sends NEXT_PUBLIC_ENGINE_MODEL.
+ */
+
+export type Backend = "npu" | "gpu" | "cpu" | "unknown";
+
+export interface EngineStatus {
+  reach: "up" | "down";
+  /** Model id the engine reports, e.g. "qwen3-4b@npu". */
+  modelId?: string;
+  /** Parsed from modelId. "unknown" when the engine doesn't follow the convention. */
+  backend: Backend;
+  /** llama.cpp build string from /props, e.g. "b1-360e134". */
+  buildInfo?: string;
+}
+
+/** Read the backend out of an engine-reported model id. Accepts @ or - . */
+export function parseBackend(modelId: string | undefined): Backend {
+  if (!modelId) return "unknown";
+  const m = /[@-](npu|gpu|cpu)$/i.exec(modelId.trim());
+  return m ? (m[1].toLowerCase() as Backend) : "unknown";
+}
+
+/** Strip a trailing /v1 so we can reach root-level endpoints like /props. */
+function rootOf(baseUrl: string): string {
+  return baseUrl.replace(/\/+$/, "").replace(/\/v1$/, "");
+}
+
+/**
+ * Probe an engine: reachability plus whatever it reports about itself.
+ * /props is best-effort — an engine that doesn't serve it is still "up".
+ *
+ * Distinct from `probeEngine` below, which is the lightweight shared
+ * reachability check (used by the picker's dots and Settings' Test buttons).
+ * This one additionally reads the model id and build string so the picker can
+ * show which compute backend the engine says it is using.
+ */
+export async function probeBackend(
+  p: EnginePreset,
+  signal?: AbortSignal,
+): Promise<EngineStatus> {
+  if (!p.available) return { reach: "down", backend: "unknown" };
+
+  const headers = p.apiKey ? { Authorization: `Bearer ${p.apiKey}` } : undefined;
+  const base = p.baseUrl.replace(/\/+$/, "");
+
+  let modelId: string | undefined;
+  try {
+    const res = await fetch(`${base}/models`, { headers, signal });
+    if (!res.ok) return { reach: "down", backend: "unknown" };
+    const json = (await res.json()) as { data?: Array<{ id?: string }> };
+    modelId = json.data?.[0]?.id;
+  } catch {
+    return { reach: "down", backend: "unknown" };
+  }
+
+  let buildInfo: string | undefined;
+  try {
+    const res = await fetch(`${rootOf(base)}/props`, { headers, signal });
+    if (res.ok) {
+      buildInfo = ((await res.json()) as { build_info?: string }).build_info;
+    }
+  } catch {
+    // /props is optional — reachability already established above.
+  }
+
+  return { reach: "up", modelId, backend: parseBackend(modelId), buildInfo };
+}
+
 /** Switch modes. No-op for unknown/unavailable ids. */
 export function setActivePreset(id: string): void {
   if (typeof window === "undefined") return;
