@@ -5,13 +5,15 @@
 in [`docs/FEATURES.md`](./docs/FEATURES.md); this file tracks what's tested, what's next,
 and open questions.
 
-**Last updated:** 2026-08-05
-**Overall state:** **The two-device RPC split is live over real Wi-Fi** (phone MAIN →
-laptop worker, Track A1 done): 84 t/s prefill / 15.5 t/s decode through the split. Headline
-caveat: the phone alone re-benched at **25.5 t/s decode** (2.4× yesterday's number — state-
-dependent, see FINDINGS), so at 4B the split is a *capability/privacy* story, not a speedup;
-the 25 ms/token Wi-Fi RTT is the binding constraint. Chat plane cross-device and all_local
-on-phone remain live. All three demo planes now proven; remaining work is wiring + NPU.
+**Last updated:** 2026-08-05 (evening)
+**Overall state:** **The two-device RPC split is live and all three demo modes are staged**
+(Track A1 done). RTT experiments concluded (FINDINGS §RTT): even at 6.5 ms ping the split
+decodes 14 t/s vs ~25 t/s phone-alone — ggml-rpc's multiple round trips per token cost
+40–70 ms on every real wireless link, so **at 4B the split is definitively a
+capability/privacy story, not a speedup**. **Demo topology: the laptop's 2.4 GHz Mobile
+Hotspot** (self-contained, venue-independent; laptop `192.168.137.1`, phone
+`192.168.137.2`, phone gets internet through the laptop). Remaining work: NPU (Track B —
+materials found on-laptop in the OneDrive workspace) and app polish.
 **Current fallback rung (see ARCHITECTURE_PLAN §5):** **L3 (both-CPU) proven across two real
 devices**; targeting L1 (both-NPU). See [Next steps](#next-steps).
 
