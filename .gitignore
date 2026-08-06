@@ -4,6 +4,9 @@
 # Machine-local network map: DHCP leases, MACs, device serial. Never committed.
 /LOCAL_NETWORK.md
 
+# Extended ideas
+/extended_ideas.md
+
 # Local model weights — GGUFs are large (GBs); never commit them.
 # Keep the directory in the tree (via .gitkeep) but ignore its contents.
 /.models/*

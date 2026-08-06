@@ -3,9 +3,9 @@
  *  ENGINE CONFIG — the modes the chat picker offers + how each is resolved
  * ============================================================================
  * The app talks to any OpenAI-compatible chat engine (`/v1/chat/completions`).
- * These presets mirror ARCHITECTURE_PLAN §3's mode map — local / split / remote
- * — plus a mock offline floor. A mode with no engine URL configured shows up as
- * unavailable (greyed) in the picker until its engine is wired.
+ * These presets mirror ARCHITECTURE_PLAN §3's mode map — local / split / remote.
+ * A mode with no engine URL configured shows up as unavailable (greyed) in the
+ * picker until its engine is wired.
  *
  * Config resolves in two layers:
  *
@@ -23,12 +23,8 @@
  * edit takes effect on the very next send — no remount, no lost conversation.
  */
 
-export type EngineMode = "mock" | "openai";
-
 export interface EngineConfig {
-  /** "mock" = canned on-device stream (offline floor); "openai" = real engine. */
-  mode: EngineMode;
-  /** OpenAI-compatible base URL, including the /v1 suffix. Empty for mock. */
+  /** OpenAI-compatible base URL, including the /v1 suffix. */
   baseUrl: string;
   /** Model id sent in the request body — must match the engine's /v1/models. */
   model: string;
@@ -37,7 +33,7 @@ export interface EngineConfig {
 }
 
 export interface EnginePreset extends EngineConfig {
-  /** Stable id, also the localStorage value: mock | local | split | remote. */
+  /** Stable id, also the localStorage value: local | split | remote. */
   id: string;
   /** Short label shown in the picker. */
   label: string;
@@ -171,23 +167,29 @@ export function normalizeBaseUrl(input: string, template = ""): string {
 
 const LS_KEY = "qmesh.engine"; // active mode id
 const SETTINGS_KEY = "qmesh.settings"; // endpoint overrides
+const AUTO_PRIVACY_KEY = "qmesh.autoPrivacy"; // "1" when auto-privacy is on
 
 /** Fired when the active mode changes, so the picker can stay in sync. */
 export const ENGINE_CHANGE_EVENT = "qmesh:engine-change";
 /** Fired when endpoint overrides are saved or reset. */
 export const SETTINGS_CHANGE_EVENT = "qmesh:settings-change";
+/** Fired when the auto-privacy toggle changes. */
+export const PRIVACY_CHANGE_EVENT = "qmesh:privacy-change";
 
 /**
- * Subscribe to any config change — active mode, endpoint overrides, or an edit
- * made in another tab. Shaped for `useSyncExternalStore`.
+ * Subscribe to any config change — active mode, endpoint overrides, the
+ * auto-privacy toggle, or an edit made in another tab. Shaped for
+ * `useSyncExternalStore`.
  */
 export function subscribeConfig(onChange: () => void): () => void {
   window.addEventListener(ENGINE_CHANGE_EVENT, onChange);
   window.addEventListener(SETTINGS_CHANGE_EVENT, onChange);
+  window.addEventListener(PRIVACY_CHANGE_EVENT, onChange);
   window.addEventListener("storage", onChange);
   return () => {
     window.removeEventListener(ENGINE_CHANGE_EVENT, onChange);
     window.removeEventListener(SETTINGS_CHANGE_EVENT, onChange);
+    window.removeEventListener(PRIVACY_CHANGE_EVENT, onChange);
     window.removeEventListener("storage", onChange);
   };
 }
@@ -278,28 +280,15 @@ export function resetSettings(): void {
 /* -------------------------------------------------------------------------- */
 
 function buildPresets(s: EngineSettings): EnginePreset[] {
-  return [
-    {
-      id: "mock",
-      label: "Mock",
-      hint: "Canned reply — fully offline, no engine",
-      mode: "mock",
-      baseUrl: "",
-      model: "",
-      apiKey: "",
-      available: true,
-    },
-    ...ENGINE_ENDPOINTS.map((e) => ({
-      id: e.id,
-      label: e.label,
-      hint: e.hint,
-      mode: "openai" as const,
-      baseUrl: s[e.id],
-      model: s.model,
-      apiKey: ENV_API_KEY,
-      available: s[e.id].length > 0,
-    })),
-  ];
+  return ENGINE_ENDPOINTS.map((e) => ({
+    id: e.id,
+    label: e.label,
+    hint: e.hint,
+    baseUrl: s[e.id],
+    model: s.model,
+    apiKey: ENV_API_KEY,
+    available: s[e.id].length > 0,
+  }));
 }
 
 /**
@@ -328,51 +317,101 @@ export function getPresets(): EnginePreset[] {
   return cachedPresets;
 }
 
-// Default mode: honor NEXT_PUBLIC_ENGINE_MODE, landing on the first available
-// real engine when set to "openai", else the mock floor.
-const DEFAULT_ID =
-  process.env.NEXT_PUBLIC_ENGINE_MODE === "openai"
-    ? (ENV_PRESETS.find((p) => p.mode === "openai" && p.available)?.id ?? "mock")
-    : "mock";
+// Default mode: the first engine with a URL configured at build time, else the
+// first slot (shown greyed until its endpoint is set up in Settings).
+export const DEFAULT_PRESET_ID = (
+  ENV_PRESETS.find((p) => p.available) ?? ENV_PRESETS[0]
+).id;
 
 /** The active preset id (falls back to the default on SSR / bad storage). */
 export function getActivePresetId(): string {
-  if (typeof window === "undefined") return DEFAULT_ID;
+  if (typeof window === "undefined") return DEFAULT_PRESET_ID;
   try {
     const id = window.localStorage.getItem(LS_KEY);
     if (id && getPresets().some((p) => p.id === id)) return id;
   } catch {
     // storage blocked — fall through to default
   }
-  return DEFAULT_ID;
+  return DEFAULT_PRESET_ID;
 }
 
-/** The active preset, coerced to a usable one (mock) if its engine is gone. */
+/** The active preset, coerced to an available one if its engine is gone. */
 export function getActivePreset(): EnginePreset {
   const presets = getPresets();
   const id = getActivePresetId();
   const p = presets.find((x) => x.id === id);
-  if (p && (p.available || p.mode === "mock")) return p;
-  return presets[0]; // mock — always available
+  if (p?.available) return p;
+  return presets.find((x) => x.available) ?? presets[0];
 }
 
 /** The engine config the adapter should use right now. */
 export function getEngine(): EngineConfig {
   const p = getActivePreset();
-  return { mode: p.mode, baseUrl: p.baseUrl, model: p.model, apiKey: p.apiKey };
+  return { baseUrl: p.baseUrl, model: p.model, apiKey: p.apiKey };
 }
 
 /** Switch modes. No-op for unknown/unavailable ids. */
 export function setActivePreset(id: string): void {
   if (typeof window === "undefined") return;
   const p = getPresets().find((x) => x.id === id);
-  if (!p || (!p.available && p.mode !== "mock")) return;
+  if (!p?.available) return;
   try {
     window.localStorage.setItem(LS_KEY, id);
     window.dispatchEvent(new CustomEvent(ENGINE_CHANGE_EVENT, { detail: id }));
   } catch {
     // storage blocked — nothing to persist
   }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Auto-privacy                                                              */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Auto-privacy = "fast by default, private when it matters": chats run on
+ * Remote, but the moment a user message contains PII the chat is pinned to the
+ * private engine *before* the request is built (see modelAdapter.ts). Off by
+ * default — it changes routing behavior, so the user opts in via Settings.
+ */
+export function getAutoPrivacy(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem(AUTO_PRIVACY_KEY) === "1";
+  } catch {
+    return false; // storage blocked — behave as off
+  }
+}
+
+/**
+ * Toggle auto-privacy. Turning it on also lands the picker on Remote — the
+ * "resort to remote first" half of the feature — when Remote is configured
+ * (setActivePreset no-ops otherwise).
+ */
+export function setAutoPrivacy(on: boolean): void {
+  if (typeof window === "undefined") return;
+  try {
+    if (on) window.localStorage.setItem(AUTO_PRIVACY_KEY, "1");
+    else window.localStorage.removeItem(AUTO_PRIVACY_KEY);
+    window.dispatchEvent(new CustomEvent(PRIVACY_CHANGE_EVENT));
+  } catch {
+    // storage blocked — nothing to persist
+  }
+  if (on) setActivePreset("remote");
+}
+
+/**
+ * The engine PII-bearing chats get pinned to: Split when configured, else
+ * On-device — a fallback is only ever *more* private, never less. Returns null
+ * when neither is set up; callers must then refuse the send rather than fall
+ * back to Remote, or the feature would leak exactly what it exists to protect.
+ */
+export function getPrivateEngine(): EnginePreset | null {
+  const presets = getPresets();
+  return (
+    presets.find((p) => p.id === "split" && p.available) ??
+    presets.find((p) => p.id === "local" && p.available) ??
+    null
+  );
 }
 
 /* -------------------------------------------------------------------------- */
@@ -413,4 +452,5 @@ if (typeof window !== "undefined") {
   w.qmeshGetEngine = getEngine;
   w.qmeshPresets = getPresets;
   w.qmeshSettings = getSettings;
+  w.qmeshAutoPrivacy = setAutoPrivacy;
 }

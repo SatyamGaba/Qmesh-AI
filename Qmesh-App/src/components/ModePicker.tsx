@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { Check, ChevronDown } from "lucide-react";
+import { useLiveQuery } from "dexie-react-hooks";
+import { Check, ChevronDown, ShieldCheck } from "lucide-react";
 import {
+  DEFAULT_PRESET_ID,
   ENV_PRESETS,
   getActivePresetId,
   getPresets,
@@ -12,18 +14,19 @@ import {
   type EnginePreset,
   type Reach,
 } from "@/lib/config";
+import { db } from "@/lib/db";
 import { cn } from "@/lib/cn";
 
 /**
  * Subscribe to the persisted active-mode id via useSyncExternalStore, so the
  * picker reflects changes from the console helper or another tab, and reads
- * cleanly on the client after SSR (server snapshot = first preset).
+ * cleanly on the client after SSR (server snapshot = default preset).
  */
 function useActivePresetId(): string {
   return useSyncExternalStore(
     subscribeConfig,
     () => getActivePresetId(),
-    () => ENV_PRESETS[0].id,
+    () => DEFAULT_PRESET_ID,
   );
 }
 
@@ -36,9 +39,8 @@ function usePresets(): EnginePreset[] {
   return useSyncExternalStore(subscribeConfig, getPresets, () => ENV_PRESETS);
 }
 
-/** Probe an engine's /v1/models with a short timeout. mock is always "up". */
+/** Probe an engine's /v1/models with a short timeout. */
 async function probe(p: EnginePreset): Promise<Reach> {
-  if (p.mode === "mock") return "up";
   if (!p.available) return "down";
   return probeEngine(p.baseUrl, p.apiKey);
 }
@@ -52,16 +54,27 @@ const DOT: Record<Reach, string> = {
 
 /**
  * Header control that shows the active engine mode and lets you switch between
- * mock / on-device / split / remote. Each mode carries a live reachability dot
+ * on-device / split / remote. Each mode carries a live reachability dot
  * so you can see whether its engine is up before selecting it. Switching takes
  * effect on the next message (the adapter dispatches per-run).
+ *
+ * When the current thread is pinned by auto-privacy, the button shows the
+ * *effective* engine (the pinned one) with a shield, since that — not the
+ * global selection — is what the next message will use. Picking a mode still
+ * only changes the global selection; the pin keeps overriding this thread
+ * until the user unpins from the privacy banner.
  */
-export function ModePicker() {
+export function ModePicker({ threadId }: { threadId?: string | null }) {
   const [open, setOpen] = useState(false);
   const activeId = useActivePresetId();
   const presets = usePresets();
   const [reach, setReach] = useState<Record<string, Reach>>({});
   const ref = useRef<HTMLDivElement>(null);
+  const pinnedId = useLiveQuery(
+    async () =>
+      threadId ? ((await db.threads.get(threadId))?.pinnedEngine ?? null) : null,
+    [threadId],
+  );
 
   // Probe reachability whenever the menu opens — or whenever an endpoint is
   // edited in Settings, since the old verdict no longer describes the new URL.
@@ -73,7 +86,7 @@ export function ModePicker() {
     (async () => {
       setReach((r) => {
         const next = { ...r };
-        for (const p of presets) if (p.mode !== "mock") next[p.id] = "checking";
+        for (const p of presets) next[p.id] = "checking";
         return next;
       });
       await Promise.all(
@@ -99,9 +112,11 @@ export function ModePicker() {
   }, [open]);
 
   const active = presets.find((p) => p.id === activeId) ?? presets[0];
+  const pinned = pinnedId ? presets.find((p) => p.id === pinnedId) : undefined;
+  const effective = pinned ?? active;
 
   function choose(p: EnginePreset) {
-    if (!p.available && p.mode !== "mock") return;
+    if (!p.available) return;
     setActivePreset(p.id); // fires ENGINE_CHANGE_EVENT → useActivePresetId updates
     setOpen(false);
   }
@@ -115,10 +130,16 @@ export function ModePicker() {
         aria-expanded={open}
       >
         <span
-          className={cn("size-1.5 rounded-full", DOT[reach[active.id] ?? "unknown"])}
+          className={cn(
+            "size-1.5 rounded-full",
+            DOT[reach[effective.id] ?? "unknown"],
+          )}
         />
         Qmesh
-        <span className="text-xs font-normal text-zinc-500">· {active.label}</span>
+        <span className="text-xs font-normal text-zinc-500">
+          · {effective.label}
+        </span>
+        {pinned && <ShieldCheck className="size-3.5 text-emerald-600" />}
         <ChevronDown className="size-3.5 text-zinc-400" />
       </button>
 
@@ -128,7 +149,7 @@ export function ModePicker() {
           className="absolute left-1/2 top-full z-30 mt-1 w-64 -translate-x-1/2 rounded-2xl border border-zinc-200 bg-white p-1.5 shadow-lg"
         >
           {presets.map((p) => {
-            const disabled = !p.available && p.mode !== "mock";
+            const disabled = !p.available;
             return (
               <button
                 key={p.id}
@@ -146,7 +167,7 @@ export function ModePicker() {
                 <span
                   className={cn(
                     "mt-1.5 size-1.5 shrink-0 rounded-full",
-                    DOT[reach[p.id] ?? (p.mode === "mock" ? "up" : "unknown")],
+                    DOT[reach[p.id] ?? "unknown"],
                   )}
                 />
                 <span className="min-w-0 flex-1">

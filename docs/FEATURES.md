@@ -19,7 +19,6 @@ then switch to **Remote** and send again — same conversation, different hardwa
   decode. No network needed at all.
 - **Remote** — engine on the laptop over Wi-Fi, ~37 tok/s decode.
 - **Split** — phone + laptop share the model (in progress).
-- **Mock** — canned reply, always works, zero dependencies (the safety floor).
 
 **Caveat:** Split mode isn't wired yet; it shows "not set up" (greyed). On-device and
 Remote are live.

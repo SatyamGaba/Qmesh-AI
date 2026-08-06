@@ -37,6 +37,32 @@ export async function deleteThread(threadId: string): Promise<void> {
   });
 }
 
+/**
+ * Pin a thread to an engine preset. Called by auto-privacy routing *before*
+ * the request leaves the device, so the pin is durable even if that first
+ * private-engine request then fails.
+ */
+export async function pinThreadEngine(
+  threadId: string,
+  presetId: string,
+  pinnedFor: string[],
+): Promise<void> {
+  await db.threads.update(threadId, { pinnedEngine: presetId, pinnedFor });
+}
+
+/**
+ * Remove the pin — the thread follows the global picker again. Only the
+ * user's confirmed Undo should call this: the next message replays the whole
+ * history, sensitive turns included, to whatever engine is then active.
+ */
+export async function unpinThreadEngine(threadId: string): Promise<void> {
+  // Dexie deletes a property when its update value is undefined.
+  await db.threads.update(threadId, {
+    pinnedEngine: undefined,
+    pinnedFor: undefined,
+  });
+}
+
 /** Rename a thread (used to derive a title from the first user message). */
 export async function renameThread(
   threadId: string,

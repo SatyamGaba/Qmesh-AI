@@ -7,6 +7,13 @@
       "runtimeArgs": ["--prefix", "Qmesh-App", "run", "dev"],
       "port": 3000,
       "autoPort": false
+    },
+    {
+      "name": "qmesh-app-3100",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "Qmesh-App", "run", "dev", "--", "-p", "3100"],
+      "port": 3100,
+      "autoPort": false
     }
   ]
 }

@@ -1,5 +1,8 @@
-import type { ChatModelAdapter } from "@assistant-ui/react";
-import { getEngine } from "./config";
+import type {
+  ChatModelRunOptions,
+  ChatModelRunResult,
+} from "@assistant-ui/react";
+import type { EngineConfig } from "./config";
 
 /**
  * ============================================================================
@@ -7,14 +10,15 @@ import { getEngine } from "./config";
  * ============================================================================
  * Streams from any OpenAI-compatible engine (llama-server today; the split /
  * all_remote / all_local modes later, all behind the same wire format — see
- * ARCHITECTURE_PLAN §3). Target is resolved per-run from config.ts, so it can
- * be repointed at runtime with no rebuild.
+ * ARCHITECTURE_PLAN §3). The target engine is resolved per-run by
+ * modelAdapter.ts (picker choice, or auto-privacy's override) and passed in,
+ * so it can be repointed at runtime with no rebuild.
  *
  * assistant-ui's ChatModelAdapter.run yields CUMULATIVE snapshots: each yield
  * carries the full text so far, not a delta — so we accumulate and re-yield.
  */
 
-type RunMessages = Parameters<ChatModelAdapter["run"]>[0]["messages"];
+type RunMessages = ChatModelRunOptions["messages"];
 
 /** Flatten one assistant-ui message's parts into a single text string. */
 function partsToText(content: RunMessages[number]["content"]): string {
@@ -83,69 +87,69 @@ async function* sseEvents(
   }
 }
 
-export const openaiModelAdapter: ChatModelAdapter = {
-  async *run({ messages, abortSignal }) {
-    const cfg = getEngine();
-    if (!cfg.baseUrl) {
-      throw new Error(
-        "No engine base URL configured. Set NEXT_PUBLIC_ENGINE_BASE_URL or call qmeshSetEngine(...).",
-      );
-    }
+export async function* openaiRun(
+  { messages, abortSignal }: ChatModelRunOptions,
+  cfg: EngineConfig,
+): AsyncGenerator<ChatModelRunResult, void> {
+  if (!cfg.baseUrl) {
+    throw new Error(
+      "No engine base URL configured. Set NEXT_PUBLIC_ENGINE_BASE_URL or call qmeshSetEngine(...).",
+    );
+  }
 
-    const url = `${cfg.baseUrl.replace(/\/$/, "")}/chat/completions`;
-    let res: Response;
+  const url = `${cfg.baseUrl.replace(/\/$/, "")}/chat/completions`;
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(cfg.apiKey ? { Authorization: `Bearer ${cfg.apiKey}` } : {}),
+      },
+      body: JSON.stringify({
+        model: cfg.model,
+        stream: true,
+        messages: toOpenAiMessages(messages),
+      }),
+      signal: abortSignal,
+    });
+  } catch (err) {
+    // Network-level failure (engine down, DNS, CORS block, offline).
+    throw new Error(
+      `Can't reach the inference engine at ${cfg.baseUrl}. Is it running and on the same network? (${(err as Error).message})`,
+    );
+  }
+
+  if (!res.ok || !res.body) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(
+      `Engine returned ${res.status} ${res.statusText}${detail ? `: ${detail.slice(0, 300)}` : ""}`,
+    );
+  }
+
+  let text = "";
+  for await (const data of sseEvents(res.body, abortSignal)) {
+    if (data === "[DONE]") break;
+    let parsed: unknown;
     try {
-      res = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(cfg.apiKey ? { Authorization: `Bearer ${cfg.apiKey}` } : {}),
-        },
-        body: JSON.stringify({
-          model: cfg.model,
-          stream: true,
-          messages: toOpenAiMessages(messages),
-        }),
-        signal: abortSignal,
-      });
-    } catch (err) {
-      // Network-level failure (engine down, DNS, CORS block, offline).
-      throw new Error(
-        `Can't reach the inference engine at ${cfg.baseUrl}. Is it running and on the same network? (${(err as Error).message})`,
-      );
+      parsed = JSON.parse(data);
+    } catch {
+      continue; // ignore keepalive pings / non-JSON lines
     }
-
-    if (!res.ok || !res.body) {
-      const detail = await res.text().catch(() => "");
-      throw new Error(
-        `Engine returned ${res.status} ${res.statusText}${detail ? `: ${detail.slice(0, 300)}` : ""}`,
-      );
-    }
-
-    let text = "";
-    for await (const data of sseEvents(res.body, abortSignal)) {
-      if (data === "[DONE]") break;
-      let parsed: unknown;
-      try {
-        parsed = JSON.parse(data);
-      } catch {
-        continue; // ignore keepalive pings / non-JSON lines
+    const delta = (
+      parsed as {
+        choices?: Array<{ delta?: { content?: string | null } }>;
       }
-      const delta = (
-        parsed as {
-          choices?: Array<{ delta?: { content?: string | null } }>;
-        }
-      ).choices?.[0]?.delta?.content;
-      if (delta) {
-        text += delta;
-        yield { content: [{ type: "text", text }] };
-      }
+    ).choices?.[0]?.delta?.content;
+    if (delta) {
+      text += delta;
+      yield { content: [{ type: "text", text }] };
     }
+  }
 
-    // Emit a final snapshot even if the stream produced nothing, so the UI
-    // doesn't hang on an empty assistant turn.
-    if (!text) {
-      yield { content: [{ type: "text", text: "" }] };
-    }
-  },
-};
+  // Emit a final snapshot even if the stream produced nothing, so the UI
+  // doesn't hang on an empty assistant turn.
+  if (!text) {
+    yield { content: [{ type: "text", text: "" }] };
+  }
+}

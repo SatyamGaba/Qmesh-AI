@@ -1,15 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Check, RotateCcw, X, Loader2, AlertCircle } from "lucide-react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import {
+  Check,
+  RotateCcw,
+  X,
+  Loader2,
+  AlertCircle,
+  ShieldCheck,
+} from "lucide-react";
 import {
   ENGINE_ENDPOINTS,
+  ENV_PRESETS,
   ENV_SETTINGS,
+  getAutoPrivacy,
+  getPresets,
   getSettings,
   normalizeBaseUrl,
   probeEngine,
   resetSettings,
   saveSettings,
+  setAutoPrivacy,
+  subscribeConfig,
   type EndpointId,
   type EngineSettings,
   type Reach,
@@ -51,6 +63,68 @@ function ReachNote({ status }: { status: Reach | undefined }) {
         </>
       )}
     </p>
+  );
+}
+
+/**
+ * The auto-privacy switch. Applies immediately (like the mode picker), not on
+ * Save — it toggles behavior, not an endpoint draft. Turning it on also lands
+ * the picker on Remote: fast by default, private the moment PII shows up.
+ */
+function AutoPrivacyToggle() {
+  const on = useSyncExternalStore(subscribeConfig, getAutoPrivacy, () => false);
+  const presets = useSyncExternalStore(
+    subscribeConfig,
+    getPresets,
+    () => ENV_PRESETS,
+  );
+  const privateEngine =
+    presets.find((p) => p.id === "split" && p.available) ??
+    presets.find((p) => p.id === "local" && p.available) ??
+    null;
+
+  return (
+    <div>
+      <div className="flex items-center justify-between gap-3">
+        <label
+          htmlFor="auto-privacy"
+          className="flex items-center gap-1.5 text-sm font-medium text-foreground"
+        >
+          <ShieldCheck className="size-4 text-emerald-600" />
+          Auto-privacy mode
+        </label>
+        <button
+          id="auto-privacy"
+          role="switch"
+          aria-checked={on}
+          onClick={() => setAutoPrivacy(!on)}
+          className={cn(
+            "relative h-6 w-11 shrink-0 rounded-full transition-colors",
+            on ? "bg-emerald-500" : "bg-zinc-300",
+          )}
+        >
+          <span
+            className={cn(
+              "absolute left-0.5 top-0.5 size-5 rounded-full bg-white shadow transition-transform",
+              on && "translate-x-5",
+            )}
+          />
+        </button>
+      </div>
+      <p className="mt-1 text-xs text-zinc-500">
+        Chats use the fast Remote engine, but the moment a message contains
+        personal info — an email, phone, card or ID number, address — the chat
+        switches to {privateEngine ? privateEngine.label : "a private engine"}{" "}
+        before anything is sent, and stays there.
+      </p>
+      {on && !privateEngine && (
+        <p className="mt-1.5 flex items-center gap-1.5 text-xs text-red-600">
+          <AlertCircle className="size-3 shrink-0" />
+          No private engine is set up — messages with personal info will be held
+          back until Split or On-device is configured.
+        </p>
+      )}
+    </div>
   );
 }
 
@@ -268,6 +342,13 @@ export function SettingsSheet({
 
         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
           <h2 className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
+            Privacy
+          </h2>
+          <div className="mt-4">
+            <AutoPrivacyToggle />
+          </div>
+
+          <h2 className="mt-8 text-xs font-semibold uppercase tracking-wide text-zinc-400">
             Laptop address
           </h2>
           <p className="mt-1 text-xs text-zinc-500">

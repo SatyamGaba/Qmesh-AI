@@ -2,8 +2,8 @@
 
 A mobile-only, offline-first chat PWA — a ChatGPT-style UI where inference and
 storage run **on the device**. Built as a hackathon prototype: the chat UI,
-history, and offline persistence are complete; the model is a mock that streams
-canned text, ready to be swapped for real local/split NPU inference.
+history, and offline persistence are complete, and chat streams from any
+OpenAI-compatible engine — on-device, split across phone + laptop, or remote.
 
 ## Stack
 
@@ -34,11 +34,11 @@ chat all keep working.
 
 ## Where the model plugs in
 
-`src/lib/mockModel.ts` is the **only** place the app talks to a model. It's a
-single `ChatModelAdapter` that streams canned text today. To wire real
-local/split NPU inference, replace the body of `run()`: feed `options.messages`
-to your on-device runtime (WebNN / ONNX Runtime Web / a native bridge) and
-`yield` partial text the same way. Nothing else in the app changes.
+`src/lib/openaiModel.ts` is the **only** place the app talks to a model: a
+single `ChatModelAdapter` that streams from any OpenAI-compatible
+`/v1/chat/completions` endpoint over SSE. Which engine it hits — on-device,
+split, or remote — is resolved per message from `src/lib/config.ts`, so the
+header picker repoints it at runtime with no rebuild.
 
 ## Layout
 
@@ -46,7 +46,8 @@ to your on-device runtime (WebNN / ONNX Runtime Web / a native bridge) and
 | --- | --- |
 | `src/lib/db.ts` | Dexie database (threads + messages tables) |
 | `src/lib/threads.ts` | Thread CRUD + the per-thread `ThreadHistoryAdapter` that persists to Dexie |
-| `src/lib/mockModel.ts` | **Inference seam** — mock `ChatModelAdapter` |
+| `src/lib/openaiModel.ts` | **Inference seam** — OpenAI-compatible SSE `ChatModelAdapter` |
+| `src/lib/config.ts` | Engine modes/presets + Settings overrides |
 | `src/components/ChatRuntimeProvider.tsx` | Wires `useLocalRuntime` (model + history) per thread |
 | `src/components/Thread.tsx` | Message list, bubbles, markdown, composer |
 | `src/components/HistorySidebar.tsx` | Slide-in history drawer (live Dexie query) |

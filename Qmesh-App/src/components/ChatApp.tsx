@@ -5,6 +5,7 @@ import { Menu, PenSquare, Settings } from "lucide-react";
 import { ChatRuntimeProvider } from "./ChatRuntimeProvider";
 import { HistorySidebar } from "./HistorySidebar";
 import { ModePicker } from "./ModePicker";
+import { PrivacyBanner } from "./PrivacyBanner";
 import { SettingsSheet } from "./SettingsSheet";
 import { Thread } from "./Thread";
 import { createThread } from "@/lib/threads";
@@ -66,7 +67,7 @@ export function ChatApp() {
           <Menu className="size-5" />
         </button>
 
-        <ModePicker />
+        <ModePicker threadId={threadId} />
 
         <div className="flex items-center justify-self-end">
           <button
@@ -86,12 +87,18 @@ export function ChatApp() {
         </div>
       </header>
 
-      <main className="min-h-0 flex-1">
+      <main className="flex min-h-0 flex-1 flex-col">
         {threadId ? (
-          // key remounts the runtime per thread so history reloads correctly.
-          <ChatRuntimeProvider key={threadId} threadId={threadId}>
-            <Thread />
-          </ChatRuntimeProvider>
+          // keys remount the runtime (and reset banner state) per thread so
+          // history and pin status reload correctly.
+          <>
+            <PrivacyBanner key={`banner-${threadId}`} threadId={threadId} />
+            <div className="min-h-0 flex-1">
+              <ChatRuntimeProvider key={threadId} threadId={threadId}>
+                <Thread />
+              </ChatRuntimeProvider>
+            </div>
+          </>
         ) : (
           <div className="grid h-full place-items-center text-sm text-zinc-400">
             Loading…

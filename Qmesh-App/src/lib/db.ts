@@ -16,6 +16,18 @@ export interface Thread {
   title: string;
   createdAt: number;
   updatedAt: number;
+  /**
+   * When set, every run in this thread uses this engine preset id instead of
+   * the global picker choice. Written by auto-privacy on a PII hit: the full
+   * history replays to the engine on every turn, so once sensitive text enters
+   * a thread it must not travel to a less-private engine unless the user
+   * explicitly unpins (PrivacyBanner's confirmed Undo).
+   *
+   * Optional non-indexed fields, so no Dexie schema version bump is needed.
+   */
+  pinnedEngine?: string;
+  /** Why it was pinned — detected PII labels ("an email address"), for the UI. */
+  pinnedFor?: string[];
 }
 
 /**
