@@ -16,15 +16,131 @@ import {
 } from "@/lib/config";
 import { cn } from "@/lib/cn";
 
+const BY_ID = Object.fromEntries(ENGINE_ENDPOINTS.map((e) => [e.id, e])) as {
+  [K in EndpointId]: (typeof ENGINE_ENDPOINTS)[number];
+};
+
+/** Reachability line under a field — the result of the last Test press. */
+function ReachNote({ status }: { status: Reach | undefined }) {
+  if (!status || status === "unknown") return null;
+  return (
+    <p
+      className={cn(
+        "mt-1.5 flex items-center gap-1.5 text-xs",
+        status === "up" && "text-green-600",
+        status === "down" && "text-red-600",
+        status === "checking" && "text-zinc-500",
+      )}
+    >
+      {status === "checking" && (
+        <>
+          <Loader2 className="size-3 animate-spin" />
+          Checking…
+        </>
+      )}
+      {status === "up" && (
+        <>
+          <Check className="size-3" />
+          Reachable
+        </>
+      )}
+      {status === "down" && (
+        <>
+          <AlertCircle className="size-3" />
+          No response — is the engine running on this network?
+        </>
+      )}
+    </p>
+  );
+}
+
+const INPUT_CLASS =
+  "min-w-0 flex-1 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-xs text-foreground outline-none placeholder:text-zinc-300 focus:border-zinc-400";
+const TEST_CLASS =
+  "shrink-0 rounded-xl border border-zinc-200 px-3 py-2 text-xs font-medium text-foreground hover:bg-zinc-50 disabled:opacity-40";
+
+/**
+ * An editable endpoint row. Defined at module scope, not inside SettingsSheet —
+ * a component declared in a render body gets a fresh identity each render, which
+ * would remount the input and drop focus on every keystroke.
+ */
+function EndpointField({
+  id,
+  value,
+  status,
+  onChange,
+  onBlur,
+  onRevert,
+  onTest,
+}: {
+  id: EndpointId;
+  value: string;
+  status: Reach | undefined;
+  onChange: (value: string) => void;
+  onBlur: () => void;
+  onRevert: () => void;
+  onTest: () => void;
+}) {
+  const e = BY_ID[id];
+  const overridden = value !== ENV_SETTINGS[id];
+  return (
+    <div>
+      <div className="flex items-baseline justify-between gap-2">
+        <label
+          htmlFor={`endpoint-${id}`}
+          className="text-sm font-medium text-foreground"
+        >
+          {e.label}
+        </label>
+        {overridden && (
+          <button
+            onClick={onRevert}
+            className="flex items-center gap-1 text-xs text-zinc-500 hover:text-foreground"
+          >
+            <RotateCcw className="size-3" />
+            Default
+          </button>
+        )}
+      </div>
+      <p className="text-xs text-zinc-500">{e.hint}</p>
+      <div className="mt-1.5 flex items-center gap-2">
+        <input
+          id={`endpoint-${id}`}
+          type="text"
+          inputMode="url"
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
+          value={value}
+          onChange={(ev) => onChange(ev.target.value)}
+          // Canonicalize on blur so the shorthand's result is visible.
+          onBlur={onBlur}
+          placeholder={ENV_SETTINGS[id] || "http://192.168.1.50:8082/v1"}
+          className={INPUT_CLASS}
+        />
+        <button
+          onClick={onTest}
+          disabled={!value || status === "checking"}
+          className={TEST_CLASS}
+        >
+          Test
+        </button>
+      </div>
+      <ReachNote status={status} />
+    </div>
+  );
+}
+
 /**
  * Runtime engine settings. The env vars in `.env.local` are inlined at build
  * time — and baked into the APK for the Android shell — so they can't be edited
  * on the device. This sheet layers localStorage overrides on top of them, which
  * is what makes joining a different Wi-Fi/hotspot a retype instead of a rebuild.
  *
- * Each field starts on the value in force and shows a revert control once it
- * differs from the build-time default. Test probes /v1/models so a new address
- * can be confirmed before leaving the sheet.
+ * Remote leads because it is the only address that moves with the network. The
+ * rest sit under Advanced: Split's port changes only if you launch the server
+ * on a different one, and On-device is shown read-only because
+ * scripts/phone_split.sh hardcodes both its port and the matching adb forward.
  */
 export function SettingsSheet({
   open,
@@ -66,17 +182,32 @@ export function SettingsSheet({
     setSaved(false);
   }
 
-  /** Canonicalize on blur so the user can see what their shorthand became. */
-  function normalizeField(id: EndpointId) {
-    setForm((f) => ({ ...f, [id]: normalizeBaseUrl(f[id], ENV_SETTINGS[id]) }));
-  }
-
   async function test(id: EndpointId) {
-    const url = normalizeBaseUrl(form[id], ENV_SETTINGS[id]);
-    setForm((f) => ({ ...f, [id]: url }));
+    // Fixed endpoints aren't editable, so probe the value in force as-is.
+    const url = BY_ID[id].fixed
+      ? ENV_SETTINGS[id]
+      : normalizeBaseUrl(form[id], ENV_SETTINGS[id]);
+    if (!BY_ID[id].fixed) setForm((f) => ({ ...f, [id]: url }));
     setReach((r) => ({ ...r, [id]: "checking" }));
     const status = await probeEngine(url);
     setReach((r) => ({ ...r, [id]: status }));
+  }
+
+  /** Wires one editable endpoint row to this component's state. */
+  function endpointProps(id: EndpointId) {
+    return {
+      id,
+      value: form[id],
+      status: reach[id],
+      onChange: (v: string) => setField(id, v),
+      onBlur: () =>
+        setForm((f) => ({
+          ...f,
+          [id]: normalizeBaseUrl(f[id], ENV_SETTINGS[id]),
+        })),
+      onRevert: () => setField(id, ENV_SETTINGS[id]),
+      onTest: () => test(id),
+    };
   }
 
   function handleSave() {
@@ -98,6 +229,8 @@ export function SettingsSheet({
   const dirty = (["local", "split", "remote", "model"] as const).some(
     (k) => form[k] !== persisted[k],
   );
+
+  const local = BY_ID.local;
 
   return (
     <>
@@ -135,139 +268,97 @@ export function SettingsSheet({
 
         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
           <h2 className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
-            Engine endpoints
+            Laptop address
           </h2>
           <p className="mt-1 text-xs text-zinc-500">
-            Address of each engine as seen from this device. Type just an IP and
-            the port and <code className="text-[11px]">/v1</code> are filled in
-            for you.
+            The only address that changes when you join a different Wi-Fi or
+            hotspot. Type just the laptop&apos;s IP — the port and{" "}
+            <code className="text-[11px]">/v1</code> are filled in for you.
           </p>
 
-          <div className="mt-4 space-y-5">
-            {ENGINE_ENDPOINTS.map((e) => {
-              const status = reach[e.id];
-              const overridden = form[e.id] !== ENV_SETTINGS[e.id];
-              return (
-                <div key={e.id}>
-                  <div className="flex items-baseline justify-between gap-2">
-                    <label
-                      htmlFor={`endpoint-${e.id}`}
-                      className="text-sm font-medium text-foreground"
-                    >
-                      {e.label}
-                    </label>
-                    {overridden && (
-                      <button
-                        onClick={() => setField(e.id, ENV_SETTINGS[e.id])}
-                        className="flex items-center gap-1 text-xs text-zinc-500 hover:text-foreground"
-                      >
-                        <RotateCcw className="size-3" />
-                        Default
-                      </button>
-                    )}
-                  </div>
-                  <p className="text-xs text-zinc-500">{e.hint}</p>
+          <div className="mt-4">
+            <EndpointField {...endpointProps("remote")} />
+          </div>
 
-                  <div className="mt-1.5 flex items-center gap-2">
-                    <input
-                      id={`endpoint-${e.id}`}
-                      type="text"
-                      inputMode="url"
-                      autoCapitalize="none"
-                      autoCorrect="off"
-                      spellCheck={false}
-                      value={form[e.id]}
-                      onChange={(ev) => setField(e.id, ev.target.value)}
-                      onBlur={() => normalizeField(e.id)}
-                      placeholder={ENV_SETTINGS[e.id] || "http://192.168.1.50:8082/v1"}
-                      className="min-w-0 flex-1 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-xs text-foreground outline-none placeholder:text-zinc-300 focus:border-zinc-400"
-                    />
+          <details className="group mt-8">
+            <summary className="cursor-pointer list-none text-xs font-semibold uppercase tracking-wide text-zinc-400 hover:text-zinc-600">
+              Advanced
+              <span className="ml-1 font-normal normal-case tracking-normal text-zinc-400 group-open:hidden">
+                — on-device ports, model id
+              </span>
+            </summary>
+
+            <div className="mt-4 space-y-5">
+              <EndpointField {...endpointProps("split")} />
+
+              {/* Read-only: phone_split.sh hardcodes this port and its adb
+                  forward, so nothing would answer on a different one. */}
+              <div>
+                <span className="text-sm font-medium text-foreground">
+                  {local.label}
+                </span>
+                <p className="text-xs text-zinc-500">{local.hint}</p>
+                <div className="mt-1.5 flex items-center gap-2">
+                  <code className="min-w-0 flex-1 truncate rounded-xl border border-dashed border-zinc-200 bg-zinc-50 px-3 py-2 font-mono text-xs text-zinc-500">
+                    {ENV_SETTINGS.local || "not configured"}
+                  </code>
+                  <button
+                    onClick={() => test("local")}
+                    disabled={!ENV_SETTINGS.local || reach.local === "checking"}
+                    className={TEST_CLASS}
+                  >
+                    Test
+                  </button>
+                </div>
+                <ReachNote status={reach.local} />
+                <p className="mt-1.5 text-xs text-zinc-400">
+                  Fixed — the phone always serves on this port.
+                </p>
+              </div>
+
+              <div>
+                <div className="flex items-baseline justify-between gap-2">
+                  <label
+                    htmlFor="engine-model"
+                    className="text-sm font-medium text-foreground"
+                  >
+                    Model id
+                  </label>
+                  {form.model !== ENV_SETTINGS.model && (
                     <button
-                      onClick={() => test(e.id)}
-                      disabled={!form[e.id] || status === "checking"}
-                      className="shrink-0 rounded-xl border border-zinc-200 px-3 py-2 text-xs font-medium text-foreground hover:bg-zinc-50 disabled:opacity-40"
+                      onClick={() => setField("model", ENV_SETTINGS.model)}
+                      className="flex items-center gap-1 text-xs text-zinc-500 hover:text-foreground"
                     >
-                      Test
+                      <RotateCcw className="size-3" />
+                      Default
                     </button>
-                  </div>
-
-                  {status && status !== "unknown" && (
-                    <p
-                      className={cn(
-                        "mt-1.5 flex items-center gap-1.5 text-xs",
-                        status === "up" && "text-green-600",
-                        status === "down" && "text-red-600",
-                        status === "checking" && "text-zinc-500",
-                      )}
-                    >
-                      {status === "checking" && (
-                        <>
-                          <Loader2 className="size-3 animate-spin" />
-                          Checking…
-                        </>
-                      )}
-                      {status === "up" && (
-                        <>
-                          <Check className="size-3" />
-                          Reachable
-                        </>
-                      )}
-                      {status === "down" && (
-                        <>
-                          <AlertCircle className="size-3" />
-                          No response — is the engine running on this network?
-                        </>
-                      )}
-                    </p>
                   )}
                 </div>
-              );
-            })}
-          </div>
+                <p className="text-xs text-zinc-500">
+                  Sent with every request; must match the engine&apos;s
+                  /v1/models.
+                </p>
+                <input
+                  id="engine-model"
+                  type="text"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  value={form.model}
+                  onChange={(ev) => setField("model", ev.target.value)}
+                  placeholder="qwen3-4b"
+                  className={cn(INPUT_CLASS, "mt-1.5 w-full")}
+                />
+              </div>
 
-          <h2 className="mt-8 text-xs font-semibold uppercase tracking-wide text-zinc-400">
-            Model
-          </h2>
-          <div className="mt-2">
-            <div className="flex items-baseline justify-between gap-2">
-              <label
-                htmlFor="engine-model"
-                className="text-sm font-medium text-foreground"
+              <button
+                onClick={handleResetAll}
+                className="text-xs text-zinc-500 underline underline-offset-2 hover:text-foreground"
               >
-                Model id
-              </label>
-              {form.model !== ENV_SETTINGS.model && (
-                <button
-                  onClick={() => setField("model", ENV_SETTINGS.model)}
-                  className="flex items-center gap-1 text-xs text-zinc-500 hover:text-foreground"
-                >
-                  <RotateCcw className="size-3" />
-                  Default
-                </button>
-              )}
+                Reset all to build defaults
+              </button>
             </div>
-            <p className="text-xs text-zinc-500">
-              Sent with every request; must match the engine&apos;s /v1/models.
-            </p>
-            <input
-              id="engine-model"
-              type="text"
-              autoCapitalize="none"
-              autoCorrect="off"
-              spellCheck={false}
-              value={form.model}
-              onChange={(ev) => setField("model", ev.target.value)}
-              placeholder="qwen3-4b"
-              className="mt-1.5 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-xs text-foreground outline-none placeholder:text-zinc-300 focus:border-zinc-400"
-            />
-          </div>
-
-          <button
-            onClick={handleResetAll}
-            className="mt-8 text-xs text-zinc-500 underline underline-offset-2 hover:text-foreground"
-          >
-            Reset all to build defaults
-          </button>
+          </details>
         </div>
 
         <div className="border-t border-zinc-200 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3">

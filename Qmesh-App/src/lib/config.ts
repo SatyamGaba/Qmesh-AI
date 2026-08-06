@@ -59,25 +59,37 @@ const ENV_API_KEY = process.env.NEXT_PUBLIC_ENGINE_API_KEY || "";
 // The original single-engine var maps to the remote slot for back-compat.
 const LEGACY_URL = process.env.NEXT_PUBLIC_ENGINE_BASE_URL || "";
 
-/** The three real engines, in picker order. Also drives the Settings form. */
+/**
+ * The three real engines, in picker order. Also drives the Settings form.
+ *
+ * `fixed` marks an address that cannot meaningfully differ from its default.
+ * On-device is the only one: scripts/phone_split.sh hardcodes both
+ * `--port 8082` and the matching `adb forward`, so nothing on the phone will
+ * ever answer elsewhere without editing that script. Split's port, by contrast,
+ * is a `PORT=` env override the script expects you to follow, and Remote's host
+ * is whatever the laptop's address is on today's network.
+ */
 export const ENGINE_ENDPOINTS = [
   {
     id: "local",
     label: "On-device",
     hint: "llama.cpp running on this phone",
     envUrl: process.env.NEXT_PUBLIC_ENGINE_LOCAL_URL || "",
+    fixed: true,
   },
   {
     id: "split",
     label: "Split",
     hint: "Phone + laptop worker (RPC split)",
     envUrl: process.env.NEXT_PUBLIC_ENGINE_SPLIT_URL || "",
+    fixed: false,
   },
   {
     id: "remote",
     label: "Remote",
     hint: "Engine on the laptop",
     envUrl: process.env.NEXT_PUBLIC_ENGINE_REMOTE_URL || LEGACY_URL,
+    fixed: false,
   },
 ] as const;
 
@@ -100,6 +112,15 @@ export const ENV_SETTINGS: EngineSettings = {
 };
 
 const SETTING_KEYS = ["local", "split", "remote", "model"] as const;
+
+/**
+ * Endpoints whose address is a constant. Overrides for these are refused on
+ * both read and write, so a stale entry from an earlier build — or a hand-edited
+ * one — can never pin the app to an address nothing is listening on.
+ */
+const FIXED_KEYS: ReadonlySet<string> = new Set(
+  ENGINE_ENDPOINTS.filter((e) => e.fixed).map((e) => e.id),
+);
 
 /* -------------------------------------------------------------------------- */
 /*  URL normalization                                                         */
@@ -189,6 +210,7 @@ function parseOverrides(raw: string | null): Partial<EngineSettings> {
     const record = parsed as Record<string, unknown>;
     const out: Partial<EngineSettings> = {};
     for (const key of SETTING_KEYS) {
+      if (FIXED_KEYS.has(key)) continue;
       const value = record[key];
       if (typeof value === "string" && value !== "") out[key] = value;
     }
@@ -222,6 +244,7 @@ export function saveSettings(next: EngineSettings): void {
 
   const overrides: Partial<EngineSettings> = {};
   for (const key of SETTING_KEYS) {
+    if (FIXED_KEYS.has(key)) continue;
     if (cleaned[key] && cleaned[key] !== ENV_SETTINGS[key]) {
       overrides[key] = cleaned[key];
     }
