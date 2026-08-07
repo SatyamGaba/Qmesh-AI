@@ -1,0 +1,23 @@
+30B-A3B split placement + performance evidence (2026-08-06 ~23:5x)
+
+Model: qwen3-30b-a3b-instruct-2507-q4_0.gguf (17,379,987,872 B, 48 layers)
+SHA-256 both sides: 8d57f6344fd0f048aabc3f65fb91ec7e1392084073ad7a85e6ae87cc1e233898
+Shape: NGL=44 -> first 4 layers on phone MAIN (:8081), 44 on laptop worker.
+
+Executing worker: b10270 CPU ggml-rpc-server, PID 22844 (0.0.0.0:50052 wildcard bind)
+  - netstat: 192.168.137.1:50052 <- 192.168.137.2:56102 ESTABLISHED, PID 22844
+  - WorkingSet after load: 15,022 MB  (the 44 offloaded layers)
+  - %LOCALAPPDATA%\llama.cpp\rpc cache after run: 17.0 GB
+  - (hvx NPU worker PID 34136 died on the MoE graph during the first load attempt;
+     serve retry fell through to the wildcard listener with the warm cache: load 98 s,
+     only ~0.5 GB over the air — TX counters sampled on wlan0)
+
+Phone MAIN: llama-server b10270 android-arm64, TOTAL RSS 1,494,504 kB (~1.5 GB)
+
+Generations (server "timings" fields, temp 0, phone-side curl):
+  gen1 (80 max):  prefill 5.90 t/s, decode 7.19 t/s (139.0 ms/tok), correct answer
+  gen2 (256 max): prefill 6.43 t/s, decode 11.45 t/s (87.4 ms/tok), 112 tokens, coherent
+
+Phone-alone reference: llama-cli -ngl 0 with the same GGUF produced ZERO tokens —
+never left "Loading model..." (oom30b.log), phone unreachable on all networks ~10 min,
+adbd + measurement harness killed by memory pressure.

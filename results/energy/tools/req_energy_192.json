@@ -1,0 +1,1 @@
+{"model":"qwen3-4b","messages":[{"role":"user","content":"Write a detailed essay about the history of renewable energy technologies, covering solar, wind, hydroelectric, and geothermal power, including key milestones and future outlook."}],"max_tokens":192,"temperature":0,"stream":true}

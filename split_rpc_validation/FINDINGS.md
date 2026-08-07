@@ -234,7 +234,68 @@ step is the go/no-go.*
 - [ ] Hexagon build on this laptop (Hexagon SDK 6.6 + OpenCL SDK + TESTSIGNING) → rerun with `-Devices HTP0` (L1 proof, laptop side)
 - [ ] Android builds on the x86 box: official `android-arm64` CPU tarball first (L2), Docker Hexagon build after (L1, phone side)
 - [x] Two-device rerun over real Wi-Fi (phone main → laptop worker) — see above (2026-08-05)
-- [ ] Re-bench phone all-local under controlled state (charger, screen, governor) to resolve the 10.6-vs-25.5 tg discrepancy
+- [x] Re-bench phone all-local under controlled state — **126.8 pp / 24.5 tg r=3** (2026-08-06,
+  unplugged, 90 %, 28 °C): confirms 25.5; the 08-04 "10.6" was a bad-state artifact
 - [x] RTT knob — see *RTT experiments* above; 2.4 GHz hotspot leg pending
-- [ ] **14B-class** model split (8B likely still fits the phone) — the "only possible together" demo; see *Runbook* above
-- [ ] Confirm the cross-client cache hit (step 2 → step 4 above) — gates the whole big-model plan
+- [x] Big-model split — done at **30B-A3B**, not 14B; see §30B below (2026-08-06)
+- [x] Cross-client cache hit — **confirmed with a caveat**: hits are per-worker-*build*; see §30B
+
+## Energy / latency / memory suite — all four modes (2026-08-06, evening)
+
+**Method** (raw data + tools in [`../results/energy/`](../results/energy/)): battery telemetry at 1 Hz via
+`dumpsys battery` (sysfs is shell-blocked on this Samsung build) — `current now` (µA) ×
+`voltage` (mV) integrated over marked windows, coulomb-counter delta as cross-check; the
+sampler and workload driver run ON the phone under nohup (adb-drop-proof); fixed 512-token
+essay prompt, temp 0, driven from the phone via curl (the app's exact path); screen on,
+brightness fixed 128, unplugged, hotspot topology. Windows ≥ ~1 min (the fuel gauge smooths
+shorter windows into noise — two identical 25 s runs read 1.25 vs 9.10 W).
+
+| Mode (4B Q4_0) | avg W | ΔJ/token | eff. t/s | phone RSS |
+|---|---:|---:|---:|---:|
+| Idle, screen on | 0.61 | — | — | — |
+| On-device CPU (`:8082`) | **8.6** | 0.41 | 19–24 | 5.27 GB |
+| On-device NPU HTP0 | 8.5–12.6 | 0.44–0.72 | ~17 | **0.81 GB** |
+| **Split → laptop worker** | **3.5** | **0.29** | 10–11 | ~1.0 GB |
+| Remote (laptop hvx `:8082`) | **3.0** | 0.25 | ~11 | ~0 |
+
+1. **Offload halves-plus the phone's power: 8.6 → 3.5 W (−2.5×), ΔJ/token 0.41 → 0.29 (−30 %).**
+   The mesh is a battery feature, not just a capability feature.
+2. **Keepalive ablation (split, same session):** decode **2.07 / 3.67 t/s with radio doze** vs
+   **10.3 t/s avg with a 5 pps keepalive** (~4×); TTFT up to 2.8 s dozed. Radio power-save, not
+   bandwidth, is the interactive-UX enemy (confirms the 4.7 t/s finding, now quantified).
+   Remote-mode SSE receive suffers the same doze without keepalive.
+3. **The experimental Hexagon path is slower AND hungrier than CPU on both devices**: phone
+   HTP0 17 t/s @ ≥8.5 W (vs CPU 24 t/s @ 8.6 W — `GGML_HEXAGON_OPPOLL=1` busy-polls a core,
+   load-avg ~10 idle); laptop hvx llama-server **~15 t/s solo (132 ms/tok)** — the 37.5 t/s
+   "Remote" figure was the b10270 *CPU* server. Its one big win: **RSS 0.81 GB vs 5.27 GB**
+   (weights live on the NPU, `--load-mode none`).
+4. Laptop during split decode: ~52–57 % total CPU (typeperf CSVs in `energy/`).
+5. Ops: llama-server's SSE hangs after ~1 gen on `:8082` engines (data complete, no `[DONE]`,
+   kept alive by `--sse-ping-interval`) — the windows were closed from stream byte-counts;
+   `pkill -f`/`pgrep -f` self-match bit us repeatedly — bracket every pattern (`pin[g]`).
+
+## 30B-A3B split — "only possible together", proven (2026-08-06, night)
+
+Model: `qwen3-30b-a3b-instruct-2507-q4_0.gguf` (17.4 GB, 48 layers, MoE 3B-active), byte-identical
+SHA-256 on laptop and phone (pushed over USB at 38.6 MB/s). Raw logs in [`../results/bigmodel/`](../results/bigmodel/).
+
+1. **Phone alone: zero tokens, phone disabled.** `llama-cli -ngl 0` never finished loading —
+   the 17.4 GB mmap thrashed 11.4 GB of RAM so hard the phone dropped off Wi-Fi entirely for
+   ~10 min, killed adbd and the measurement harness, and silently re-joined a different network.
+   `oom30b.log` is an endless load spinner. Film exactly this tomorrow.
+2. **Split (first 4 layers on phone, 44 on laptop): correct answers at 7.2–11.5 t/s decode**
+   (87–139 ms/tok), prefill ~6 t/s. Same ~10 t/s as the 4B split — **network cost is flat per
+   token, so model size is nearly free until the worker saturates**. That's the architecture's
+   whole thesis in one number: 7.5× the parameters at equal speed.
+3. Placement proof: worker WS **15.0 GB**, phone MAIN RSS **1.5 GB**, worker-side RPC cache
+   grew to 17.0 GB.
+4. **Cache-hit caveat (important for the demo):** the content-addressed cache is effectively
+   **per-worker-build**. A cache warmed through the b10270 CPU worker did NOT serve the hvx NPU
+   worker (the MAIN started streaming 16 GB at ~8 MB/s); after that worker died, the retry
+   landed on the b10270 CPU worker (wildcard bind) and loaded from cache in **98 s** with only
+   ~0.5 GB over the air. Warm the cache through the same worker binary you'll demo on.
+5. **The hvx NPU worker dies on the 30B MoE graph** (process gone mid-load; also cannot be
+   relaunched over ssh — Hexagon FastRPC refuses session-0/WMI processes, `0x80000406`; it
+   needs a console launch). Demo routing today: NPU worker alive on the specific bind gets the
+   phone; when it's absent, the b10270 CPU worker's `0.0.0.0` listener takes over. **Give 4B to
+   the NPU worker, 30B to the CPU worker.**

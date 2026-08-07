@@ -1,0 +1,37 @@
+tag=split_ka_off_1b http=200 ttft=2.145207 total=95.003554 bytes=47710
+tag=split_ka_off_2b http=200 ttft=1.382162 total=53.962449 bytes=47709
+tag=split_ka_on_1 http=200 ttft=0.010434 total=44.459476 bytes=125739
+tag=split_ka_on_2 http=200 ttft=2.847899 total=48.182237 bytes=125739
+tag=split_ka_on_3 http=200 ttft=0.010301 total=55.718277 bytes=125738
+tag=remote_npu_1 http=200 ttft=0.093129 total=74.259204 bytes=124652
+tag=remote_npu_1 http=200 ttft=0.134483 total=77.115333 bytes=124618
+tag=remote_npu2_1 http=200 ttft=0.052836 total=72.033438 bytes=124648
+Terminated 
+tag=remote_npu_w_1 http=200 ttft=0.095509 total=76.666531 bytes=124623
+Terminated 
+tag=remote_final_2 http=200 ttft=0.086369 total=80.622985 bytes=124472
+tag=remote_npu3_1 http=200 ttft=0.050479 total=81.549348 bytes=124596
+tag=remote_final_3 http=200 ttft=0.083156 total=75.487019 bytes=124513
+tag=remote_npu3_2 http=200 ttft=0.102543 total=75.671567 bytes=124725
+tag=remote_final_4 http=200 ttft=0.135218 total=81.744335 bytes=124719
+tag=remote_npu3_3 http=200 ttft=0.071388 total=81.888395 bytes=124629
+tag=remote_final_5 http=200 ttft=0.091806 total=61.898922 bytes=124492
+tag=remote_clean_1 http=200 ttft=0.075081 total=46.149665 bytes=124509
+tag=remote_clean_2 http=200 ttft=0.038433 total=50.223172 bytes=124541
+tag=remote_clean_3 http=200 ttft=0.076467 total=44.292250 bytes=124550
+tag=local_npu_w_1 http=200 ttft=0.017263 total=29.091882 bytes=122605
+tag=local_npu_w_2 http=200 ttft=0.110009 total=30.462336 bytes=122683
+Terminated 
+tag=local_cpu_w_1 http=200 ttft=0.012119 total=25.661676 bytes=125536
+tag=local_cpu_w_2 http=200 ttft=0.030692 total=26.910027 bytes=125678
+tag=local_cpu_w_3 http=200 ttft=0.046227 total=4.009177 bytes=19854
+tag=local_cpu_w_4 http=000 ttft=0.000000 total=0.000959 bytes=0
+tag=local_cpu_w_5 http=000 ttft=0.000000 total=0.000568 bytes=0
+tag=remote_e_1 http=503 ttft=0.007385 total=0.007506 bytes=75
+tag=remote_e_2 http=503 ttft=0.007140 total=0.007248 bytes=75
+tag=local_cpu_e_1 http=200 ttft=0.013253 total=24.982175 bytes=125536
+tag=local_cpu_e_2 http=200 ttft=0.026808 total=27.184697 bytes=125679
+tag=remote_e2_1 http=200 ttft=0.016729 total=45.255891 bytes=124651
+Terminated 
+tag=split_e_1 http=200 ttft=0.009793 total=46.575371 bytes=125579
+tag=split_e_2 http=200 ttft=3.247957 total=52.997126 bytes=125735

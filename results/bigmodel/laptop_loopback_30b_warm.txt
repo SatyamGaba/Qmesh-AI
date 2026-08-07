@@ -1,0 +1,8 @@
+load_backend: loaded RPC backend from C:\Users\qc_de\QMesh_AI\split_rpc_validation\bin\ggml-rpc.dll
+load_backend: loaded CPU backend from C:\Users\qc_de\QMesh_AI\split_rpc_validation\bin\ggml-cpu.dll
+| model                          |       size |     params | backend    | ngl | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------: | --------------: | -------------------: |
+| qwen3moe 30B.A3B Q4_0          |  16.18 GiB |    30.53 B | RPC        |  99 |      10 |            pp16 |          5.60 ± 0.00 |
+| qwen3moe 30B.A3B Q4_0          |  16.18 GiB |    30.53 B | RPC        |  99 |      10 |             tg8 |          4.20 ± 0.00 |
+
+build: 071327508 (10270)

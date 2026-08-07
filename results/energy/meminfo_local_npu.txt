@@ -1,0 +1,2 @@
+PID 27907:
+           TOTAL PSS:   802416            TOTAL RSS:   808612      TOTAL SWAP (KB):        0

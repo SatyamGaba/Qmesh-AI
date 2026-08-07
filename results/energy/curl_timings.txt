@@ -1,0 +1,4 @@
+tag=local_cpu_1 http=200 ttft=0.011230 total=24.573913 bytes=125532
+tag=local_cpu_2 http=200 ttft=0.037288 total=25.191391 bytes=125674
+tag=local_npu_1 http=200 ttft=0.009612 total=28.935444 bytes=122619
+tag=local_npu_2 http=200 ttft=0.041667 total=30.283395 bytes=122664
