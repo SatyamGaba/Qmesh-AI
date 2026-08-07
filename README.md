@@ -42,9 +42,9 @@ internet dependency.
 
 | Name | Email |
 |---|---|
-| Satyam Gaba | bnr.robotics@gmail.com |
-| Pratap Ramachandran | — |
-| Vishnu Priya Ammina | — |
+| Satyam Gaba | satyamgb321@gmail.com |
+| Pratap Ramachandran | mailpratapr@gmail.com |
+| Vishnu Priya Ammina | avishnupriya2206@gmail.com |
 
 ## Repository layout
 
