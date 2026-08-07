@@ -16,7 +16,7 @@ for Wi-Fi):
 
 | Path | What |
 |------|------|
-| `bin/` | Official llama.cpp `b10270` win-arm64 **CPU** build (incl. `ggml-rpc-server.exe`) |
+| `bin/` | Official llama.cpp `b10270` win-arm64 **CPU** build (worker renamed to `ggml-rpc-server-split.exe` to disambiguate from the hvx NPU worker) |
 | `%LOCALAPPDATA%\qmesh_split\models\` | GGUF models (kept out of OneDrive sync) |
 | `start_worker.ps1` | Start an RPC worker (parameterized: port, bind host, devices) |
 | `start_worker_a.ps1` | Worker A on :50052 — "phone role" end (first layers in a `4,32` split) |
