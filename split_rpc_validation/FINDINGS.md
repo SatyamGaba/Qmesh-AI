@@ -178,6 +178,57 @@ self-contained, immune to venue-Wi-Fi congestion, phone keeps internet through t
 laptop's HaQathon uplink (separate radio), and the "private mesh" story is literal.
 Perf vs venue is a wash (tg 14.0 vs 15.5).
 
+## Runbook — big-model split via a pre-warmed worker cache (2026-08-06)
+
+The "only possible together" demo needs a model far bigger than 4B, and the naive
+path is blocked by weight transfer: at `-ngl 36` on a 14B Q4_0 the MAIN streams
+**~7.5 GB** to the worker, which is 15–25 min over the 2.4 GHz hotspot. This
+removes that cost without touching any code.
+
+**Why the transfer exists (and why it can't be reversed).** ggml-rpc has no command
+for "worker, load layer N from your own disk" — the MAIN opens the GGUF and pushes
+every offloaded tensor. The direction is a property of the protocol, not of our
+scripts.
+
+**Why the cache escapes it.** `ggml-rpc.dll` (b10270) exports `set_tensor_hash`
+alongside `set_tensor`, and the server prints a `local cache : %s` line with
+hash-bucket handling. With `-c`, the client sends the tensor's **content hash**
+instead of its bytes; the worker looks the hash up in
+`%LOCALAPPDATA%\llama.cpp\rpc\` and loads from its own disk on a hit, falling back
+to a full transfer only on a miss. Because the key is the tensor *data*, **it does
+not matter which client populated the entry** — the laptop can warm its own cache
+at disk speed and the phone then pays nothing.
+
+**Recipe:**
+
+1. **Download the GGUF directly onto the laptop.** Do not route it through the phone.
+2. **Pre-warm at loopback speed, on the laptop.** Start the worker with `-c`, then
+   run one short `llama-bench` as MAIN against `127.0.0.1:50052` with **`-ngl 99`** —
+   offloading *every* layer, so the cache holds a superset of whatever the phone
+   later requests and any phone-side `NGL` is a guaranteed subset. Seconds, not
+   minutes.
+3. **Push the same GGUF to the phone over USB adb.** Still required: MAIN reads the
+   file for metadata and to compute the hashes. USB, not Wi-Fi — minutes.
+4. **Run the split normally.** All hash hits → no bulk transfer over the air.
+
+**Verification signal:** phone-side load comes up in **~40 s** (cache hit) or grinds
+for **minutes** (miss). You know within a minute of starting. *The cross-client hit
+is inferred from the cache being content-addressed and has not yet been run — this
+step is the go/no-go.*
+
+**Gotchas:**
+
+- **`NGL` is model-specific.** Qwen3-14B has **40** layers, not 36, so "first 4 on
+  the phone" is `-ngl 36`. `phone_split.sh` defaults to `NGL=32` but both `MODEL`
+  and `NGL` are env-overridable — `MODEL=… NGL=36 ./scripts/phone_split.sh serve <ip>`.
+  No script edits needed.
+- **Laptop cache disk:** a 14B adds ~8.5 GB on top of the 4B's ~1.9 GB in the RPC
+  cache dir. Check free space first.
+- **Model sizing, corrected:** 8B Q4_0 (~4.7 GB) probably *does* fit the phone's
+  11.4 GB, so it does not carry the "impossible alone" claim. **14B Q4_0 (~8.5 GB)**
+  is the smallest size that plausibly OOMs the phone; verify the phone-alone failure
+  on camera rather than asserting it.
+
 ## Next
 
 - [ ] Hexagon build on this laptop (Hexagon SDK 6.6 + OpenCL SDK + TESTSIGNING) → rerun with `-Devices HTP0` (L1 proof, laptop side)
@@ -185,4 +236,5 @@ Perf vs venue is a wash (tg 14.0 vs 15.5).
 - [x] Two-device rerun over real Wi-Fi (phone main → laptop worker) — see above (2026-08-05)
 - [ ] Re-bench phone all-local under controlled state (charger, screen, governor) to resolve the 10.6-vs-25.5 tg discrepancy
 - [x] RTT knob — see *RTT experiments* above; 2.4 GHz hotspot leg pending
-- [ ] 8B-class model split (doesn't fit the phone alone) — the "only possible together" demo
+- [ ] **14B-class** model split (8B likely still fits the phone) — the "only possible together" demo; see *Runbook* above
+- [ ] Confirm the cross-client cache hit (step 2 → step 4 above) — gates the whole big-model plan

@@ -1,5 +1,9 @@
-import type { ChatModelAdapter, ChatModelRunOptions } from "@assistant-ui/react";
+import type {
+  ChatModelAdapter,
+  ChatModelRunOptions,
+} from "@assistant-ui/react";
 import {
+  blockedReason,
   getActivePreset,
   getAutoPrivacy,
   getPresets,
@@ -36,9 +40,12 @@ function lastUserText(messages: ChatModelRunOptions["messages"]): string {
  *     persisted here, *before* any bytes leave the device.
  *  3. Otherwise the picker's choice applies as-is.
  *
- * When privacy is required but no private engine is configured, this throws
- * instead of falling back to Remote: a failed send is recoverable, a leak is
- * not. The error surfaces in the chat like any engine failure.
+ * No step ever substitutes a different engine for the one named in the UI. If
+ * the chosen engine can't serve the run — no address, or a model it can't hold
+ * — the send is refused and the reason surfaces in the chat like any engine
+ * failure. Two reasons: a failed send is recoverable and a leak is not, and a
+ * quiet substitution makes the transcript lie about where the answer came from,
+ * which is worthless for a demo or a measurement.
  */
 async function resolvePreset(
   threadId: string,
@@ -49,14 +56,17 @@ async function resolvePreset(
   if (thread?.pinnedEngine) {
     const pinned = getPresets().find((p) => p.id === thread.pinnedEngine);
     if (pinned?.available) return pinned;
-    const fallback = getPrivateEngine();
-    if (fallback) return fallback;
+    // No substituting a different private engine: the banner names the pinned
+    // one, so quietly running elsewhere would mislabel the run.
     throw new Error(
-      "This chat is pinned to a private engine, but neither Split nor On-device is configured. Set one up in Settings, or unpin the chat from the privacy banner.",
+      pinned
+        ? `This chat is pinned to ${pinned.label}, which can't serve it right now. ${blockedReason(pinned)} Then send again, or unpin the chat from the privacy banner.`
+        : "This chat is pinned to an engine that no longer exists. Unpin it from the privacy banner.",
     );
   }
 
   const active = getActivePreset();
+  if (!active.available) throw new Error(blockedReason(active) ?? "");
   if (!getAutoPrivacy() || active.id !== "remote") return active;
 
   const matches = detectPii(lastUserText(options.messages));
@@ -65,7 +75,7 @@ async function resolvePreset(
   const target = getPrivateEngine();
   if (!target) {
     throw new Error(
-      `Message held back: it contains ${describePii(matches)} and auto-privacy is on, but no private engine (Split or On-device) is configured. Nothing was sent to Remote.`,
+      `Message held back: it contains ${describePii(matches)} and auto-privacy is on, but no private engine (Split or On-device) can serve the selected model. Nothing was sent to Remote.`,
     );
   }
   await pinThreadEngine(threadId, target.id, piiLabels(matches));

@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
-import { Check, ChevronDown, ShieldCheck } from "lucide-react";
+import { Check, ChevronDown, ShieldCheck, TriangleAlert } from "lucide-react";
 import {
   DEFAULT_PRESET_ID,
   ENV_PRESETS,
+  blockedLabel,
+  blockedReason,
   getActivePresetId,
   getPresets,
   probeEngine,
@@ -39,9 +41,13 @@ function usePresets(): EnginePreset[] {
   return useSyncExternalStore(subscribeConfig, getPresets, () => ENV_PRESETS);
 }
 
-/** Probe an engine's /v1/models with a short timeout. */
+/**
+ * Probe an engine's /v1/models with a short timeout. Keyed off the URL, not
+ * `available` — a mode greyed out for being too small for the model is still
+ * running, and a red dot would claim otherwise.
+ */
 async function probe(p: EnginePreset): Promise<Reach> {
-  if (!p.available) return "down";
+  if (!p.baseUrl) return "down";
   return probeEngine(p.baseUrl, p.apiKey);
 }
 
@@ -72,7 +78,9 @@ export function ModePicker({ threadId }: { threadId?: string | null }) {
   const ref = useRef<HTMLDivElement>(null);
   const pinnedId = useLiveQuery(
     async () =>
-      threadId ? ((await db.threads.get(threadId))?.pinnedEngine ?? null) : null,
+      threadId
+        ? ((await db.threads.get(threadId))?.pinnedEngine ?? null)
+        : null,
     [threadId],
   );
 
@@ -105,7 +113,8 @@ export function ModePicker({ threadId }: { threadId?: string | null }) {
   useEffect(() => {
     if (!open) return;
     const onDoc = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      if (ref.current && !ref.current.contains(e.target as Node))
+        setOpen(false);
     };
     document.addEventListener("mousedown", onDoc);
     return () => document.removeEventListener("mousedown", onDoc);
@@ -125,6 +134,7 @@ export function ModePicker({ threadId }: { threadId?: string | null }) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
+        title={blockedReason(effective) ?? undefined}
         className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-sm font-semibold text-foreground hover:bg-zinc-100"
         aria-haspopup="menu"
         aria-expanded={open}
@@ -140,6 +150,11 @@ export function ModePicker({ threadId }: { threadId?: string | null }) {
           · {effective.label}
         </span>
         {pinned && <ShieldCheck className="size-3.5 text-emerald-600" />}
+        {/* The selected mode can't serve the selected model — the next send
+            will be refused, so say so before the user types it. */}
+        {effective.blockedBy && (
+          <TriangleAlert className="size-3.5 text-amber-600" />
+        )}
         <ChevronDown className="size-3.5 text-zinc-400" />
       </button>
 
@@ -157,6 +172,7 @@ export function ModePicker({ threadId }: { threadId?: string | null }) {
                 aria-checked={p.id === activeId}
                 disabled={disabled}
                 onClick={() => choose(p)}
+                title={blockedReason(p) ?? undefined}
                 className={cn(
                   "flex w-full items-start gap-2.5 rounded-xl px-2.5 py-2 text-left",
                   disabled
@@ -176,8 +192,17 @@ export function ModePicker({ threadId }: { threadId?: string | null }) {
                       {p.label}
                     </span>
                     {disabled && (
-                      <span className="text-[10px] uppercase tracking-wide text-zinc-400">
-                        not set up
+                      <span
+                        className={cn(
+                          "text-[10px] uppercase tracking-wide",
+                          // "too big" is a live mismatch the user just caused,
+                          // not dormant config — flag it, don't mute it.
+                          p.blockedBy === "model"
+                            ? "text-amber-600"
+                            : "text-zinc-400",
+                        )}
+                      >
+                        {blockedLabel(p)}
                       </span>
                     )}
                   </span>

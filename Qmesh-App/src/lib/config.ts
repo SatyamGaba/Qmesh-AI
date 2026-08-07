@@ -32,6 +32,14 @@ export interface EngineConfig {
   apiKey: string;
 }
 
+/**
+ * Why a mode can't be used right now.
+ *   "unset" — no engine URL configured for it yet.
+ *   "model" — configured and quite possibly running, but the selected model is
+ *             not one this engine can hold (the 30B on the phone).
+ */
+export type BlockReason = "unset" | "model";
+
 export interface EnginePreset extends EngineConfig {
   /** Stable id, also the localStorage value: local | split | remote. */
   id: string;
@@ -39,7 +47,9 @@ export interface EnginePreset extends EngineConfig {
   label: string;
   /** One-line description of what this mode routes to. */
   hint: string;
-  /** false when this mode has no engine URL yet — shown greyed, not selectable. */
+  /** Why this mode is unusable, or null when it is fine. */
+  blockedBy: BlockReason | null;
+  /** `blockedBy === null` — shown greyed and unselectable when false. */
   available: boolean;
 }
 
@@ -49,7 +59,7 @@ export interface EnginePreset extends EngineConfig {
 
 // NEXT_PUBLIC_* vars are substituted textually at build time, so each one has to
 // be spelled out as a literal — `process.env[key]` would not be replaced.
-const ENV_MODEL = process.env.NEXT_PUBLIC_ENGINE_MODEL || "";
+// ENV_MODEL is defined below MODEL_OPTIONS, whose first entry is its fallback.
 const ENV_API_KEY = process.env.NEXT_PUBLIC_ENGINE_API_KEY || "";
 
 // The original single-engine var maps to the remote slot for back-compat.
@@ -90,6 +100,49 @@ export const ENGINE_ENDPOINTS = [
 ] as const;
 
 export type EndpointId = (typeof ENGINE_ENDPOINTS)[number]["id"];
+
+/**
+ * The models the Settings dropdown offers, in menu order. `id` is the string
+ * sent in the request body and has to match what the engine reports at
+ * /v1/models — for llama-server that is whatever `--alias` it was launched
+ * with, so this list and the launch flags must be kept in step.
+ *
+ * Adding a model is one entry here — nothing else in the app needs to know.
+ *
+ * `servedBy` is the enforced half of the size note in `hint`: an engine not
+ * listed there is greyed out while this model is selected, and a send routed to
+ * it is refused. Without it the picker stays happy and llama-server — which
+ * ignores the `model` field in the request body and answers with whatever it
+ * actually loaded — quietly returns 4B output labelled 30B.
+ *
+ * The first entry is the build default when `NEXT_PUBLIC_ENGINE_MODEL` is
+ * unset, so keep the most broadly servable model at the top — every mode,
+ * phone included, has to be able to answer with it.
+ */
+export const MODEL_OPTIONS = [
+  {
+    id: "qwen3-4b",
+    label: "Qwen3 4B",
+    hint: "2.2 GB — small enough for the phone, so every mode can serve it.",
+    servedBy: ["local", "split", "remote"],
+  },
+  {
+    id: "qwen3-30b-a3b",
+    label: "Qwen3 30B-A3B",
+    hint: "17.4 GB, MoE — laptop-side only. Use Split or Remote; the phone cannot hold it.",
+    servedBy: ["split", "remote"],
+  },
+] as const;
+
+/**
+ * The model in force with no override set. Previously this could be the empty
+ * string ("send no model name, let the engine serve whatever it loaded"), but
+ * that option is gone from the picker — and a value matching no option would
+ * make the select display its first entry while the form still held "", so Save
+ * would silently change the model. Falling back to a real id keeps the control
+ * and the value in step.
+ */
+const ENV_MODEL = process.env.NEXT_PUBLIC_ENGINE_MODEL || MODEL_OPTIONS[0].id;
 
 /** Every field the Settings sheet can edit. The api key stays env-only. */
 export interface EngineSettings {
@@ -279,16 +332,77 @@ export function resetSettings(): void {
 /*  Presets                                                                   */
 /* -------------------------------------------------------------------------- */
 
+/**
+ * Which engines can serve a model id. An id matching no option — a custom or
+ * hand-edited value — restricts nothing: we know its name and nothing else, so
+ * second-guessing where it can run would be invention.
+ */
+function servedBy(modelId: string): readonly string[] | null {
+  return MODEL_OPTIONS.find((m) => m.id === modelId)?.servedBy ?? null;
+}
+
 function buildPresets(s: EngineSettings): EnginePreset[] {
-  return ENGINE_ENDPOINTS.map((e) => ({
-    id: e.id,
-    label: e.label,
-    hint: e.hint,
-    baseUrl: s[e.id],
-    model: s.model,
-    apiKey: ENV_API_KEY,
-    available: s[e.id].length > 0,
-  }));
+  const serves = servedBy(s.model);
+  return ENGINE_ENDPOINTS.map((e) => {
+    const blockedBy: BlockReason | null =
+      s[e.id].length === 0
+        ? "unset"
+        : serves && !serves.includes(e.id)
+          ? "model"
+          : null;
+    return {
+      id: e.id,
+      label: e.label,
+      hint: e.hint,
+      baseUrl: s[e.id],
+      model: s.model,
+      apiKey: ENV_API_KEY,
+      blockedBy,
+      available: blockedBy === null,
+    };
+  });
+}
+
+/**
+ * Can this mode hold this model? Takes ids rather than a preset so the Settings
+ * sheet can ask about a model the user has selected but not yet saved.
+ */
+export function modeCanServe(endpointId: string, modelId: string): boolean {
+  const serves = servedBy(modelId);
+  return !serves || serves.includes(endpointId);
+}
+
+/** Short chip shown next to a greyed mode in the picker. */
+export function blockedLabel(p: EnginePreset): string | null {
+  if (p.blockedBy === "unset") return "not set up";
+  if (p.blockedBy === "model") return "too big";
+  return null;
+}
+
+/**
+ * The full sentence behind a greyed mode — used both as the Settings warning
+ * and as the error text when a send lands on a blocked engine.
+ */
+export function blockedReason(p: EnginePreset): string | null {
+  if (p.blockedBy === "unset") {
+    return `${p.label} has no engine address configured. Set one up in Settings, or pick another mode.`;
+  }
+  if (p.blockedBy === "model") {
+    const m = MODEL_OPTIONS.find((x) => x.id === p.model);
+    const others = ENGINE_ENDPOINTS.filter((e) =>
+      (m?.servedBy as readonly string[] | undefined)?.includes(e.id),
+    ).map((e) => e.label);
+    // Deliberately not splicing in the model's `hint` — it already ends with
+    // its own "use Split or Remote" advice, which would say this twice.
+    return `${p.label} can't hold ${m?.label ?? p.model}. Use ${formatList(others)}, or choose a smaller model in Settings.`;
+  }
+  return null;
+}
+
+/** "a", "a or b", "a, b or c" — for listing the modes that would work. */
+function formatList(items: readonly string[]): string {
+  if (items.length <= 1) return items[0] ?? "another mode";
+  return `${items.slice(0, -1).join(", ")} or ${items[items.length - 1]}`;
 }
 
 /**
@@ -335,13 +449,19 @@ export function getActivePresetId(): string {
   return DEFAULT_PRESET_ID;
 }
 
-/** The active preset, coerced to an available one if its engine is gone. */
+/**
+ * The active preset — exactly the one the picker is showing, blocked or not.
+ *
+ * This deliberately does *not* substitute a working engine when the selected
+ * one is unusable. Silently answering from a different engine than the header
+ * names is the same failure that let the 30B "run" on the phone: you get an
+ * answer, it looks fine, and the run is mislabelled. Callers check `available`
+ * and refuse instead — see modelAdapter.resolvePreset.
+ */
 export function getActivePreset(): EnginePreset {
   const presets = getPresets();
   const id = getActivePresetId();
-  const p = presets.find((x) => x.id === id);
-  if (p?.available) return p;
-  return presets.find((x) => x.available) ?? presets[0];
+  return presets.find((x) => x.id === id) ?? presets[0];
 }
 
 /** The engine config the adapter should use right now. */
@@ -400,10 +520,12 @@ export function setAutoPrivacy(on: boolean): void {
 }
 
 /**
- * The engine PII-bearing chats get pinned to: Split when configured, else
- * On-device — a fallback is only ever *more* private, never less. Returns null
- * when neither is set up; callers must then refuse the send rather than fall
- * back to Remote, or the feature would leak exactly what it exists to protect.
+ * The engine PII-bearing chats get pinned to: Split when usable, else
+ * On-device — picking between the two private engines is only ever *more*
+ * private, never less. Returns null when neither is usable, which now includes
+ * "configured, but can't hold the selected model": callers must then refuse the
+ * send rather than fall back to Remote, or the feature would leak exactly what
+ * it exists to protect.
  */
 export function getPrivateEngine(): EnginePreset | null {
   const presets = getPresets();

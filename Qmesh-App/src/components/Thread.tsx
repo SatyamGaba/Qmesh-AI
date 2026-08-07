@@ -4,10 +4,11 @@ import {
   ThreadPrimitive,
   MessagePrimitive,
   ComposerPrimitive,
+  ErrorPrimitive,
 } from "@assistant-ui/react";
 import { MarkdownTextPrimitive } from "@assistant-ui/react-markdown";
 import type { TextMessagePartComponent } from "@assistant-ui/react";
-import { ArrowUp, Square } from "lucide-react";
+import { ArrowUp, Square, TriangleAlert } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 // MarkdownTextPrimitive reads the text part from context, so it ignores the
@@ -86,16 +87,29 @@ function UserMessage() {
 
 function AssistantMessage() {
   return (
-    <MessagePrimitive.Root className="flex justify-start">
+    <MessagePrimitive.Root className="flex flex-col items-start gap-2">
       <div
         className={cn(
           "max-w-[85%] rounded-3xl rounded-bl-md bg-zinc-100 px-4 py-2.5 text-foreground",
+          // An errored run has no parts, so this bubble would render empty.
+          "empty:hidden",
           // prose-ish spacing for markdown output
           "[&_p]:my-1 [&_pre]:my-2 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:bg-black/80 [&_pre]:p-3 [&_pre]:text-xs [&_pre]:text-zinc-100 [&_code]:font-mono [&_ul]:my-1 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-1 [&_ol]:list-decimal [&_ol]:pl-5",
         )}
       >
         <MessagePrimitive.Parts components={{ Text: MarkdownText }} />
       </div>
+
+      {/* Why a run produced nothing — an unreachable engine, or a send the
+          adapter refused because the selected mode can't serve the selected
+          model. Without this the message just sits there with no reply, which
+          reads as a hang and hides the one thing worth knowing. */}
+      <MessagePrimitive.Error>
+        <ErrorPrimitive.Root className="flex max-w-[85%] items-start gap-2 rounded-2xl border border-red-200 bg-red-50 px-3.5 py-2.5">
+          <TriangleAlert className="mt-0.5 size-4 shrink-0 text-red-600" />
+          <ErrorPrimitive.Message className="text-xs text-red-900" />
+        </ErrorPrimitive.Root>
+      </MessagePrimitive.Error>
     </MessagePrimitive.Root>
   );
 }
