@@ -1,0 +1,94 @@
+=== sweep_hvx 2026-08-05T12:42:53.7687090-07:00 ===
+--- baseline : (defaults) ---
+exit 0
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+
+| model                          |       size |     params | backend    | ngl | dev          |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------------ | --------------: | -------------------: |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |           pp128 |       345.70 ± 18.13 |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |            tg32 |         11.15 ± 0.80 |
+
+--- oppoll1 : GGML_HEXAGON_OPPOLL=1 ---
+exit 0
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+
+| model                          |       size |     params | backend    | ngl | dev          |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------------ | --------------: | -------------------: |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |           pp128 |        448.83 ± 4.25 |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |            tg32 |         14.98 ± 0.10 |
+
+--- nhmx0 : GGML_HEXAGON_NHMX=0 ---
+exit 0
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 0, vtcm 8 MB
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+
+| model                          |       size |     params | backend    | ngl | dev          |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------------ | --------------: | -------------------: |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |           pp128 |          9.78 ± 0.48 |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |            tg32 |         15.30 ± 0.18 |
+
+--- mmsel2_noHMX : GGML_HEXAGON_MM_SELECT=2 ---
+exit 0
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+
+| model                          |       size |     params | backend    | ngl | dev          |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------------ | --------------: | -------------------: |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |           pp128 |          9.90 ± 0.18 |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |            tg32 |         15.30 ± 0.03 |
+
+--- fasel1_noHMX : GGML_HEXAGON_FA_SELECT=1 ---
+exit 0
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+
+| model                          |       size |     params | backend    | ngl | dev          |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------------ | --------------: | -------------------: |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |           pp128 |        107.77 ± 1.79 |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |            tg32 |          6.64 ± 0.37 |
+
+--- nhmx0_oppoll1 : GGML_HEXAGON_NHMX=0 GGML_HEXAGON_OPPOLL=1 ---
+exit 0
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 0, vtcm 8 MB
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+
+| model                          |       size |     params | backend    | ngl | dev          |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------------ | --------------: | -------------------: |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |           pp128 |         12.79 ± 0.09 |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |            tg32 |         14.87 ± 1.78 |
+
+--- opbatch128 : GGML_HEXAGON_OPBATCH=128 ---
+exit 0
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 896 n-ops 128 vmem 3145728000
+
+| model                          |       size |     params | backend    | ngl | dev          |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------------ | --------------: | -------------------: |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |           pp128 |       313.19 ± 11.74 |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |            tg32 |          6.54 ± 0.12 |
+
+--- ndev2 : GGML_HEXAGON_NDEV=2 ---
+exit 0
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+ggml-hex: HTP1 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP1 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+
+| model                          |       size |     params | backend    | ngl | dev          |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------------ | --------------: | -------------------: |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |           pp128 |       329.83 ± 15.78 |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |            tg32 |          6.43 ± 0.25 |
+
+--- nofusion : GGML_HEXAGON_OPFUSION=0 ---
+exit 0
+ggml-hex: HTP0 hwinfo: threads 4, hvx 4, hmx 1, vtcm 8 MB
+ggml-hex: HTP0 op batching: n-bufs 16 n-tensors 7168 n-ops 1024 vmem 3145728000
+
+| model                          |       size |     params | backend    | ngl | dev          |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------------ | --------------: | -------------------: |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |           pp128 |       316.24 ± 18.20 |
+| qwen3 4B Q4_0                  |   2.21 GiB |     4.02 B | OpenCL,HTP |  -1 | HTP0         |            tg32 |          6.54 ± 0.48 |
+
+=== sweep done ===

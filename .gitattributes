@@ -1,0 +1,4 @@
+# Shell scripts run on Android (adb push) and via Git Bash -- a CRLF checkout
+# breaks /system/bin/sh ('\r': command not found), and core.autocrlf=true on
+# Windows would produce exactly that. Force LF in the working copy.
+*.sh text eol=lf

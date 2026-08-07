@@ -1,0 +1,22 @@
+ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+
+ggml_opencl: device: 'QUALCOMM Adreno(TM) 830 (OpenCL 3.0 Adreno(TM) 830)'
+ggml_opencl: default device: 'QUALCOMM Adreno(TM) 830 (OpenCL 3.0 Adreno(TM) 830)'
+ggml-hex: Loading driver libcdsprpc.so
+ggml-hex: Hexagon backend (experimental) : allocating new registry : ndev 1
+ggml-hex: Hexagon Arch version v79
+ggml-hex: HTP0 allocating new session
+ggml-hex: failed to open session 0 : error 0x80000406
+ggml-hex: releasing session: HTP0
+ggml-hex: failed to create device/session 0
+/workspace/ggml/src/ggml-backend.cpp:569: GGML_ASSERT(device) failed
+0: 0x7ea7d200d0 
+1: 0x7ea7d1ffdc ggml_print_backtrace
+2: 0x7ea7d202c8 ggml_abort
+3: 0x7ea7d3dc3c ggml_backend_dev_description
+4: 0x7ead7b1100 ggml_backend_dev_by_name
+5: 0x7eaafc6d2c 
+6: 0x7eaafb5578 
+7: 0x7eaafb08c4 _Z11llama_benchiPPc
+8: 0x7eaaed0a28 __libc_init
+Aborted 

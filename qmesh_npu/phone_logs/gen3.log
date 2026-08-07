@@ -1,0 +1,71 @@
+0.00.147.666 I llama_completion: llama backend init
+0.00.147.684 I llama_completion: load the model and apply lora adapter, if any
+0.00.359.563 W common_get_device_memory_data_impl: device HTP0 did not report memory; --fit will not use it
+0.00.519.128 W common_get_device_memory_data_impl: device HTP0 did not report memory; --fit will not use it
+0.00.544.678 W common_fit_params: failed to fit params to free device memory: n_gpu_layers already set by user to 99, abort
+0.00.646.527 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.03.339.546 I llama_completion: llama threadpool init, n_threads = 6
+0.03.339.740 I llama_completion: chat template is available, enabling conversation mode (disable it with -no-cnv)
+0.03.339.744 W *** User-specified prompt will pre-start conversation, did you mean to set --system-prompt (-sys) instead?
+0.03.339.906 I llama_completion: chat template example:
+<|im_start|>system
+You are a helpful assistant<|im_end|>
+<|im_start|>user
+Hello<|im_end|>
+<|im_start|>assistant
+Hi there<|im_end|>
+<|im_start|>user
+How are you?<|im_end|>
+<|im_start|>assistant
+
+0.03.339.907 I 
+0.03.339.960 I system_info: n_threads = 6 (n_threads_batch = 6) / 8 | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | MATMUL_INT8 = 1 | DOTPROD = 1 | REPACK = 1 | 
+0.03.339.960 I 
+0.03.340.062 I llama_completion: interactive mode on.
+0.03.340.064 I sampler seed: 4275533401
+0.03.340.068 I sampler params: 
+	repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+	dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+	top_k = 40, top_p = 0.950, min_p = 0.050, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.800
+	mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+0.03.340.071 I sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist 
+0.03.340.071 I generate: n_ctx = 4096, n_batch = 2048, n_predict = 600, n_keep = 0
+0.03.340.071 I 
+0.03.340.071 I == Running in interactive mode. ==
+0.03.340.072 I  - Press Ctrl+C to interject at any time.
+0.03.340.072 I  - Press Return to return control to the AI.
+ - To return control without starting a new line, end your input with '/'.
+ - If you want to submit another line, end your input with '\'.
+0.03.340.072 I  - Not using system message. To change it, set a different value via -sys PROMPT
+0.03.340.073 I 
+user
+Write a long detailed essay about the ocean.
+assistant
+**The Ocean: A Comprehensive Exploration of Earth’s Vast Blue Expanse**
+
+The ocean is one of the most profound, mysterious, and essential features of our planet. Spanning nearly 71% of Earth’s surface, the ocean is not merely a body of water; it is a dynamic, living, and life-sustaining system that governs Earth’s climate, shapes ecosystems, influences human history, and plays a critical role in the planet’s long-term stability. This essay provides a detailed and comprehensive exploration of the ocean, covering its physical and chemical composition, geological and biological significance, ecological diversity, economic and cultural importance, and the pressing environmental challenges it faces.
+
+---
+
+### I. The Physical and Geographical Scope of the Ocean
+
+The ocean is a vast, interconnected system of saltwater that covers approximately 71% of Earth's surface, extending an average depth of about 3,795 meters (12,450 feet), with the deepest point, Challenger Deep in the Mariana Trench, reaching nearly 11,000 meters (36,000 feet). The ocean is divided into five major basins: the Pacific, Atlantic, Indian, Southern (Antarctic), and Arctic Oceans. The Pacific Ocean is the largest and deepest, stretching from the western to the eastern hemisphere and bordering the Americas, Asia, and Australia. The Atlantic Ocean lies between the Americas and Europe/Africa, while the Indian Ocean is situated in the southern hemisphere between Africa, Asia, and Australia. The Southern Ocean, which encircles Antarctica, is defined by its cold, circumpolar currents and is a critical boundary in global climate regulation. The Arctic Ocean, the smallest and shallowest, is largely frozen in winter and plays a key role in global heat distribution.
+
+The ocean is not uniform in depth or temperature. It is stratified into layers: the surface layer (0–100 meters), the thermocline (100–1000 meters), the mesopelagic (1000–4000 meters), and the hadalpelagic (below 4000 meters). Each layer has distinct physical and chemical properties. The surface layer is influenced by solar radiation, wind, and evaporation, while the deep layers are stable and isolated from surface processes. Ocean currents—driven by wind, temperature, salinity, and Earth's rotation—distribute heat and nutrients globally, forming a complex network of circulation patterns.
+
+---
+
+### II. The Ocean’s Physical and Chemical Composition
+
+Water is the fundamental component of the ocean, but its properties are shaped by a variety of physical and chemical processes. The average salinity of seawater is about 3.5% (35 parts per thousand), meaning that for every 1,000 grams of seawater, 35 grams are salt. The primary ions in seawater are chloride (Cl
+> EOF by user
+
+
+0.38.701.394 I common_perf_print:    sampling time =      77.59 ms
+0.38.701.395 I common_perf_print:    samplers time =      50.86 ms /   617 tokens
+0.38.701.397 I common_perf_print:        load time =    2745.53 ms
+0.38.701.399 I common_perf_print: prompt eval time =      94.96 ms /    17 tokens (    5.59 ms per token,   179.02 tokens per second)
+0.38.701.402 I common_perf_print:        eval time =   35117.46 ms /   599 runs   (   58.63 ms per token,    17.06 tokens per second)
+0.38.701.403 I common_perf_print:       total time =   35361.85 ms /   616 tokens
+0.38.701.404 I common_perf_print: unaccounted time =      71.84 ms /   0.2 %      (total - sampling - prompt eval - eval) / (total)
+0.38.701.404 I common_perf_print:    graphs reused =        597

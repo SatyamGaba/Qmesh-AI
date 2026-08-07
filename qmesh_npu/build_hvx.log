@@ -1,0 +1,2271 @@
+=== ENV ===
+SRC                = C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp
+HEXAGON_SDK_ROOT   = C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\hexagon-sdk-wos\6.6.0.0
+HEXAGON_TOOLS_ROOT = C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\hexagon-sdk-wos\6.6.0.0\tools\HEXAGON_Tools\19.0.07
+HEXAGON_HTP_CERT   = C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\certs\ggml-htp-v1.pfx
+WINDOWS_SDK_BIN    = C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0
+=== CONFIGURE ===
+-- The C compiler identification is Clang 19.1.1 with GNU-like command-line
+-- The CXX compiler identification is Clang 19.1.1 with GNU-like command-line
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/Llvm/x64/bin/clang.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/Llvm/x64/bin/clang++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+cmake : CMAKE_BUILD_TYPE=Release
+At C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\build_hvx.ps1:50 char:1
++ cmake --preset arm64-windows-snapdragon-release -B $bld `
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (CMAKE_BUILD_TYPE=Release:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+-- Found Git: C:/Program Files/Git/mingw64/bin/git.exe (found version "2.48.1.windows.1")
+-- The ASM compiler identification is Clang with GNU-like command-line
+-- Found assembler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/Llvm/x64/bin/clang.exe
+-- Setting GGML_NATIVE_DEFAULT to OFF
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Check if compiler accepts -pthread
+-- Check if compiler accepts -pthread - no
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - not found
+-- Found Threads: TRUE
+-- Warning: ccache not found - consider installing it for faster compilation or disable this warning with GGML_CCACHE=OFF
+-- CMAKE_SYSTEM_PROCESSOR: arm64
+-- GGML_SYSTEM_ARCH: ARM
+-- Including CPU backend
+-- ARM detected
+-- Performing Test GGML_COMPILER_SUPPORTS_FP16_FORMAT_I3E
+-- Performing Test GGML_COMPILER_SUPPORTS_FP16_FORMAT_I3E - Failed
+-- Checking for ARM features using flags:
+-- Performing Test HAVE_DOTPROD
+-- Performing Test HAVE_DOTPROD - Success
+-- Performing Test HAVE_SVE
+-- Performing Test HAVE_SVE - Failed
+-- Performing Test HAVE_MATMUL_INT8
+-- Performing Test HAVE_MATMUL_INT8 - Success
+-- Performing Test HAVE_FMA
+-- Performing Test HAVE_FMA - Success
+-- Performing Test HAVE_FP16_VECTOR_ARITHMETIC
+-- Performing Test HAVE_FP16_VECTOR_ARITHMETIC - Success
+-- Performing Test HAVE_SME
+-- Performing Test HAVE_SME - Failed
+-- Adding CPU backend variant ggml-cpu:  
+-- Using RPC backend
+--   RDMA transport disabled
+-- Including RPC backend
+-- Looking for CL_VERSION_3_0
+-- Looking for CL_VERSION_3_0 - found
+-- Found OpenCL: C:/Qualcomm/OpenCL_SDK/2.3.2/lib/OpenCL.lib (found version "3.0")
+-- Found Python3: C:/Users/qc_de/AppData/Local/Programs/Python/Python311/python.exe (found version "3.11.9") found components: Interpreter
+-- OpenCL will use matmul kernels optimized for Adreno
+-- opencl: embedding kernel add
+-- opencl: embedding kernel add_id
+-- opencl: embedding kernel argsort
+-- opencl: embedding kernel tri
+-- opencl: embedding kernel fill
+-- opencl: embedding kernel clamp
+-- opencl: embedding kernel cpy
+-- opencl: embedding kernel cvt
+-- opencl: embedding kernel diag_mask_inf
+-- opencl: embedding kernel diag
+-- opencl: embedding kernel div
+-- opencl: embedding kernel gelu
+-- opencl: embedding kernel get_rows
+-- opencl: embedding kernel glu
+-- opencl: embedding kernel group_norm
+-- opencl: embedding kernel solve_tri
+-- opencl: embedding kernel im2col_f32
+-- opencl: embedding kernel im2col_f16
+-- opencl: embedding kernel mean
+-- opencl: embedding kernel mul_mv_f16_f16
+-- opencl: embedding kernel mul_mv_f16_f32_1row
+-- opencl: embedding kernel mul_mv_f16_f32_l4
+-- opencl: embedding kernel mul_mv_f16_f32
+-- opencl: embedding kernel mul_mv_f32_f32
+-- opencl: embedding kernel mul_mv_q1_0_f32
+-- opencl: embedding kernel mul_mv_q1_0_f32_flat
+-- opencl: embedding kernel mul_mv_q4_0_f32
+-- opencl: embedding kernel mul_mv_q4_0_f32_v
+-- opencl: embedding kernel mul_mv_q4_0_f32_8x_flat
+-- opencl: embedding kernel mul_mv_q4_0_f32_1d_8x_flat
+-- opencl: embedding kernel mul_mv_q4_0_f32_1d_16x_flat
+-- opencl: embedding kernel mul_mv_q4_1_f32
+-- opencl: embedding kernel mul_mv_q4_1_f32_flat
+-- opencl: embedding kernel mul_mv_q4_k_f32
+-- opencl: embedding kernel mul_mv_q4_k_f32_flat
+-- opencl: embedding kernel mul_mv_q5_0_f32
+-- opencl: embedding kernel mul_mv_q5_0_f32_flat
+-- opencl: embedding kernel mul_mv_q5_1_f32
+-- opencl: embedding kernel mul_mv_q5_1_f32_flat
+-- opencl: embedding kernel mul_mv_q5_k_f32
+-- opencl: embedding kernel mul_mv_q5_k_f32_flat
+-- opencl: embedding kernel mul_mv_q6_k_f32
+-- opencl: embedding kernel mul_mv_q6_k_f32_flat
+-- opencl: embedding kernel mul_mv_q8_0_f32
+-- opencl: embedding kernel mul_mv_q8_0_f32_flat
+-- opencl: embedding kernel mul_mv_iq4_nl_f32
+-- opencl: embedding kernel mul_mv_iq4_nl_f32_flat
+-- opencl: embedding kernel mul_mv_mxfp4_f32
+-- opencl: embedding kernel mul_mv_mxfp4_f32_flat
+-- opencl: embedding kernel mul_mv_id_q4_0_f32_8x_flat
+-- opencl: embedding kernel mul_mv_id_q8_0_f32
+-- opencl: embedding kernel mul_mv_id_q8_0_f32_flat
+-- opencl: embedding kernel mul_mv_id_mxfp4_f32
+-- opencl: embedding kernel mul_mv_id_mxfp4_f32_flat
+-- opencl: embedding kernel gemm_moe_q4_0_f32_ns
+-- opencl: embedding kernel gemm_moe_q4_0_q8_1_dp4a
+-- opencl: embedding kernel gemv_moe_q4_0_f32_ns
+-- opencl: embedding kernel gemm_moe_q8_0_f32_ns
+-- opencl: embedding kernel gemm_moe_q4_1_f32_ns
+-- opencl: embedding kernel gemv_moe_q4_1_f32_ns
+-- opencl: embedding kernel gemm_moe_q5_0_f32_ns
+-- opencl: embedding kernel gemv_moe_q5_0_f32_ns
+-- opencl: embedding kernel gemm_moe_q5_1_f32_ns
+-- opencl: embedding kernel gemv_moe_q5_1_f32_ns
+-- opencl: embedding kernel gemm_moe_q4_k_f32_ns
+-- opencl: embedding kernel gemm_moe_q4_k_q8_1_dp4a
+-- opencl: embedding kernel gemm_moe_q6_k_q8_1_dp4a
+-- opencl: embedding kernel gemm_moe_q8_1_dp4a
+-- opencl: embedding kernel moe_reorder_quant_a_q8_1
+-- opencl: embedding kernel gemm_noshuffle_q4_k_q8_1_dp4a
+-- opencl: embedding kernel gemm_noshuffle_q5_k_q8_1_dp4a
+-- opencl: embedding kernel gemm_noshuffle_q6_k_q8_1_dp4a
+-- opencl: embedding kernel gemm_noshuffle_q8_0_q8_1_dp4a
+-- opencl: embedding kernel gemm_noshuffle_q5_0_q8_1_dp4a
+-- opencl: embedding kernel gemm_noshuffle_iq4_nl_q8_1_dp4a
+-- opencl: embedding kernel gemm_noshuffle_q4_0_q8_1_dp4a
+-- opencl: embedding kernel quant_a_q8_1
+-- opencl: embedding kernel gemv_moe_q4_k_f32_ns
+-- opencl: embedding kernel gemm_moe_q5_k_f32_ns
+-- opencl: embedding kernel gemv_moe_q5_k_f32_ns
+-- opencl: embedding kernel gemm_moe_q6_k_f32_ns
+-- opencl: embedding kernel gemv_moe_q6_k_f32_ns
+-- opencl: embedding kernel gemm_moe_mxfp4_f32
+-- opencl: embedding kernel gemv_moe_mxfp4_f32
+-- opencl: embedding kernel gemm_moe_mxfp4_f32_ns
+-- opencl: embedding kernel gemm_moe_mxfp4_q8_1_dp4a
+-- opencl: embedding kernel gemv_moe_mxfp4_f32_ns
+-- opencl: embedding kernel moe_reorder_b
+-- opencl: embedding kernel moe_combine
+-- opencl: embedding kernel moe_sort_by_expert
+-- opencl: embedding kernel mul_mm_f32_f32_l4_lm
+-- opencl: embedding kernel mul_mm_f16_f32_l4_lm
+-- opencl: embedding kernel mul_mm_q1_0_f32_l4_lm
+-- opencl: embedding kernel mul_mm_q4_0_f32_l4_lm
+-- opencl: embedding kernel mul_mm_q4_1_f32_l4_lm
+-- opencl: embedding kernel mul_mm_q5_0_f32_l4_lm
+-- opencl: embedding kernel mul_mm_q5_1_f32_l4_lm
+-- opencl: embedding kernel mul_mm_q8_0_f32_l4_lm
+-- opencl: embedding kernel mul_mm_iq4_nl_f32_l4_lm
+-- opencl: embedding kernel mul_mm_q4_k_f32_l4_lm
+-- opencl: embedding kernel mul_mm_q5_k_f32_l4_lm
+-- opencl: embedding kernel mul_mm_q6_k_f32_l4_lm
+-- opencl: embedding kernel gemv_noshuffle_q1_0_f32
+-- opencl: embedding kernel gemm_noshuffle_q1_0_f32
+-- opencl: embedding kernel gemv_noshuffle_q4_0_f32
+-- opencl: embedding kernel gemv_noshuffle_q4_0_f32_spec
+-- opencl: embedding kernel gemm_noshuffle_q4_0_f32
+-- opencl: embedding kernel gemv_noshuffle_q4_1_f32
+-- opencl: embedding kernel gemm_noshuffle_q4_1_f32
+-- opencl: embedding kernel gemv_noshuffle_q5_0_f32
+-- opencl: embedding kernel gemm_noshuffle_q5_0_f32
+-- opencl: embedding kernel gemv_noshuffle_q5_1_f32
+-- opencl: embedding kernel gemm_noshuffle_q5_1_f32
+-- opencl: embedding kernel gemv_noshuffle_iq4_nl_f32
+-- opencl: embedding kernel gemm_noshuffle_iq4_nl_f32
+-- opencl: embedding kernel gemv_noshuffle_q8_0_f32
+-- opencl: embedding kernel gemm_noshuffle_q8_0_f32
+-- opencl: embedding kernel gemv_noshuffle_q4_k_f32
+-- opencl: embedding kernel gemm_noshuffle_q4_k_f32
+-- opencl: embedding kernel gemv_noshuffle_q6_k_f32
+-- opencl: embedding kernel gemm_noshuffle_q6_k_f32
+-- opencl: embedding kernel gemv_noshuffle_q5_k_f32
+-- opencl: embedding kernel gemm_noshuffle_q5_k_f32
+-- opencl: embedding kernel mul
+-- opencl: embedding kernel neg
+-- opencl: embedding kernel norm
+-- opencl: embedding kernel relu
+-- opencl: embedding kernel l2_norm
+-- opencl: embedding kernel rms_norm
+-- opencl: embedding kernel rope
+-- opencl: embedding kernel scale
+-- opencl: embedding kernel set_rows
+-- opencl: embedding kernel sigmoid
+-- opencl: embedding kernel silu
+-- opencl: embedding kernel softmax_4_f32
+-- opencl: embedding kernel softmax_4_f16
+-- opencl: embedding kernel softmax_f32
+-- opencl: embedding kernel softmax_f16
+-- opencl: embedding kernel sqr
+-- opencl: embedding kernel sqrt
+-- opencl: embedding kernel ssm_conv
+-- opencl: embedding kernel gated_delta_net
+-- opencl: embedding kernel sub
+-- opencl: embedding kernel sum_rows
+-- opencl: embedding kernel cumsum
+-- opencl: embedding kernel transpose
+-- opencl: embedding kernel concat
+-- opencl: embedding kernel tsembd
+-- opencl: embedding kernel upscale
+-- opencl: embedding kernel tanh
+-- opencl: embedding kernel exp
+-- opencl: embedding kernel expm1
+-- opencl: embedding kernel abs
+-- opencl: embedding kernel softplus
+-- opencl: embedding kernel pad
+-- opencl: embedding kernel repeat
+-- opencl: embedding kernel mul_mat_f16_f32
+-- opencl: embedding kernel mul_mm_f16_f32_kq_kqv
+-- opencl: embedding kernel conv2d
+-- opencl: embedding kernel conv2d_f16_f32
+-- opencl: embedding kernel flash_attn_pre_f16
+-- opencl: embedding kernel flash_attn_f32_f16
+-- opencl: embedding kernel flash_attn_f32_q8_0
+-- opencl: embedding kernel flash_attn_f32_q4_0
+-- opencl: embedding kernel flash_attn_f16
+-- opencl: embedding kernel flash_attn_f32
+-- opencl: embedding kernel gemm_xmem_f16_f32_os8
+-- Including OpenCL backend
+-- hexagon: using C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0 and C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/tools/HEXAGON_Tools/19.0.07 for building libggml-htp skels
+-- hexagon: using C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/certs/ggml-htp-v1.pfx to sign libggml-htp skels
+-- Including Hexagon backend
+-- ggml version: 0.18.1
+-- ggml commit:  360e134-dirty
+-- UI: building llama-ui-embed with host compiler C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/Llvm/x64/bin/clang++.exe
+-- Generating embedded license file for target: llama-app
+-- Configuring done (12.1s)
+-- Generating done (0.5s)
+-- Build files have been written to: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx
+
+=== CONFIGURE EXIT 0 ===
+[1/699] Creating directories for 'htp-v73'
+[2/699] Creating directories for 'htp-v75'
+[3/699] Creating directories for 'htp-v79'
+[4/699] Creating directories for 'htp-v81'
+[5/699] No download step for 'htp-v75'
+[6/699] No download step for 'htp-v73'
+[7/699] No download step for 'htp-v79'
+[8/699] No download step for 'htp-v81'
+[9/699] No update step for 'htp-v73'
+[10/699] No update step for 'htp-v75'
+[11/699] No update step for 'htp-v79'
+[12/699] No update step for 'htp-v81'
+[13/699] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml.cpp.obj
+[14/699] No patch step for 'htp-v73'
+[15/699] No patch step for 'htp-v75'
+[16/699] No patch step for 'htp-v79'
+[17/699] Building C object ggml/src/CMakeFiles/ggml-base.dir/ggml-alloc.c.obj
+[18/699] No patch step for 'htp-v81'
+[19/699] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-threading.cpp.obj
+[20/699] Generating htp_iface_skel.c, htp_iface_stub.c, htp_iface.h
+[21/699] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-opt.cpp.obj
+[22/699] Building C object ggml/src/ggml-hexagon/CMakeFiles/htp_iface.dir/cmake_pch.h.pch
+[23/699] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-backend.cpp.obj
+[24/699] Building C object ggml/src/CMakeFiles/ggml-base.dir/ggml.c.obj
+[25/699] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/hbm.cpp.obj
+[26/699] Building C object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ggml-cpu.c.obj
+[27/699] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/traits.cpp.obj
+[28/699] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/amx/amx.cpp.obj
+[29/699] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ggml-cpu.cpp.obj
+[30/699] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/amx/mmq.cpp.obj
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/ggml-cpu/amx/mmq.cpp:11:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/ggml-cpu\quants.h:4:
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/.\ggml-common.h:204:9: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  204 |         struct {
+      |         ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/.\ggml-common.h:204:9: warning: anonymous types declared in an anonymous union are an extension [-Wnested-anon-types]
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/.\ggml-common.h:240:9: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  240 |         struct {
+      |         ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/.\ggml-common.h:240:9: warning: anonymous types declared in an anonymous union are an extension [-Wnested-anon-types]
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/.\ggml-common.h:261:9: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  261 |         struct {
+      |         ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/.\ggml-common.h:261:9: warning: anonymous types declared in an anonymous union are an extension [-Wnested-anon-types]
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/.\ggml-common.h:302:9: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  302 |         struct {
+      |         ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/.\ggml-common.h:302:9: warning: anonymous types declared in an anonymous union are an extension [-Wnested-anon-types]
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/.\ggml-common.h:329:9: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  329 |         struct {
+      |         ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/.\ggml-common.h:329:9: warning: anonymous types declared in an anonymous union are an extension [-Wnested-anon-types]
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/.\ggml-common.h:346:9: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  346 |         struct {
+      |         ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/.\ggml-common.h:346:9: warning: anonymous types declared in an anonymous union are an extension [-Wnested-anon-types]
+12 warnings generated.
+[31/699] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-backend-meta.cpp.obj
+[32/699] Building C object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/quants.c.obj
+[33/699] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/vec.cpp.obj
+[34/699] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/gguf.cpp.obj
+[35/699] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/binary-ops.cpp.obj
+[36/699] Building C object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/arch/arm/quants.c.obj
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/ggml-cpu/arch/arm/quants.c:3:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/.\ggml-quants.h:4:
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/.\ggml-common.h:79:9: warning: keyword is hidden by macro definition [-Wkeyword-macro]
+   79 | #define static_assert(cond, msg) _Static_assert(cond, msg)
+      |         ^
+1 warning generated.
+[37/699] Building C object ggml/src/CMakeFiles/ggml-base.dir/ggml-quants.c.obj
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/ggml-quants.c:4:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src\ggml-quants.h:4:
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src\ggml-common.h:79:9: warning: keyword is hidden by macro definition [-Wkeyword-macro]
+   79 | #define static_assert(cond, msg) _Static_assert(cond, msg)
+      |         ^
+1 warning generated.
+[38/699] Building C object ggml/src/ggml-hexagon/CMakeFiles/htp_iface.dir/htp_iface_stub.c.obj
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-hexagon/htp_iface_stub.c:3:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-hexagon\htp_iface.h:3:
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/incs/stddef\AEEStdDef.h:107:10: warning: extension used [-Wlanguage-extension-token]
+  107 | typedef  __int64            int64;       /**< Signed 64-bit value */
+      |          ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/incs/stddef\AEEStdDef.h:112:19: warning: extension used [-Wlanguage-extension-token]
+  112 | typedef  unsigned __int64   uint64;      /**< Unsigned 64-bit value */
+      |                   ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-hexagon/htp_iface_stub.c:384:70: warning: cast from 'const struct htp_iface_pmu_conf *' to 'unsigned int *' drops const qualifier [-Wcast-qual]
+  384 |    return _stub_method_4(_handle, _mid, (uint32_t*)&mode, (uint32_t*)pmu);
+      |                                                                      ^
+3 warnings generated.
+[39/699] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/arch/arm/repack.cpp.obj
+[40/699] Building CXX object common/CMakeFiles/llama-common-base.dir/build-info.cpp.obj
+[41/699] Building CXX object ggml/src/ggml-rpc/CMakeFiles/ggml-rpc.dir/transport.cpp.obj
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/ggml-rpc/transport.cpp:34:17: warning: extension used [-Wlanguage-extension-token]
+   34 | using ssize_t = __int64;
+      |                 ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/ggml-rpc/transport.cpp:609:9: warning: 'inet_addr' is deprecated: Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings [-Wdeprecated-declarations]
+  609 |     if (inet_addr(host) == INADDR_NONE) {
+      |         ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winsock2.h:1835:1: note: 'inet_addr' has been explicitly marked deprecated here
+ 1835 | _WINSOCK_DEPRECATED_BY("inet_pton() or InetPton()")
+      | ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winsock2.h:26:56: note: expanded from macro '_WINSOCK_DEPRECATED_BY'
+   26 | #define _WINSOCK_DEPRECATED_BY(replacement) __declspec(deprecated("Use " replacement " instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings"))
+      |                                                        ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/ggml-rpc/transport.cpp:615:33: warning: 'inet_addr' is deprecated: Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings [-Wdeprecated-declarations]
+  615 |     serv_addr.sin_addr.s_addr = inet_addr(host);
+      |                                 ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winsock2.h:1835:1: note: 'inet_addr' has been explicitly marked deprecated here
+ 1835 | _WINSOCK_DEPRECATED_BY("inet_pton() or InetPton()")
+      | ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winsock2.h:26:56: note: expanded from macro '_WINSOCK_DEPRECATED_BY'
+   26 | #define _WINSOCK_DEPRECATED_BY(replacement) __declspec(deprecated("Use " replacement " instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings"))
+      |                                                        ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/ggml-rpc/transport.cpp:639:31: warning: 'gethostbyname' is deprecated: Use getaddrinfo() or GetAddrInfoW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings [-Wdeprecated-declarations]
+  639 |     struct hostent * server = gethostbyname(host);
+      |                               ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winsock2.h:2223:1: note: 'gethostbyname' has been explicitly marked deprecated here
+ 2223 | _WINSOCK_DEPRECATED_BY("getaddrinfo() or GetAddrInfoW()")
+      | ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um\winsock2.h:26:56: note: expanded from macro '_WINSOCK_DEPRECATED_BY'
+   26 | #define _WINSOCK_DEPRECATED_BY(replacement) __declspec(deprecated("Use " replacement " instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings"))
+      |                                                        ^
+4 warnings generated.
+[42/699] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/repack.cpp.obj
+[43/699] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/unary-ops.cpp.obj
+[44/699] Building C object examples/gguf-hash/CMakeFiles/sha1.dir/deps/sha1/sha1.c.obj
+[45/699] Linking CXX static library common\llama-common-base.lib
+[46/699] Building C object examples/gguf-hash/CMakeFiles/sha256.dir/deps/sha256/sha256.c.obj
+[47/699] Building C object examples/gguf-hash/CMakeFiles/xxhash.dir/deps/xxhash/xxhash.c.obj
+[48/699] Building CXX object tools/mtmd/CMakeFiles/llama-llava-cli.dir/deprecation-warning.cpp.obj
+[49/699] Building CXX object tools/mtmd/CMakeFiles/llama-gemma3-cli.dir/deprecation-warning.cpp.obj
+[50/699] Linking CXX executable bin\llama-llava-cli.exe
+[51/699] Building CXX object tools/mtmd/CMakeFiles/llama-minicpmv-cli.dir/deprecation-warning.cpp.obj
+[52/699] Building CXX object tools/mtmd/CMakeFiles/llama-qwen2vl-cli.dir/deprecation-warning.cpp.obj
+[53/699] Building CXX object ggml/src/ggml-rpc/CMakeFiles/ggml-rpc.dir/ggml-rpc.cpp.obj
+[54/699] Linking CXX executable bin\llama-gemma3-cli.exe
+[55/699] Linking CXX executable bin\llama-minicpmv-cli.exe
+[56/699] Linking CXX executable bin\llama-qwen2vl-cli.exe
+[57/699] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ops.cpp.obj
+[58/699] Building llama-ui-embed (host)
+[59/699] Performing configure step for 'htp-v79'
+-- The C compiler identification is Clang 19.0.0
+-- The CXX compiler identification is Clang 19.0.0
+-- The ASM compiler identification is unknown
+-- Found assembler: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/tools/HEXAGON_Tools/19.0.07/Tools/bin/hexagon-clang++.exe
+System is unknown to cmake, create:
+Platform/QURT to use this system, please post your config file on discourse.cmake.org so it can be added to cmake
+-- Detecting C compiler ABI info
+System is unknown to cmake, create:
+Platform/QURT to use this system, please post your config file on discourse.cmake.org so it can be added to cmake
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/tools/HEXAGON_Tools/19.0.07/Tools/bin/hexagon-clang.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+System is unknown to cmake, create:
+Platform/QURT to use this system, please post your config file on discourse.cmake.org so it can be added to cmake
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/tools/HEXAGON_Tools/19.0.07/Tools/bin/hexagon-clang++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (7.6s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-hexagon/htp-v79-prefix/src/htp-v79-build
+[60/699] Performing configure step for 'htp-v81'
+-- The C compiler identification is Clang 19.0.0
+-- The CXX compiler identification is Clang 19.0.0
+-- The ASM compiler identification is unknown
+-- Found assembler: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/tools/HEXAGON_Tools/19.0.07/Tools/bin/hexagon-clang++.exe
+System is unknown to cmake, create:
+Platform/QURT to use this system, please post your config file on discourse.cmake.org so it can be added to cmake
+-- Detecting C compiler ABI info
+System is unknown to cmake, create:
+Platform/QURT to use this system, please post your config file on discourse.cmake.org so it can be added to cmake
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/tools/HEXAGON_Tools/19.0.07/Tools/bin/hexagon-clang.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+System is unknown to cmake, create:
+Platform/QURT to use this system, please post your config file on discourse.cmake.org so it can be added to cmake
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/tools/HEXAGON_Tools/19.0.07/Tools/bin/hexagon-clang++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (7.6s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-hexagon/htp-v81-prefix/src/htp-v81-build
+[61/699] Performing configure step for 'htp-v75'
+-- The C compiler identification is Clang 19.0.0
+-- The CXX compiler identification is Clang 19.0.0
+-- The ASM compiler identification is unknown
+-- Found assembler: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/tools/HEXAGON_Tools/19.0.07/Tools/bin/hexagon-clang++.exe
+System is unknown to cmake, create:
+Platform/QURT to use this system, please post your config file on discourse.cmake.org so it can be added to cmake
+-- Detecting C compiler ABI info
+System is unknown to cmake, create:
+Platform/QURT to use this system, please post your config file on discourse.cmake.org so it can be added to cmake
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/tools/HEXAGON_Tools/19.0.07/Tools/bin/hexagon-clang.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+System is unknown to cmake, create:
+Platform/QURT to use this system, please post your config file on discourse.cmake.org so it can be added to cmake
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/tools/HEXAGON_Tools/19.0.07/Tools/bin/hexagon-clang++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (7.7s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-hexagon/htp-v75-prefix/src/htp-v75-build
+[62/699] Performing configure step for 'htp-v73'
+-- The C compiler identification is Clang 19.0.0
+-- The CXX compiler identification is Clang 19.0.0
+-- The ASM compiler identification is unknown
+-- Found assembler: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/tools/HEXAGON_Tools/19.0.07/Tools/bin/hexagon-clang++.exe
+System is unknown to cmake, create:
+Platform/QURT to use this system, please post your config file on discourse.cmake.org so it can be added to cmake
+-- Detecting C compiler ABI info
+System is unknown to cmake, create:
+Platform/QURT to use this system, please post your config file on discourse.cmake.org so it can be added to cmake
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/tools/HEXAGON_Tools/19.0.07/Tools/bin/hexagon-clang.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+System is unknown to cmake, create:
+Platform/QURT to use this system, please post your config file on discourse.cmake.org so it can be added to cmake
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/hexagon-sdk-wos/6.6.0.0/tools/HEXAGON_Tools/19.0.07/Tools/bin/hexagon-clang++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (7.7s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-hexagon/htp-v73-prefix/src/htp-v73-build
+[63/699] Linking CXX shared library bin\ggml-base.dll
+[64/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/clamp.cl.h
+[65/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/tri.cl.h
+[66/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/add.cl.h
+[67/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/add_id.cl.h
+[68/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/fill.cl.h
+[69/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/argsort.cl.h
+[70/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/cpy.cl.h
+[71/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/cvt.cl.h
+[72/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/diag_mask_inf.cl.h
+[73/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/diag.cl.h
+[74/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gelu.cl.h
+[75/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/div.cl.h
+[76/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/get_rows.cl.h
+[77/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/glu.cl.h
+[78/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/im2col_f32.cl.h
+[79/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/im2col_f16.cl.h
+[80/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/solve_tri.cl.h
+[81/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_f16_f32_l4.cl.h
+[82/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_f16_f16.cl.h
+[83/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mean.cl.h
+[84/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_f32_f32.cl.h
+[85/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q1_0_f32.cl.h
+[86/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/group_norm.cl.h
+[87/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_f16_f32_1row.cl.h
+[88/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_f16_f32.cl.h
+[89/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q4_0_f32_8x_flat.cl.h
+[90/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q1_0_f32_flat.cl.h
+[91/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q4_0_f32_1d_16x_flat.cl.h
+[92/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q4_0_f32_1d_8x_flat.cl.h
+[93/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q4_0_f32.cl.h
+[94/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q4_0_f32_v.cl.h
+[95/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q4_1_f32.cl.h
+[96/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q4_k_f32.cl.h
+[97/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q5_0_f32.cl.h
+[98/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q5_k_f32.cl.h
+[99/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q4_k_f32_flat.cl.h
+[100/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q5_0_f32_flat.cl.h
+[101/699] Building CXX object vendor/cpp-httplib/CMakeFiles/cpp-httplib.dir/httplib.cpp.obj
+[102/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q5_1_f32_flat.cl.h
+[103/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q6_k_f32_flat.cl.h
+[104/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q4_1_f32_flat.cl.h
+[105/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q6_k_f32.cl.h
+[106/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q8_0_f32.cl.h
+[107/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q5_1_f32.cl.h
+[108/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q5_k_f32_flat.cl.h
+[109/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_q8_0_f32_flat.cl.h
+[110/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_mxfp4_f32_flat.cl.h
+[111/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_iq4_nl_f32.cl.h
+[112/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_iq4_nl_f32_flat.cl.h
+[113/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_mxfp4_f32.cl.h
+[114/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_id_q8_0_f32_flat.cl.h
+[115/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_id_q4_0_f32_8x_flat.cl.h
+[116/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_id_q8_0_f32.cl.h
+[117/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_id_mxfp4_f32.cl.h
+[118/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mv_id_mxfp4_f32_flat.cl.h
+[119/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_moe_q4_0_f32_ns.cl.h
+[120/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_q4_0_q8_1_dp4a.cl.h
+[121/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_q4_0_f32_ns.cl.h
+[122/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_q8_0_f32_ns.cl.h
+[123/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_q4_1_f32_ns.cl.h
+[124/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_moe_q5_0_f32_ns.cl.h
+[125/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_q5_0_f32_ns.cl.h
+[126/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_q5_1_f32_ns.cl.h
+[127/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_moe_q5_1_f32_ns.cl.h
+[128/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_moe_q4_1_f32_ns.cl.h
+[129/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_q4_k_f32_ns.cl.h
+[130/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_q6_k_q8_1_dp4a.cl.h
+[131/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/moe_reorder_quant_a_q8_1.cl.h
+[132/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_q8_1_dp4a.cl.h
+[133/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_q4_k_q8_1_dp4a.cl.h
+[134/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q5_k_q8_1_dp4a.cl.h
+[135/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q4_k_q8_1_dp4a.cl.h
+[136/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q6_k_q8_1_dp4a.cl.h
+[137/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q8_0_q8_1_dp4a.cl.h
+[138/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q5_0_q8_1_dp4a.cl.h
+[139/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q4_0_q8_1_dp4a.cl.h
+[140/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_iq4_nl_q8_1_dp4a.cl.h
+[141/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/quant_a_q8_1.cl.h
+[142/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_moe_q4_k_f32_ns.cl.h
+[143/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_q5_k_f32_ns.cl.h
+[144/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_moe_q6_k_f32_ns.cl.h
+[145/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_q6_k_f32_ns.cl.h
+[146/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_moe_mxfp4_f32.cl.h
+[147/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_moe_q5_k_f32_ns.cl.h
+[148/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_mxfp4_f32.cl.h
+[149/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_mxfp4_f32_ns.cl.h
+[150/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_moe_mxfp4_f32_ns.cl.h
+[151/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_moe_mxfp4_q8_1_dp4a.cl.h
+[152/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/moe_sort_by_expert.cl.h
+[153/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/moe_combine.cl.h
+[154/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mm_f32_f32_l4_lm.cl.h
+[155/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/moe_reorder_b.cl.h
+[156/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mm_f16_f32_l4_lm.cl.h
+[157/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mm_q1_0_f32_l4_lm.cl.h
+[158/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mm_q4_0_f32_l4_lm.cl.h
+[159/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mm_q4_1_f32_l4_lm.cl.h
+[160/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mm_q5_0_f32_l4_lm.cl.h
+[161/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mm_q8_0_f32_l4_lm.cl.h
+[162/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mm_q5_1_f32_l4_lm.cl.h
+[163/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mm_iq4_nl_f32_l4_lm.cl.h
+[164/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mm_q4_k_f32_l4_lm.cl.h
+[165/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mm_q5_k_f32_l4_lm.cl.h
+[166/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mm_q6_k_f32_l4_lm.cl.h
+[167/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q1_0_f32.cl.h
+[168/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_noshuffle_q1_0_f32.cl.h
+[169/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_noshuffle_q4_0_f32_spec.cl.h
+[170/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_noshuffle_q4_1_f32.cl.h
+[171/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_noshuffle_q4_0_f32.cl.h
+[172/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q4_0_f32.cl.h
+[173/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q4_1_f32.cl.h
+[174/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_noshuffle_q5_0_f32.cl.h
+[175/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_noshuffle_iq4_nl_f32.cl.h
+[176/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_noshuffle_q5_1_f32.cl.h
+[177/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_iq4_nl_f32.cl.h
+[178/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q5_0_f32.cl.h
+[179/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q5_1_f32.cl.h
+[180/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_noshuffle_q8_0_f32.cl.h
+[181/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q8_0_f32.cl.h
+[182/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q4_k_f32.cl.h
+[183/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_noshuffle_q4_k_f32.cl.h
+[184/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_noshuffle_q5_k_f32.cl.h
+[185/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q5_k_f32.cl.h
+[186/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemv_noshuffle_q6_k_f32.cl.h
+[187/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_noshuffle_q6_k_f32.cl.h
+[188/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul.cl.h
+[189/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/norm.cl.h
+[190/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/neg.cl.h
+[191/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/rms_norm.cl.h
+[192/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/relu.cl.h
+[193/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/l2_norm.cl.h
+[194/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/rope.cl.h
+[195/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/scale.cl.h
+[196/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/set_rows.cl.h
+[197/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/softmax_f32.cl.h
+[198/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/sigmoid.cl.h
+[199/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/softmax_4_f32.cl.h
+[200/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/silu.cl.h
+[201/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/softmax_4_f16.cl.h
+[202/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/softmax_f16.cl.h
+[203/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/sqr.cl.h
+[204/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/sqrt.cl.h
+[205/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/ssm_conv.cl.h
+[206/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gated_delta_net.cl.h
+[207/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/sub.cl.h
+[208/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/sum_rows.cl.h
+[209/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/cumsum.cl.h
+[210/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/concat.cl.h
+[211/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/transpose.cl.h
+[212/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/upscale.cl.h
+[213/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/tsembd.cl.h
+[214/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/exp.cl.h
+[215/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/tanh.cl.h
+[216/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/expm1.cl.h
+[217/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/softplus.cl.h
+[218/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/pad.cl.h
+[219/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/abs.cl.h
+[220/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/repeat.cl.h
+[221/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mat_f16_f32.cl.h
+[222/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/mul_mm_f16_f32_kq_kqv.cl.h
+[223/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/conv2d.cl.h
+[224/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/conv2d_f16_f32.cl.h
+[225/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/flash_attn_f32_q8_0.cl.h
+[226/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/flash_attn_pre_f16.cl.h
+[227/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/flash_attn_f32_f16.cl.h
+[228/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/flash_attn_f32.cl.h
+[229/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/flash_attn_f32_q4_0.cl.h
+[230/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/flash_attn_f16.cl.h
+[231/699] Generate C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-opencl/autogenerated/gemm_xmem_f16_f32_os8.cl.h
+[232/699] Linking CXX static library vendor\cpp-httplib\cpp-httplib.lib
+[233/699] Linking CXX shared library bin\ggml-rpc.dll
+[234/699] Building CXX object ggml/src/ggml-opencl/CMakeFiles/ggml-opencl.dir/cl-program-cache.cpp.obj
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/ggml-opencl/cl-program-cache.cpp:6:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/ggml-opencl\cl-program-cache.h:42:
+In file included from C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl.h:47:
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:556:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  556 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:559:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  559 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:562:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  562 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:574:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  574 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:577:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  577 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:580:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  580 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:598:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  598 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:601:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  601 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:604:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  604 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:622:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  622 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:625:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  625 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:628:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  628 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:650:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  650 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:653:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  653 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:656:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  656 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:668:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  668 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:671:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  671 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:674:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  674 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:692:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  692 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:695:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  695 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:698:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  698 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:716:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  716 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:719:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  719 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:722:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  722 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:744:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  744 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:747:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  747 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:750:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  750 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:762:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  762 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:765:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  765 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:768:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  768 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:786:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  786 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:789:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  789 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:792:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  792 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:810:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  810 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:813:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  813 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:816:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  816 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:838:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  838 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:841:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  841 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:844:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  844 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:856:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  856 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:859:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  859 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:862:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  862 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:880:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  880 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:883:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  883 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:886:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  886 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:904:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  904 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:907:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  907 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:910:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  910 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:932:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  932 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:935:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  935 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:938:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  938 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:950:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  950 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:953:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  953 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:956:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  956 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:974:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  974 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:977:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  977 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:980:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  980 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:998:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  998 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1001:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1001 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1004:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1004 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1026:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1026 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1029:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1029 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1032:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1032 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1044:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1044 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1047:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1047 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1050:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1050 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1068:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1068 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1071:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1071 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1074:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1074 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1092:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1092 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1095:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1095 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1098:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1098 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1120:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1120 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1123:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1123 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1126:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1126 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1138:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1138 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1141:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1141 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1144:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1144 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1162:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1162 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1165:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1165 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1168:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1168 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1186:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1186 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1189:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1189 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1192:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1192 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1214:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1214 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1217:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1217 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1220:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1220 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1232:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1232 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1235:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1235 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1238:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1238 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1256:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1256 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1259:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1259 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1262:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1262 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1280:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1280 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1283:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1283 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1286:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1286 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1308:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1308 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1311:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1311 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1314:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1314 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1326:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1326 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1329:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1329 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1332:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1332 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1350:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1350 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1353:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1353 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1356:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1356 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1374:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1374 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1377:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1377 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1380:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1380 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1403:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1403 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1406:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1406 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1409:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1409 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1421:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1421 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1424:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1424 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1427:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1427 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1445:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1445 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1448:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1448 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1451:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1451 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1469:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1469 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1472:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1472 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1475:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1475 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1498:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1498 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1501:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1501 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1504:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1504 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1516:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1516 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1519:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1519 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1522:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1522 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1540:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1540 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1543:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1543 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1546:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1546 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1564:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1564 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1567:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1567 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+C:/Qualcomm/OpenCL_SDK/2.3.2/include\CL/cl_platform.h:1570:24: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+ 1570 |     __CL_ANON_STRUCT__ struct {
+      |                        ^
+132 warnings generated.
+[235/699] Linking CXX shared library bin\ggml-cpu.dll
+[236/699] Building CXX object ggml/src/ggml-opencl/CMakeFiles/ggml-opencl.dir/ggml-opencl.cpp.obj
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:1274:66: warning: unused parameter 'backend_ctx' [-Wunused-parameter]
+ 1274 | static bool use_adreno_bin_kernels(ggml_backend_opencl_context * backend_ctx) {
+      |                                                                  ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:7128:9: warning: TODO: implement BF16, Q4_0, Q4_1, Q5_0, Q5_1, Q8_0, IQ4_NL support (https://github.com/ggml-org/llama.cpp/pull/14661) [-W#pragma-messages]
+ 7128 | #pragma message("TODO: implement BF16, Q4_0, Q4_1, Q5_0, Q5_1, Q8_0, IQ4_NL support (https://github.com/ggml-org/llama.cpp/pull/14661)")
+      |         ^
+2 warnings generated.
+[237/699] Linking CXX shared library bin\ggml-opencl.dll
+[238/699] Performing build step for 'htp-v73'
+[1/30] Generating htp_iface_skel.c, htp_iface_stub.c, htp_iface.h
+[2/30] Building C object CMakeFiles/ggml-htp-v73.dir/htp_iface_skel.c.obj
+[3/30] Building C object CMakeFiles/ggml-htp-v73.dir/dma-queue.c.obj
+[4/30] Building C object CMakeFiles/ggml-htp-v73.dir/work-queue.c.obj
+[5/30] Building C object CMakeFiles/ggml-htp-v73.dir/hmx-queue.c.obj
+[6/30] Building C object CMakeFiles/ggml-htp-v73.dir/htp-tensor.c.obj
+[7/30] Building C object CMakeFiles/ggml-htp-v73.dir/sum-rows-ops.c.obj
+[8/30] Building C object CMakeFiles/ggml-htp-v73.dir/main.c.obj
+[9/30] Building C object CMakeFiles/ggml-htp-v73.dir/set-rows-ops.c.obj
+[10/30] Building C object CMakeFiles/ggml-htp-v73.dir/softmax-ops.c.obj
+[11/30] Building C object CMakeFiles/ggml-htp-v73.dir/repeat-ops.c.obj
+[12/30] Building C object CMakeFiles/ggml-htp-v73.dir/get-rows-ops.c.obj
+[13/30] Building C object CMakeFiles/ggml-htp-v73.dir/gated-delta-net-ops.c.obj
+[14/30] Building C object CMakeFiles/ggml-htp-v73.dir/cpy-ops.c.obj
+[15/30] Building C object CMakeFiles/ggml-htp-v73.dir/act-ops.c.obj
+[16/30] Building C object CMakeFiles/ggml-htp-v73.dir/rope-ops.c.obj
+[17/30] Building C object CMakeFiles/ggml-htp-v73.dir/binary-ops.c.obj
+[18/30] Building C object CMakeFiles/ggml-htp-v73.dir/ssm-conv.c.obj
+[19/30] Building C object CMakeFiles/ggml-htp-v73.dir/cumsum-ops.c.obj
+[20/30] Building C object CMakeFiles/ggml-htp-v73.dir/fill-ops.c.obj
+[21/30] Building C object CMakeFiles/ggml-htp-v73.dir/diag-ops.c.obj
+[22/30] Building C object CMakeFiles/ggml-htp-v73.dir/solve-tri-ops.c.obj
+[23/30] Building C object CMakeFiles/ggml-htp-v73.dir/concat-ops.c.obj
+[24/30] Building C object CMakeFiles/ggml-htp-v73.dir/argsort-ops.c.obj
+[25/30] Building C object CMakeFiles/ggml-htp-v73.dir/im2col-ops.c.obj
+[26/30] Building C object CMakeFiles/ggml-htp-v73.dir/pad-ops.c.obj
+[27/30] Building C object CMakeFiles/ggml-htp-v73.dir/flash-attn-ops.c.obj
+[28/30] Building C object CMakeFiles/ggml-htp-v73.dir/unary-ops.c.obj
+[29/30] Building C object CMakeFiles/ggml-htp-v73.dir/matmul-ops.c.obj
+[30/30] Linking C shared library libggml-htp-v73.so
+[239/699] Performing install step for 'htp-v73'
+[0/1] Install the project...
+-- Install configuration: "Release"
+-- Installing: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-hexagon/libggml-htp-v73.so
+[240/699] Completed 'htp-v73'
+[241/699] Performing build step for 'htp-v75'
+[1/30] Generating htp_iface_skel.c, htp_iface_stub.c, htp_iface.h
+[2/30] Building C object CMakeFiles/ggml-htp-v75.dir/htp_iface_skel.c.obj
+[3/30] Building C object CMakeFiles/ggml-htp-v75.dir/dma-queue.c.obj
+[4/30] Building C object CMakeFiles/ggml-htp-v75.dir/work-queue.c.obj
+[5/30] Building C object CMakeFiles/ggml-htp-v75.dir/hmx-queue.c.obj
+[6/30] Building C object CMakeFiles/ggml-htp-v75.dir/main.c.obj
+[7/30] Building C object CMakeFiles/ggml-htp-v75.dir/htp-tensor.c.obj
+[8/30] Building C object CMakeFiles/ggml-htp-v75.dir/sum-rows-ops.c.obj
+[9/30] Building C object CMakeFiles/ggml-htp-v75.dir/set-rows-ops.c.obj
+[10/30] Building C object CMakeFiles/ggml-htp-v75.dir/get-rows-ops.c.obj
+[11/30] Building C object CMakeFiles/ggml-htp-v75.dir/softmax-ops.c.obj
+[12/30] Building C object CMakeFiles/ggml-htp-v75.dir/act-ops.c.obj
+[13/30] Building C object CMakeFiles/ggml-htp-v75.dir/gated-delta-net-ops.c.obj
+[14/30] Building C object CMakeFiles/ggml-htp-v75.dir/repeat-ops.c.obj
+[15/30] Building C object CMakeFiles/ggml-htp-v75.dir/ssm-conv.c.obj
+[16/30] Building C object CMakeFiles/ggml-htp-v75.dir/cpy-ops.c.obj
+[17/30] Building C object CMakeFiles/ggml-htp-v75.dir/rope-ops.c.obj
+[18/30] Building C object CMakeFiles/ggml-htp-v75.dir/cumsum-ops.c.obj
+[19/30] Building C object CMakeFiles/ggml-htp-v75.dir/binary-ops.c.obj
+[20/30] Building C object CMakeFiles/ggml-htp-v75.dir/fill-ops.c.obj
+[21/30] Building C object CMakeFiles/ggml-htp-v75.dir/diag-ops.c.obj
+[22/30] Building C object CMakeFiles/ggml-htp-v75.dir/concat-ops.c.obj
+[23/30] Building C object CMakeFiles/ggml-htp-v75.dir/solve-tri-ops.c.obj
+[24/30] Building C object CMakeFiles/ggml-htp-v75.dir/pad-ops.c.obj
+[25/30] Building C object CMakeFiles/ggml-htp-v75.dir/flash-attn-ops.c.obj
+[26/30] Building C object CMakeFiles/ggml-htp-v75.dir/im2col-ops.c.obj
+[27/30] Building C object CMakeFiles/ggml-htp-v75.dir/argsort-ops.c.obj
+[28/30] Building C object CMakeFiles/ggml-htp-v75.dir/unary-ops.c.obj
+[29/30] Building C object CMakeFiles/ggml-htp-v75.dir/matmul-ops.c.obj
+[30/30] Linking C shared library libggml-htp-v75.so
+[242/699] Performing install step for 'htp-v75'
+[0/1] Install the project...
+-- Install configuration: "Release"
+-- Installing: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-hexagon/libggml-htp-v75.so
+[243/699] Completed 'htp-v75'
+[244/699] Performing build step for 'htp-v81'
+[1/30] Generating htp_iface_skel.c, htp_iface_stub.c, htp_iface.h
+[2/30] Building C object CMakeFiles/ggml-htp-v81.dir/htp_iface_skel.c.obj
+[3/30] Building C object CMakeFiles/ggml-htp-v81.dir/work-queue.c.obj
+[4/30] Building C object CMakeFiles/ggml-htp-v81.dir/hmx-queue.c.obj
+[5/30] Building C object CMakeFiles/ggml-htp-v81.dir/dma-queue.c.obj
+[6/30] Building C object CMakeFiles/ggml-htp-v81.dir/sum-rows-ops.c.obj
+[7/30] Building C object CMakeFiles/ggml-htp-v81.dir/htp-tensor.c.obj
+[8/30] Building C object CMakeFiles/ggml-htp-v81.dir/main.c.obj
+[9/30] Building C object CMakeFiles/ggml-htp-v81.dir/gated-delta-net-ops.c.obj
+[10/30] Building C object CMakeFiles/ggml-htp-v81.dir/set-rows-ops.c.obj
+[11/30] Building C object CMakeFiles/ggml-htp-v81.dir/softmax-ops.c.obj
+[12/30] Building C object CMakeFiles/ggml-htp-v81.dir/get-rows-ops.c.obj
+[13/30] Building C object CMakeFiles/ggml-htp-v81.dir/repeat-ops.c.obj
+[14/30] Building C object CMakeFiles/ggml-htp-v81.dir/rope-ops.c.obj
+[15/30] Building C object CMakeFiles/ggml-htp-v81.dir/ssm-conv.c.obj
+[16/30] Building C object CMakeFiles/ggml-htp-v81.dir/act-ops.c.obj
+[17/30] Building C object CMakeFiles/ggml-htp-v81.dir/cpy-ops.c.obj
+[18/30] Building C object CMakeFiles/ggml-htp-v81.dir/cumsum-ops.c.obj
+[19/30] Building C object CMakeFiles/ggml-htp-v81.dir/fill-ops.c.obj
+[20/30] Building C object CMakeFiles/ggml-htp-v81.dir/diag-ops.c.obj
+[21/30] Building C object CMakeFiles/ggml-htp-v81.dir/solve-tri-ops.c.obj
+[22/30] Building C object CMakeFiles/ggml-htp-v81.dir/binary-ops.c.obj
+[23/30] Building C object CMakeFiles/ggml-htp-v81.dir/flash-attn-ops.c.obj
+[24/30] Building C object CMakeFiles/ggml-htp-v81.dir/im2col-ops.c.obj
+[25/30] Building C object CMakeFiles/ggml-htp-v81.dir/argsort-ops.c.obj
+[26/30] Building C object CMakeFiles/ggml-htp-v81.dir/concat-ops.c.obj
+[27/30] Building C object CMakeFiles/ggml-htp-v81.dir/pad-ops.c.obj
+[28/30] Building C object CMakeFiles/ggml-htp-v81.dir/unary-ops.c.obj
+[29/30] Building C object CMakeFiles/ggml-htp-v81.dir/matmul-ops.c.obj
+[30/30] Linking C shared library libggml-htp-v81.so
+[245/699] Performing build step for 'htp-v79'
+[1/30] Generating htp_iface_skel.c, htp_iface_stub.c, htp_iface.h
+[2/30] Building C object CMakeFiles/ggml-htp-v79.dir/htp_iface_skel.c.obj
+[3/30] Building C object CMakeFiles/ggml-htp-v79.dir/dma-queue.c.obj
+[4/30] Building C object CMakeFiles/ggml-htp-v79.dir/work-queue.c.obj
+[5/30] Building C object CMakeFiles/ggml-htp-v79.dir/hmx-queue.c.obj
+[6/30] Building C object CMakeFiles/ggml-htp-v79.dir/htp-tensor.c.obj
+[7/30] Building C object CMakeFiles/ggml-htp-v79.dir/sum-rows-ops.c.obj
+[8/30] Building C object CMakeFiles/ggml-htp-v79.dir/main.c.obj
+[9/30] Building C object CMakeFiles/ggml-htp-v79.dir/set-rows-ops.c.obj
+[10/30] Building C object CMakeFiles/ggml-htp-v79.dir/get-rows-ops.c.obj
+[11/30] Building C object CMakeFiles/ggml-htp-v79.dir/gated-delta-net-ops.c.obj
+[12/30] Building C object CMakeFiles/ggml-htp-v79.dir/softmax-ops.c.obj
+[13/30] Building C object CMakeFiles/ggml-htp-v79.dir/repeat-ops.c.obj
+[14/30] Building C object CMakeFiles/ggml-htp-v79.dir/rope-ops.c.obj
+[15/30] Building C object CMakeFiles/ggml-htp-v79.dir/act-ops.c.obj
+[16/30] Building C object CMakeFiles/ggml-htp-v79.dir/fill-ops.c.obj
+[17/30] Building C object CMakeFiles/ggml-htp-v79.dir/cpy-ops.c.obj
+[18/30] Building C object CMakeFiles/ggml-htp-v79.dir/ssm-conv.c.obj
+[19/30] Building C object CMakeFiles/ggml-htp-v79.dir/cumsum-ops.c.obj
+[20/30] Building C object CMakeFiles/ggml-htp-v79.dir/concat-ops.c.obj
+[21/30] Building C object CMakeFiles/ggml-htp-v79.dir/diag-ops.c.obj
+[22/30] Building C object CMakeFiles/ggml-htp-v79.dir/binary-ops.c.obj
+[23/30] Building C object CMakeFiles/ggml-htp-v79.dir/flash-attn-ops.c.obj
+[24/30] Building C object CMakeFiles/ggml-htp-v79.dir/pad-ops.c.obj
+[25/30] Building C object CMakeFiles/ggml-htp-v79.dir/solve-tri-ops.c.obj
+[26/30] Building C object CMakeFiles/ggml-htp-v79.dir/im2col-ops.c.obj
+[27/30] Building C object CMakeFiles/ggml-htp-v79.dir/argsort-ops.c.obj
+[28/30] Building C object CMakeFiles/ggml-htp-v79.dir/unary-ops.c.obj
+[29/30] Building C object CMakeFiles/ggml-htp-v79.dir/matmul-ops.c.obj
+[30/30] Linking C shared library libggml-htp-v79.so
+[246/699] Performing install step for 'htp-v81'
+[0/1] Install the project...
+-- Install configuration: "Release"
+-- Installing: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-hexagon/libggml-htp-v81.so
+[247/699] Completed 'htp-v81'
+[248/699] Performing install step for 'htp-v79'
+[0/1] Install the project...
+-- Install configuration: "Release"
+-- Installing: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-hexagon/libggml-htp-v79.so
+[249/699] Completed 'htp-v79'
+[250/699] generating and signing libggml-htp.cat file
+.................................................................................................................................................................................................................................................................................................................
+Signability test complete.
+
+Errors:
+None
+
+Warnings:
+None
+
+Catalog generation complete.
+C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\ggml\src\ggml-hexagon\libggml-htp.cat
+Done Adding Additional Store
+Successfully signed: C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/ggml/src/ggml-hexagon/libggml-htp.cat
+
+[251/699] Building CXX object ggml/src/ggml-hexagon/CMakeFiles/ggml-hexagon.dir/cmake_pch.hxx.pch
+[252/699] Building CXX object src/CMakeFiles/llama.dir/llama-cparams.cpp.obj
+[253/699] Building CXX object src/CMakeFiles/llama.dir/llama-arch.cpp.obj
+[254/699] Building CXX object ggml/src/CMakeFiles/ggml.dir/ggml-backend-dl.cpp.obj
+[255/699] Building CXX object src/CMakeFiles/llama.dir/llama.cpp.obj
+[256/699] Building CXX object src/CMakeFiles/llama.dir/llama-chat.cpp.obj
+[257/699] Building CXX object src/CMakeFiles/llama.dir/llama-hparams.cpp.obj
+[258/699] Building CXX object src/CMakeFiles/llama.dir/llama-batch.cpp.obj
+[259/699] Building CXX object src/CMakeFiles/llama.dir/llama-adapter.cpp.obj
+[260/699] Building CXX object src/CMakeFiles/llama.dir/llama-io.cpp.obj
+[261/699] Building CXX object ggml/src/CMakeFiles/ggml.dir/ggml-backend-reg.cpp.obj
+[262/699] Building CXX object ggml/src/ggml-hexagon/CMakeFiles/ggml-hexagon.dir/htp-drv.cpp.obj
+[263/699] Building CXX object src/CMakeFiles/llama.dir/llama-impl.cpp.obj
+[264/699] Building CXX object src/CMakeFiles/llama.dir/llama-memory.cpp.obj
+[265/699] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache-iswa.cpp.obj
+[266/699] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache-dsa.cpp.obj
+[267/699] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache-msa.cpp.obj
+[268/699] Building CXX object src/CMakeFiles/llama.dir/llama-context.cpp.obj
+[269/699] Building CXX object src/CMakeFiles/llama.dir/llama-grammar.cpp.obj
+[270/699] Building CXX object src/CMakeFiles/llama.dir/llama-memory-hybrid.cpp.obj
+[271/699] Building CXX object src/CMakeFiles/llama.dir/llama-graph.cpp.obj
+[272/699] Building CXX object src/CMakeFiles/llama.dir/llama-mmap.cpp.obj
+[273/699] Building CXX object src/CMakeFiles/llama.dir/llama-memory-hybrid-iswa.cpp.obj
+[274/699] Building CXX object src/CMakeFiles/llama.dir/llama-model-saver.cpp.obj
+[275/699] Building CXX object src/CMakeFiles/llama.dir/llama-memory-recurrent.cpp.obj
+[276/699] Building CXX object ggml/src/ggml-hexagon/CMakeFiles/ggml-hexagon.dir/ggml-hexagon.cpp.obj
+[277/699] Building CXX object src/CMakeFiles/llama.dir/unicode-data.cpp.obj
+[278/699] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache-dsv4.cpp.obj
+[279/699] Building CXX object src/CMakeFiles/llama.dir/models/afmoe.cpp.obj
+[280/699] Building CXX object src/CMakeFiles/llama.dir/models/apertus.cpp.obj
+[281/699] Building CXX object src/CMakeFiles/llama.dir/models/arcee.cpp.obj
+[282/699] Building CXX object src/CMakeFiles/llama.dir/llama-model-loader.cpp.obj
+[283/699] Building CXX object src/CMakeFiles/llama.dir/models/arctic.cpp.obj
+[284/699] Building CXX object src/CMakeFiles/llama.dir/models/arwkv7.cpp.obj
+[285/699] Building CXX object src/CMakeFiles/llama.dir/llama-quant.cpp.obj
+[286/699] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache.cpp.obj
+[287/699] Building CXX object src/CMakeFiles/llama.dir/models/baichuan.cpp.obj
+[288/699] Building CXX object src/CMakeFiles/llama.dir/llama-sampler.cpp.obj
+[289/699] Building CXX object src/CMakeFiles/llama.dir/llama-vocab.cpp.obj
+[290/699] Linking CXX shared library bin\ggml-hexagon.dll
+[291/699] Building CXX object src/CMakeFiles/llama.dir/models/bailingmoe.cpp.obj
+[292/699] Building CXX object src/CMakeFiles/llama.dir/models/bailingmoe2.cpp.obj
+[293/699] Building CXX object src/CMakeFiles/llama.dir/llama-model.cpp.obj
+[294/699] Building CXX object src/CMakeFiles/llama.dir/models/bitnet.cpp.obj
+[295/699] Building CXX object src/CMakeFiles/llama.dir/models/bloom.cpp.obj
+[296/699] Building CXX object src/CMakeFiles/llama.dir/models/bert.cpp.obj
+[297/699] Building CXX object src/CMakeFiles/llama.dir/models/chameleon.cpp.obj
+[298/699] Building CXX object src/CMakeFiles/llama.dir/unicode.cpp.obj
+[299/699] Building CXX object src/CMakeFiles/llama.dir/models/chatglm.cpp.obj
+[300/699] Building CXX object src/CMakeFiles/llama.dir/models/codeshell.cpp.obj
+[301/699] Linking CXX shared library bin\ggml.dll
+[302/699] Building CXX object src/CMakeFiles/llama.dir/models/cogvlm.cpp.obj
+[303/699] Building CXX object src/CMakeFiles/llama.dir/models/cohere2.cpp.obj
+[304/699] Building CXX object src/CMakeFiles/llama.dir/models/cohere2moe.cpp.obj
+[305/699] Building CXX object src/CMakeFiles/llama.dir/models/command-r.cpp.obj
+[306/699] Building CXX object src/CMakeFiles/llama.dir/models/dbrx.cpp.obj
+[307/699] Building CXX object src/CMakeFiles/llama.dir/models/deci.cpp.obj
+[308/699] Building CXX object src/CMakeFiles/llama.dir/models/deepseek2ocr.cpp.obj
+[309/699] Building CXX object src/CMakeFiles/llama.dir/models/deepseek.cpp.obj
+[310/699] Building CXX object src/CMakeFiles/llama.dir/models/deepseek2.cpp.obj
+[311/699] Building CXX object src/CMakeFiles/llama.dir/models/deepseek32.cpp.obj
+[312/699] Building CXX object src/CMakeFiles/llama.dir/models/delta-net-base.cpp.obj
+[313/699] Building CXX object src/CMakeFiles/llama.dir/models/dots1.cpp.obj
+[314/699] Building CXX object src/CMakeFiles/llama.dir/models/ernie4-5-moe.cpp.obj
+[315/699] Building CXX object src/CMakeFiles/llama.dir/models/dream.cpp.obj
+[316/699] Building CXX object src/CMakeFiles/llama.dir/models/deepseek4.cpp.obj
+[317/699] Building CXX object src/CMakeFiles/llama.dir/models/eagle3.cpp.obj
+[318/699] Building CXX object src/CMakeFiles/llama.dir/models/ernie4-5.cpp.obj
+[319/699] Building CXX object src/CMakeFiles/llama.dir/models/dflash.cpp.obj
+[320/699] Building CXX object src/CMakeFiles/llama.dir/models/eurobert.cpp.obj
+[321/699] Building CXX object src/CMakeFiles/llama.dir/models/exaone-moe.cpp.obj
+[322/699] Building CXX object src/CMakeFiles/llama.dir/models/exaone.cpp.obj
+[323/699] Building CXX object src/CMakeFiles/llama.dir/models/exaone4.cpp.obj
+[324/699] Building CXX object src/CMakeFiles/llama.dir/models/gemma-embedding.cpp.obj
+[325/699] Building CXX object src/CMakeFiles/llama.dir/models/falcon.cpp.obj
+[326/699] Building CXX object src/CMakeFiles/llama.dir/models/gemma.cpp.obj
+[327/699] Building CXX object src/CMakeFiles/llama.dir/models/gemma2.cpp.obj
+[328/699] Building CXX object src/CMakeFiles/llama.dir/models/falcon-h1.cpp.obj
+[329/699] Building CXX object src/CMakeFiles/llama.dir/models/gemma3.cpp.obj
+[330/699] Building CXX object src/CMakeFiles/llama.dir/models/gemma4-assistant.cpp.obj
+[331/699] Building CXX object src/CMakeFiles/llama.dir/models/gemma3n.cpp.obj
+[332/699] Building CXX object src/CMakeFiles/llama.dir/models/gemma4.cpp.obj
+[333/699] Building CXX object src/CMakeFiles/llama.dir/models/glm4-moe.cpp.obj
+[334/699] Building CXX object src/CMakeFiles/llama.dir/models/gpt2.cpp.obj
+[335/699] Building CXX object src/CMakeFiles/llama.dir/models/granite-moe.cpp.obj
+[336/699] Building CXX object src/CMakeFiles/llama.dir/models/glm4.cpp.obj
+[337/699] Building CXX object src/CMakeFiles/llama.dir/models/granite-hybrid.cpp.obj
+[338/699] Building CXX object src/CMakeFiles/llama.dir/models/gptneox.cpp.obj
+[339/699] Building CXX object src/CMakeFiles/llama.dir/models/glm-dsa.cpp.obj
+[340/699] Building CXX object src/CMakeFiles/llama.dir/models/grovemoe.cpp.obj
+[341/699] Building CXX object src/CMakeFiles/llama.dir/models/grok.cpp.obj
+[342/699] Building CXX object src/CMakeFiles/llama.dir/models/granite.cpp.obj
+[343/699] Building CXX object src/CMakeFiles/llama.dir/models/hunyuan-dense.cpp.obj
+[344/699] Building CXX object src/CMakeFiles/llama.dir/models/hunyuan-moe.cpp.obj
+[345/699] Building CXX object src/CMakeFiles/llama.dir/models/hunyuan-vl.cpp.obj
+[346/699] Building CXX object src/CMakeFiles/llama.dir/models/jais.cpp.obj
+[347/699] Building CXX object src/CMakeFiles/llama.dir/models/internlm2.cpp.obj
+[348/699] Building CXX object src/CMakeFiles/llama.dir/models/jais2.cpp.obj
+[349/699] Building CXX object src/CMakeFiles/llama.dir/models/hy-v3.cpp.obj
+[350/699] Building CXX object src/CMakeFiles/llama.dir/models/jamba.cpp.obj
+[351/699] Building CXX object src/CMakeFiles/llama.dir/models/jina-bert-v2.cpp.obj
+[352/699] Building CXX object src/CMakeFiles/llama.dir/models/jina-bert-v3.cpp.obj
+[353/699] Provisioning UI assets
+-- UI: running npm ci
+
+added 1043 packages, and audited 1044 packages in 28s
+
+349 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+-- UI: running npm run build, output -> C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/tools/ui/dist
+
+> llama-ui@1.0.0 build
+> npm run build-pwa-assets && vite build
+
+
+> llama-ui@1.0.0 build-pwa-assets
+> npx @vite-pwa/assets-generator --root . --config pwa-assets.config.ts && npx @vite-pwa/assets-generator --root . --config pwa-assets-dark.config.ts && node scripts/make-icons-circular.js
+
+Zero Config PWA Assets Generator v1.0.2
+? Preparing to generate PWA assets...
+? Resolving instructions...
+? PWA assets ready to be generated, instructions resolved
+? Generating PWA assets from static/favicon.svg image
+? Generating assets for static/favicon.svg...
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\pwa-64x64.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\pwa-192x192.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\pwa-512x512.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\maskable-icon-512x512.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-touch-icon-180x180.png
+? Generated ICO file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\favicon.ico
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-2532x1170.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-1170x2532.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-2778x1284.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-1284x2778.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-2556x1179.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-1179x2556.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-1290x2796.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-2796x1290.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-2622x1206.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-1206x2622.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-1136x640.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-750x1334.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-640x1136.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-2868x1320.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-1334x750.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-1320x2868.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-2360x1640.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-1640x2360.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-2732x2048.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-2048x2732.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-2388x1668.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-1668x2388.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-1488x2266.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-2266x1488.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-dark-2532x1170.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-dark-1170x2532.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-dark-1284x2778.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-dark-2778x1284.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-dark-1179x2556.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-dark-2622x1206.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-dark-2556x1179.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-dark-1206x2622.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-dark-1290x2796.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-dark-2796x1290.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-dark-640x1136.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-dark-1136x640.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-dark-1334x750.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-dark-750x1334.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-dark-2868x1320.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-dark-1320x2868.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-dark-2360x1640.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-dark-1640x2360.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-dark-1668x2388.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-dark-2048x2732.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-dark-2388x1668.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-dark-2732x2048.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-portrait-dark-1488x2266.png
+? Generated PNG file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\apple-splash-landscape-dark-2266x1488.png
+? Assets generated for static/favicon.svg
+? Generating Html Head Links...
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./apple-splash-portrait-1170x2532.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="./apple-splash-landscape-2532x1170.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./apple-splash-portrait-dark-1170x2532.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="./apple-splash-landscape-dark-2532x1170.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./apple-splash-portrait-1284x2778.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="./apple-splash-landscape-2778x1284.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./apple-splash-portrait-dark-1284x2778.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="./apple-splash-landscape-dark-2778x1284.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./apple-splash-portrait-1179x2556.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="./apple-splash-landscape-2556x1179.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./apple-splash-portrait-dark-1179x2556.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="./apple-splash-landscape-dark-2556x1179.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./apple-splash-portrait-1290x2796.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="./apple-splash-landscape-2796x1290.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./apple-splash-portrait-dark-1290x2796.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="./apple-splash-landscape-dark-2796x1290.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./apple-splash-portrait-1206x2622.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="./apple-splash-landscape-2622x1206.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./apple-splash-portrait-dark-1206x2622.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="./apple-splash-landscape-dark-2622x1206.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./apple-splash-portrait-1320x2868.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="./apple-splash-landscape-2868x1320.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="./apple-splash-portrait-dark-1320x2868.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="./apple-splash-landscape-dark-2868x1320.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="./apple-splash-portrait-640x1136.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./apple-splash-landscape-1136x640.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="./apple-splash-portrait-dark-640x1136.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./apple-splash-landscape-dark-1136x640.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="./apple-splash-portrait-750x1334.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./apple-splash-landscape-1334x750.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="./apple-splash-portrait-dark-750x1334.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./apple-splash-landscape-dark-1334x750.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="./apple-splash-portrait-1640x2360.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./apple-splash-landscape-2360x1640.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="./apple-splash-portrait-dark-1640x2360.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./apple-splash-landscape-dark-2360x1640.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="./apple-splash-portrait-2048x2732.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./apple-splash-landscape-2732x2048.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="./apple-splash-portrait-dark-2048x2732.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./apple-splash-landscape-dark-2732x2048.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="./apple-splash-portrait-1668x2388.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./apple-splash-landscape-2388x1668.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="./apple-splash-portrait-dark-1668x2388.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./apple-splash-landscape-dark-2388x1668.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="./apple-splash-portrait-1488x2266.png">
+<link rel="apple-touch-startup-image" media="screen and (device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./apple-splash-landscape-2266x1488.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="./apple-splash-portrait-dark-1488x2266.png">
+<link rel="apple-touch-startup-image" media="screen and (prefers-color-scheme: dark) and (device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./apple-splash-landscape-dark-2266x1488.png">
+? Html Head Links generated
+? Generating PWA web manifest icons entry...
+{
+  "icons": [
+    {
+      "src": "pwa-64x64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "maskable-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
+? PWA web manifest icons entry generated
+? PWA assets generated
+Zero Config PWA Assets Generator v1.0.2
+? Preparing to generate PWA assets...
+? Resolving instructions...
+? PWA assets ready to be generated, instructions resolved
+? Generating PWA assets from static/favicon-dark.svg image
+? Generating assets for static/favicon-dark.svg...
+? Generated ICO file: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\ui-src\static\favicon-dark.ico
+? Assets generated for static/favicon-dark.svg
+? Generating Html Head Links...
+<link rel="icon" href="/favicon-dark.ico" sizes="48x48">
+<link rel="icon" href="/favicon-dark.svg" sizes="any" type="image/svg+xml">
+? Html Head Links generated
+? Generating PWA web manifest icons entry...
+{
+  "icons": []
+}
+? PWA web manifest icons entry generated
+? PWA assets generated
+Circular mask: 0% padding, 85% scale, source=maskable-icon-512x512.png
+
+? pwa-64x64.png ? circle from maskable-icon-512x512.png, 0% padding (size=64, r=32, scale=85%, circleDiameter=64)
+? pwa-192x192.png ? circle from maskable-icon-512x512.png, 0% padding (size=192, r=96, scale=85%, circleDiameter=192)
+? pwa-512x512.png ? circle from maskable-icon-512x512.png, 0% padding (size=512, r=256, scale=85%, circleDiameter=512)
+
+Unchanged:
+  maskable-icon-512x512.png (1894 bytes)
+  apple-touch-icon-180x180.png (806 bytes)
+vite v7.3.6 building ssr environment for production...
+transforming...
+? 5270 modules transformed.
+rendering chunks...
+vite v7.3.6 building client environment for production...
+transforming...
+? 8338 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                              0.03 kB ¦ gzip:     0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                            0.30 kB ¦ gzip:     0.18 kB
+.svelte-kit/output/client/manifest.webmanifest                           0.52 kB
+.svelte-kit/output/client/_app/immutable/assets/bundle.DUiDaiZz.css    537.60 kB ¦ gzip:   291.79 kB
+.svelte-kit/output/client/_app/immutable/bundle.CIBcjEf7.js          8,794.97 kB ¦ gzip: 2,592.59 kB
+? built in 48.36s
+Relativized base refs in index.html and sw.js
+.svelte-kit/output/server/.vite/manifest.json                                                         16.50 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.CV-KWLNP.css                                     0.29 kB
+.svelte-kit/output/server/_app/immutable/assets/dialog-description.bHHIbcsu.css                        0.35 kB
+.svelte-kit/output/server/_app/immutable/assets/_layout.CEgOpzij.css                                 147.59 kB
+.svelte-kit/output/server/_app/immutable/assets/SidebarNavigationConversationItem.tH0ecgxy.css       388.82 kB
+.svelte-kit/output/server/chunks/app.js                                                                0.07 kB
+.svelte-kit/output/server/chunks/internal.js                                                           0.07 kB
+.svelte-kit/output/server/env.js                                                                       0.15 kB
+.svelte-kit/output/server/chunks/api-key-validation.js                                                 0.19 kB
+.svelte-kit/output/server/chunks/server.js                                                             0.20 kB
+.svelte-kit/output/server/chunks/arrow-right.js                                                        0.22 kB
+.svelte-kit/output/server/chunks/device.svelte.js                                                      0.23 kB
+.svelte-kit/output/server/entries/pages/(chat)/_page.ts.js                                             0.29 kB
+.svelte-kit/output/server/chunks/keyboard.enums.js                                                     0.29 kB
+.svelte-kit/output/server/entries/pages/(chat)/chat/_id_/_page.ts.js                                   0.31 kB
+.svelte-kit/output/server/chunks/pencil.js                                                             0.33 kB
+.svelte-kit/output/server/chunks/refresh-cw.js                                                         0.35 kB
+.svelte-kit/output/server/internal.js                                                                  0.37 kB
+.svelte-kit/output/server/chunks/card.js                                                               0.45 kB
+.svelte-kit/output/server/chunks/utils2.js                                                             0.60 kB
+.svelte-kit/output/server/chunks/use-marquee-selection.svelte.js                                       0.63 kB
+.svelte-kit/output/server/entries/pages/settings/_layout.svelte.js                                     0.88 kB
+.svelte-kit/output/server/entries/pages/(chat)/_page.svelte.js                                         1.14 kB
+.svelte-kit/output/server/chunks/formatters.js                                                         1.14 kB
+.svelte-kit/output/server/entries/pages/(chat)/chat/_id_/_page.svelte.js                               1.28 kB
+.svelte-kit/output/server/chunks/alert-dialog-cancel.js                                                1.29 kB
+.svelte-kit/output/server/chunks/exports.js                                                            1.46 kB
+.svelte-kit/output/server/chunks/label.js                                                              1.56 kB
+.svelte-kit/output/server/chunks/ActionIcon.js                                                         1.57 kB
+.svelte-kit/output/server/chunks/url.js                                                                1.60 kB
+.svelte-kit/output/server/chunks/input.js                                                              1.67 kB
+.svelte-kit/output/server/entries/pages/search/_page.svelte.js                                         2.03 kB
+.svelte-kit/output/server/chunks/DialogConfirmation.js                                                 2.43 kB
+.svelte-kit/output/server/chunks/DialogModelNotAvailable.js                                            2.76 kB
+.svelte-kit/output/server/chunks/internal2.js                                                          2.88 kB
+.svelte-kit/output/server/chunks/SidebarNavigationSearchResults.js                                     5.25 kB
+.svelte-kit/output/server/chunks/workbox-window.prod.es5.js                                            5.75 kB
+.svelte-kit/output/server/chunks/dialog-footer.js                                                      5.77 kB
+.svelte-kit/output/server/chunks/TruncatedText.js                                                      5.78 kB
+.svelte-kit/output/server/chunks/index2.js                                                             6.85 kB
+.svelte-kit/output/server/entries/pages/_error.svelte.js                                               8.18 kB
+.svelte-kit/output/server/chunks/SearchInput.js                                                        9.16 kB
+.svelte-kit/output/server/chunks/McpServerIdentity.js                                                 12.08 kB
+.svelte-kit/output/server/chunks/utils.js                                                             15.02 kB
+.svelte-kit/output/server/chunks/popper-layer-force-mount.js                                          15.45 kB
+.svelte-kit/output/server/remote-entry.js                                                             15.69 kB
+.svelte-kit/output/server/chunks/models.svelte.js                                                     17.37 kB
+.svelte-kit/output/server/chunks/conversations.svelte.js                                              17.50 kB
+.svelte-kit/output/server/chunks/index.js                                                             21.71 kB
+.svelte-kit/output/server/chunks/dialog-description.js                                                24.61 kB
+.svelte-kit/output/server/entries/pages/mcp-servers/_page.svelte.js                                   33.59 kB
+.svelte-kit/output/server/entries/pages/_layout.svelte.js                                             39.47 kB
+.svelte-kit/output/server/chunks/root.js                                                              41.41 kB
+.svelte-kit/output/server/chunks/url2.js                                                              49.74 kB
+.svelte-kit/output/server/index.js                                                                    57.22 kB
+.svelte-kit/output/server/entries/pages/settings/__section__/_page.svelte.js                          76.17 kB
+.svelte-kit/output/server/chunks/chat.svelte.js                                                       76.62 kB
+.svelte-kit/output/server/chunks/SidebarNavigationConversationItem.svelte_svelte_type_style_lang.js  144.78 kB
+.svelte-kit/output/server/entries/pages/(chat)/_layout.svelte.js                                     325.12 kB
+.svelte-kit/output/server/chunks/_virtual_nerdamer.js                                                483.95 kB
+? built in 1m 30s
+
+PWA v1.3.0
+mode      generateSW
+precache  67 entries (9547.61 KiB)
+files generated
+  .svelte-kit/output/server/sw.js
+  .svelte-kit/output/server/workbox-b3c04f83.js
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-static
+Overwriting C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\llama.cpp\build-hvx\tools\ui\dist\index.html with fallback page. Consider using a different name for the fallback.
+  Wrote site to "C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/tools/ui/dist"
+  ? done
+Generated 48 apple-splash link tags
+Updated index.html
+Created build.json (version: 1)
+Relativized base refs in index.html and sw.js
+-- UI: npm build succeeded
+-- UI: gzip compression applied (C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/tools/ui/dist/_gzip)
+embed: write output file C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/tools/ui/ui.h
+embed: write output file C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/build-hvx/tools/ui/ui.cpp
+[354/699] Building CXX object src/CMakeFiles/llama.dir/models/kimi-linear.cpp.obj
+[355/699] Building CXX object src/CMakeFiles/llama.dir/models/laguna.cpp.obj
+[356/699] Building CXX object src/CMakeFiles/llama.dir/models/llada.cpp.obj
+[357/699] Building CXX object src/CMakeFiles/llama.dir/models/llada-moe.cpp.obj
+[358/699] Building CXX object src/CMakeFiles/llama.dir/models/llama-embed.cpp.obj
+[359/699] Building CXX object src/CMakeFiles/llama.dir/models/llama.cpp.obj
+[360/699] Building CXX object src/CMakeFiles/llama.dir/models/lfm2moe.cpp.obj
+[361/699] Building CXX object src/CMakeFiles/llama.dir/models/lfm2.cpp.obj
+[362/699] Building CXX object src/CMakeFiles/llama.dir/models/llama4.cpp.obj
+[363/699] Building CXX object src/CMakeFiles/llama.dir/models/maincoder.cpp.obj
+[364/699] Building CXX object src/CMakeFiles/llama.dir/models/mamba-base.cpp.obj
+[365/699] Building CXX object src/CMakeFiles/llama.dir/models/mamba.cpp.obj
+[366/699] Building CXX object src/CMakeFiles/llama.dir/models/mamba2.cpp.obj
+[367/699] Building CXX object src/CMakeFiles/llama.dir/models/mellum.cpp.obj
+[368/699] Building CXX object src/CMakeFiles/llama.dir/models/minicpm.cpp.obj
+[369/699] Building CXX object src/CMakeFiles/llama.dir/models/minicpm3.cpp.obj
+[370/699] Building CXX object src/CMakeFiles/llama.dir/models/mimo2.cpp.obj
+[371/699] Building CXX object src/CMakeFiles/llama.dir/models/minimax-m2.cpp.obj
+[372/699] Building CXX object src/CMakeFiles/llama.dir/models/mistral3.cpp.obj
+[373/699] Building CXX object src/CMakeFiles/llama.dir/models/mistral4.cpp.obj
+[374/699] Building CXX object src/CMakeFiles/llama.dir/models/modern-bert.cpp.obj
+[375/699] Building CXX object src/CMakeFiles/llama.dir/models/minimax-m3.cpp.obj
+[376/699] Building CXX object src/CMakeFiles/llama.dir/models/mpt.cpp.obj
+[377/699] Building CXX object src/CMakeFiles/llama.dir/models/nanbeige.cpp.obj
+[378/699] Building CXX object src/CMakeFiles/llama.dir/models/nemotron-h-moe.cpp.obj
+[379/699] Building CXX object src/CMakeFiles/llama.dir/models/nemotron-h.cpp.obj
+[380/699] Building CXX object src/CMakeFiles/llama.dir/models/nemotron.cpp.obj
+[381/699] Building CXX object src/CMakeFiles/llama.dir/models/neo-bert.cpp.obj
+[382/699] Building CXX object src/CMakeFiles/llama.dir/models/nomic-bert.cpp.obj
+[383/699] Building CXX object src/CMakeFiles/llama.dir/models/nomic-bert-moe.cpp.obj
+[384/699] Building CXX object src/CMakeFiles/llama.dir/models/olmo.cpp.obj
+[385/699] Building CXX object src/CMakeFiles/llama.dir/models/olmoe.cpp.obj
+[386/699] Building CXX object src/CMakeFiles/llama.dir/models/olmo2.cpp.obj
+[387/699] Building CXX object src/CMakeFiles/llama.dir/models/openai-moe.cpp.obj
+[388/699] Building CXX object src/CMakeFiles/llama.dir/models/openelm.cpp.obj
+[389/699] Building CXX object src/CMakeFiles/llama.dir/models/orion.cpp.obj
+[390/699] Building CXX object src/CMakeFiles/llama.dir/models/paddleocr.cpp.obj
+[391/699] Building CXX object src/CMakeFiles/llama.dir/models/pangu-embed.cpp.obj
+[392/699] Building CXX object src/CMakeFiles/llama.dir/models/phi2.cpp.obj
+[393/699] Building CXX object src/CMakeFiles/llama.dir/models/phi3.cpp.obj
+[394/699] Building CXX object src/CMakeFiles/llama.dir/models/phimoe.cpp.obj
+[395/699] Building CXX object src/CMakeFiles/llama.dir/models/plamo.cpp.obj
+[396/699] Building CXX object src/CMakeFiles/llama.dir/models/plamo3.cpp.obj
+[397/699] Building CXX object src/CMakeFiles/llama.dir/models/plm.cpp.obj
+[398/699] Building CXX object src/CMakeFiles/llama.dir/models/plamo2.cpp.obj
+[399/699] Building CXX object src/CMakeFiles/llama.dir/models/qwen.cpp.obj
+[400/699] Building CXX object src/CMakeFiles/llama.dir/models/qwen2moe.cpp.obj
+[401/699] Building CXX object src/CMakeFiles/llama.dir/models/qwen2.cpp.obj
+[402/699] Building CXX object src/CMakeFiles/llama.dir/models/qwen2vl.cpp.obj
+[403/699] Building CXX object src/CMakeFiles/llama.dir/models/qwen3.cpp.obj
+[404/699] Building CXX object src/CMakeFiles/llama.dir/models/qwen35.cpp.obj
+[405/699] Building CXX object src/CMakeFiles/llama.dir/models/qwen35moe.cpp.obj
+[406/699] Building CXX object src/CMakeFiles/llama.dir/models/qwen3moe.cpp.obj
+[407/699] Building CXX object src/CMakeFiles/llama.dir/models/qwen3tts.cpp.obj
+[408/699] Building CXX object src/CMakeFiles/llama.dir/models/qwen3vl.cpp.obj
+[409/699] Building CXX object src/CMakeFiles/llama.dir/models/qwen3next.cpp.obj
+[410/699] Building CXX object src/CMakeFiles/llama.dir/models/qwen3vlmoe.cpp.obj
+[411/699] Building CXX object src/CMakeFiles/llama.dir/models/refact.cpp.obj
+[412/699] Building CXX object src/CMakeFiles/llama.dir/models/rwkv6-base.cpp.obj
+[413/699] Building CXX object src/CMakeFiles/llama.dir/models/rnd1.cpp.obj
+[414/699] Building CXX object src/CMakeFiles/llama.dir/models/rwkv6.cpp.obj
+[415/699] Building CXX object src/CMakeFiles/llama.dir/models/rwkv6qwen2.cpp.obj
+[416/699] Building CXX object src/CMakeFiles/llama.dir/models/rwkv7-base.cpp.obj
+[417/699] Building CXX object src/CMakeFiles/llama.dir/models/rwkv7.cpp.obj
+[418/699] Building CXX object src/CMakeFiles/llama.dir/models/seed-oss.cpp.obj
+[419/699] Building CXX object src/CMakeFiles/llama.dir/models/smollm3.cpp.obj
+[420/699] Building CXX object src/CMakeFiles/llama.dir/models/smallthinker.cpp.obj
+[421/699] Building CXX object src/CMakeFiles/llama.dir/models/starcoder.cpp.obj
+[422/699] Building CXX object src/CMakeFiles/llama.dir/models/stablelm.cpp.obj
+[423/699] Building CXX object src/CMakeFiles/llama.dir/models/starcoder2.cpp.obj
+[424/699] Building CXX object src/CMakeFiles/llama.dir/models/t5encoder.cpp.obj
+[425/699] Building CXX object src/CMakeFiles/llama.dir/models/t5.cpp.obj
+[426/699] Building CXX object src/CMakeFiles/llama.dir/models/step35.cpp.obj
+[427/699] Building CXX object src/CMakeFiles/llama.dir/models/talkie.cpp.obj
+[428/699] Building CXX object src/CMakeFiles/llama.dir/models/wavtokenizer-dec.cpp.obj
+[429/699] Building CXX object src/CMakeFiles/llama.dir/models/xverse.cpp.obj
+[430/699] Building CXX object common/CMakeFiles/llama-common.dir/console.cpp.obj
+[431/699] Building CXX object common/CMakeFiles/llama-common.dir/debug.cpp.obj
+[432/699] Building CXX object common/CMakeFiles/llama-common.dir/fit.cpp.obj
+[433/699] Building CXX object common/CMakeFiles/llama-common.dir/chat-auto-parser-helpers.cpp.obj
+[434/699] Building CXX object common/CMakeFiles/llama-common.dir/imatrix-loader.cpp.obj
+[435/699] Building CXX object common/CMakeFiles/llama-common.dir/llguidance.cpp.obj
+[436/699] Building CXX object common/CMakeFiles/llama-common.dir/log.cpp.obj
+[437/699] Building CXX object common/CMakeFiles/llama-common.dir/common.cpp.obj
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/common.cpp:1148:33: warning: 'fileno' is deprecated: The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _fileno. See online help for details. [-Wdeprecated-declarations]
+ 1148 |     bool stdout_is_tty = isatty(fileno(stdout));
+      |                                 ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stdio.h:2433:28: note: 'fileno' has been explicitly marked deprecated here
+ 2433 |         _Check_return_     _CRT_NONSTDC_DEPRECATE(_fileno)    _ACRTIMP int   __cdecl fileno(_In_ FILE* _Stream);
+      |                            ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt.h:428:50: note: expanded from macro '_CRT_NONSTDC_DEPRECATE'
+  428 |         #define _CRT_NONSTDC_DEPRECATE(_NewName) _CRT_DEPRECATE_TEXT(             \
+      |                                                  ^
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\include\vcruntime.h:358:47: note: expanded from macro '_CRT_DEPRECATE_TEXT'
+  358 | #define _CRT_DEPRECATE_TEXT(_Text) __declspec(deprecated(_Text))
+      |                                               ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/common.cpp:1148:26: warning: 'isatty' is deprecated: The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _isatty. See online help for details. [-Wdeprecated-declarations]
+ 1148 |     bool stdout_is_tty = isatty(fileno(stdout));
+      |                          ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_io.h:492:24: note: 'isatty' has been explicitly marked deprecated here
+  492 |         _Check_return_ _CRT_NONSTDC_DEPRECATE(_isatty)
+      |                        ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt.h:428:50: note: expanded from macro '_CRT_NONSTDC_DEPRECATE'
+  428 |         #define _CRT_NONSTDC_DEPRECATE(_NewName) _CRT_DEPRECATE_TEXT(             \
+      |                                                  ^
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\include\vcruntime.h:358:47: note: expanded from macro '_CRT_DEPRECATE_TEXT'
+  358 | #define _CRT_DEPRECATE_TEXT(_Text) __declspec(deprecated(_Text))
+      |                                               ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/common.cpp:1149:33: warning: 'fileno' is deprecated: The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _fileno. See online help for details. [-Wdeprecated-declarations]
+ 1149 |     bool stderr_is_tty = isatty(fileno(stderr));
+      |                                 ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stdio.h:2433:28: note: 'fileno' has been explicitly marked deprecated here
+ 2433 |         _Check_return_     _CRT_NONSTDC_DEPRECATE(_fileno)    _ACRTIMP int   __cdecl fileno(_In_ FILE* _Stream);
+      |                            ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt.h:428:50: note: expanded from macro '_CRT_NONSTDC_DEPRECATE'
+  428 |         #define _CRT_NONSTDC_DEPRECATE(_NewName) _CRT_DEPRECATE_TEXT(             \
+      |                                                  ^
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\include\vcruntime.h:358:47: note: expanded from macro '_CRT_DEPRECATE_TEXT'
+  358 | #define _CRT_DEPRECATE_TEXT(_Text) __declspec(deprecated(_Text))
+      |                                               ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/common.cpp:1149:26: warning: 'isatty' is deprecated: The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _isatty. See online help for details. [-Wdeprecated-declarations]
+ 1149 |     bool stderr_is_tty = isatty(fileno(stderr));
+      |                          ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_io.h:492:24: note: 'isatty' has been explicitly marked deprecated here
+  492 |         _Check_return_ _CRT_NONSTDC_DEPRECATE(_isatty)
+      |                        ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt.h:428:50: note: expanded from macro '_CRT_NONSTDC_DEPRECATE'
+  428 |         #define _CRT_NONSTDC_DEPRECATE(_NewName) _CRT_DEPRECATE_TEXT(             \
+      |                                                  ^
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\include\vcruntime.h:358:47: note: expanded from macro '_CRT_DEPRECATE_TEXT'
+  358 | #define _CRT_DEPRECATE_TEXT(_Text) __declspec(deprecated(_Text))
+      |                                               ^
+4 warnings generated.
+[438/699] Building CXX object common/CMakeFiles/llama-common.dir/ngram-cache.cpp.obj
+[439/699] Building CXX object common/CMakeFiles/llama-common.dir/chat-auto-parser-generator.cpp.obj
+[440/699] Building CXX object common/CMakeFiles/llama-common.dir/ngram-mod.cpp.obj
+[441/699] Building CXX object common/CMakeFiles/llama-common.dir/ngram-map.cpp.obj
+[442/699] Building CXX object common/CMakeFiles/llama-common.dir/reasoning-budget.cpp.obj
+[443/699] Building CXX object common/CMakeFiles/llama-common.dir/sampling.cpp.obj
+[444/699] Building CXX object common/CMakeFiles/llama-common.dir/subproc.cpp.obj
+[445/699] Building CXX object common/CMakeFiles/llama-common.dir/chat-peg-parser.cpp.obj
+[446/699] Building CXX object common/CMakeFiles/llama-common.dir/trie.cpp.obj
+[447/699] Building CXX object common/CMakeFiles/llama-common.dir/unicode.cpp.obj
+[448/699] Building CXX object common/CMakeFiles/llama-common.dir/speculative.cpp.obj
+[449/699] Building CXX object common/CMakeFiles/llama-common.dir/preset.cpp.obj
+[450/699] Building CXX object common/CMakeFiles/llama-common.dir/jinja/lexer.cpp.obj
+[451/699] Building CXX object common/CMakeFiles/llama-common.dir/jinja/string.cpp.obj
+[452/699] Building CXX object common/CMakeFiles/llama-common.dir/jinja/parser.cpp.obj
+[453/699] Building CXX object common/CMakeFiles/llama-common.dir/hf-cache.cpp.obj
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/hf-cache.cpp:6:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common\http.h:3:
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/../vendor\cpp-httplib/httplib.h:233:17: warning: extension used [-Wlanguage-extension-token]
+  233 | using ssize_t = __int64;
+      |                 ^
+1 warning generated.
+[454/699] Building CXX object common/CMakeFiles/llama-common.dir/jinja/runtime.cpp.obj
+[455/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-audio.cpp.obj
+[456/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-image.cpp.obj
+[457/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd.cpp.obj
+[458/699] Building CXX object common/CMakeFiles/llama-common.dir/chat-diff-analyzer.cpp.obj
+[459/699] Building CXX object common/CMakeFiles/llama-common.dir/json-schema-to-grammar.cpp.obj
+[460/699] Building CXX object common/CMakeFiles/llama-common.dir/download.cpp.obj
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/download.cpp:24:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common\http.h:3:
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/../vendor\cpp-httplib/httplib.h:233:17: warning: extension used [-Wlanguage-extension-token]
+  233 | using ssize_t = __int64;
+      |                 ^
+1 warning generated.
+[461/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-helper-gen.cpp.obj
+[462/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/cogvlm.cpp.obj
+[463/699] Building CXX object common/CMakeFiles/llama-common.dir/jinja/caps.cpp.obj
+[464/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/conformer.cpp.obj
+[465/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/dotsocr.cpp.obj
+[466/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/exaone4_5.cpp.obj
+[467/699] Building CXX object common/CMakeFiles/llama-common.dir/jinja/value.cpp.obj
+[468/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/gemma4a.cpp.obj
+[469/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/gemma4v.cpp.obj
+[470/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/gemma4ua.cpp.obj
+[471/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/gemma4uv.cpp.obj
+[472/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/glm4v.cpp.obj
+[473/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/granite-speech.cpp.obj
+[474/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/granite4-vision.cpp.obj
+[475/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/hunyuanvl.cpp.obj
+[476/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/internvl.cpp.obj
+[477/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/kimivl.cpp.obj
+[478/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/kimik25.cpp.obj
+[479/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/nemotron-v2-vl.cpp.obj
+[480/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/clip.cpp.obj
+[481/699] Building CXX object common/CMakeFiles/llama-common.dir/arg.cpp.obj
+[482/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/llama4.cpp.obj
+[483/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/llava.cpp.obj
+[484/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/minicpmv.cpp.obj
+[485/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/paddleocr.cpp.obj
+[486/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/pixtral.cpp.obj
+[487/699] Building CXX object common/CMakeFiles/llama-common.dir/peg-parser.cpp.obj
+[488/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/qwen2vl.cpp.obj
+[489/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/minimax-m3.cpp.obj
+[490/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/qwen3vl.cpp.obj
+[491/699] Building CXX object common/CMakeFiles/llama-common.dir/chat.cpp.obj
+[492/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/qwen3a.cpp.obj
+[493/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/mimovl.cpp.obj
+[494/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/mimo-audio.cpp.obj
+[495/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/qwen3tts-spkenc.cpp.obj
+[496/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/step3vl.cpp.obj
+[497/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/siglip.cpp.obj
+[498/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-helper.cpp.obj
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tools/mtmd/mtmd-helper.cpp:747:25: warning: 'strdup' is deprecated: The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _strdup. See online help for details. [-Wdeprecated-declarations]
+  747 |             *out_text = strdup(pending_text.c_str());
+      |                         ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\string.h:531:20: note: 'strdup' has been explicitly marked deprecated here
+  531 |     _Check_return_ _CRT_NONSTDC_DEPRECATE(_strdup)
+      |                    ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt.h:428:50: note: expanded from macro '_CRT_NONSTDC_DEPRECATE'
+  428 |         #define _CRT_NONSTDC_DEPRECATE(_NewName) _CRT_DEPRECATE_TEXT(             \
+      |                                                  ^
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\include\vcruntime.h:358:47: note: expanded from macro '_CRT_DEPRECATE_TEXT'
+  358 | #define _CRT_DEPRECATE_TEXT(_Text) __declspec(deprecated(_Text))
+      |                                               ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tools/mtmd/mtmd-helper.cpp:762:29: warning: 'strdup' is deprecated: The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _strdup. See online help for details. [-Wdeprecated-declarations]
+  762 |                 *out_text = strdup(prompt_start.c_str());
+      |                             ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\string.h:531:20: note: 'strdup' has been explicitly marked deprecated here
+  531 |     _Check_return_ _CRT_NONSTDC_DEPRECATE(_strdup)
+      |                    ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt.h:428:50: note: expanded from macro '_CRT_NONSTDC_DEPRECATE'
+  428 |         #define _CRT_NONSTDC_DEPRECATE(_NewName) _CRT_DEPRECATE_TEXT(             \
+      |                                                  ^
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\include\vcruntime.h:358:47: note: expanded from macro '_CRT_DEPRECATE_TEXT'
+  358 | #define _CRT_DEPRECATE_TEXT(_Text) __declspec(deprecated(_Text))
+      |                                               ^
+2 warnings generated.
+[499/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/qwen3tts-gen.cpp.obj
+[500/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/whisper-enc.cpp.obj
+[501/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/deepseekocr.cpp.obj
+[502/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/mobilenetv5.cpp.obj
+[503/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/youtuvl.cpp.obj
+[504/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/deepseekocr2.cpp.obj
+[505/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/parakeet.cpp.obj
+[506/699] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/yasa2.cpp.obj
+[507/699] Building CXX object tools/server/CMakeFiles/server-context.dir/server-queue.cpp.obj
+[508/699] Building CXX object tools/ui/CMakeFiles/llama-ui.dir/ui.cpp.obj
+[509/699] Linking CXX static library tools\ui\llama-ui.lib
+[510/699] Building CXX object tools/server/CMakeFiles/server-context.dir/server-stream.cpp.obj
+[511/699] Building CXX object tools/server/CMakeFiles/server-context.dir/server-schema.cpp.obj
+[512/699] Building CXX object tools/server/CMakeFiles/server-context.dir/server-chat.cpp.obj
+[513/699] Building CXX object examples/diffusion/CMakeFiles/llama-diffusion.dir/diffusion.cpp.obj
+[514/699] Building CXX object tools/batched-bench/CMakeFiles/llama-batched-bench-impl.dir/batched-bench.cpp.obj
+[515/699] Building CXX object tools/server/CMakeFiles/server-context.dir/server-common.cpp.obj
+[516/699] Building CXX object tools/completion/CMakeFiles/llama-completion-impl.dir/completion.cpp.obj
+[517/699] Building CXX object tools/server/CMakeFiles/server-context.dir/server-mcp.cpp.obj
+[518/699] Building CXX object tools/server/CMakeFiles/llama-server-impl.dir/server.cpp.obj
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tools/server/server.cpp:4:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tools/server\server-cors-proxy.h:4:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/.\http.h:3:
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/../vendor\cpp-httplib/httplib.h:233:17: warning: extension used [-Wlanguage-extension-token]
+  233 | using ssize_t = __int64;
+      |                 ^
+1 warning generated.
+[519/699] Building CXX object tools/perplexity/CMakeFiles/llama-perplexity-impl.dir/perplexity.cpp.obj
+[520/699] Building CXX object tools/quantize/CMakeFiles/llama-quantize-impl.dir/quantize.cpp.obj
+[521/699] Building CXX object tools/fit-params/CMakeFiles/llama-fit-params-impl.dir/fit-params.cpp.obj
+[522/699] Building CXX object tools/cli/CMakeFiles/llama-cli-impl.dir/cli.cpp.obj
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tools/cli/cli.cpp:5:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tools/cli\cli-context.h:6:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tools/cli\cli-server.h:5:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/.\http.h:3:
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/../vendor\cpp-httplib/httplib.h:233:17: warning: extension used [-Wlanguage-extension-token]
+  233 | using ssize_t = __int64;
+      |                 ^
+1 warning generated.
+[523/699] Building CXX object tests/CMakeFiles/test-tokenizer-0.dir/test-tokenizer-0.cpp.obj
+[524/699] Building CXX object tools/cli/CMakeFiles/llama-cli-impl.dir/cli-client.cpp.obj
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tools/cli/cli-client.cpp:3:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/.\http.h:3:
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/../vendor\cpp-httplib/httplib.h:233:17: warning: extension used [-Wlanguage-extension-token]
+  233 | using ssize_t = __int64;
+      |                 ^
+1 warning generated.
+[525/699] Building CXX object tests/CMakeFiles/test-recurrent-state-rollback.dir/test-recurrent-state-rollback.cpp.obj
+[526/699] Building CXX object tests/CMakeFiles/test-chat-peg-parser.dir/peg-parser/simple-tokenize.cpp.obj
+[527/699] Building CXX object tools/llama-bench/CMakeFiles/llama-bench-impl.dir/llama-bench.cpp.obj
+[528/699] Building CXX object tests/CMakeFiles/test-log.dir/test-log.cpp.obj
+[529/699] Building CXX object tests/CMakeFiles/test-peg-parser.dir/test-peg-parser.cpp.obj
+[530/699] Building CXX object tests/CMakeFiles/test-peg-parser.dir/peg-parser/simple-tokenize.cpp.obj
+[531/699] Building CXX object tools/server/CMakeFiles/server-context.dir/server-task.cpp.obj
+[532/699] Building CXX object tools/server/CMakeFiles/server-context.dir/server-tools.cpp.obj
+[533/699] Building CXX object tools/server/CMakeFiles/llama-server-impl.dir/server-http.cpp.obj
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tools/server/server-http.cpp:2:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/.\http.h:3:
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/../vendor\cpp-httplib/httplib.h:233:17: warning: extension used [-Wlanguage-extension-token]
+  233 | using ssize_t = __int64;
+      |                 ^
+1 warning generated.
+[534/699] Building CXX object tests/CMakeFiles/test-peg-parser.dir/peg-parser/test-json-parser.cpp.obj
+[535/699] Building CXX object tools/server/CMakeFiles/server-context.dir/server-context.cpp.obj
+[536/699] Building CXX object tests/CMakeFiles/test-chat-template.dir/test-chat-template.cpp.obj
+[537/699] Building CXX object tools/cli/CMakeFiles/llama-cli-impl.dir/cli-context.cpp.obj
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tools/cli/cli-context.cpp:1:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tools/cli\cli-context.h:6:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tools/cli\cli-server.h:5:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/.\http.h:3:
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/../vendor\cpp-httplib/httplib.h:233:17: warning: extension used [-Wlanguage-extension-token]
+  233 | using ssize_t = __int64;
+      |                 ^
+1 warning generated.
+[538/699] Building CXX object tests/CMakeFiles/test-peg-parser.dir/peg-parser/test-json-serialization.cpp.obj
+[539/699] Building CXX object tests/CMakeFiles/test-thread-safety.dir/test-thread-safety.cpp.obj
+[540/699] Building CXX object tests/CMakeFiles/test-arg-parser.dir/test-arg-parser.cpp.obj
+[541/699] Building CXX object tests/CMakeFiles/test-peg-parser.dir/peg-parser/test-basic.cpp.obj
+[542/699] Building CXX object tests/CMakeFiles/test-peg-parser.dir/peg-parser/test-gbnf-generation.cpp.obj
+[543/699] Building CXX object tests/CMakeFiles/test-model-load-cancel.dir/test-model-load-cancel.cpp.obj
+[544/699] Building CXX object tests/CMakeFiles/test-autorelease.dir/test-autorelease.cpp.obj
+[545/699] Building CXX object tests/CMakeFiles/test-opt.dir/test-opt.cpp.obj
+[546/699] Building CXX object tests/CMakeFiles/test-peg-parser.dir/peg-parser/test-python-dict-parser.cpp.obj
+[547/699] Building CXX object tests/CMakeFiles/test-state-restore-fragmented.dir/test-state-restore-fragmented.cpp.obj
+[548/699] Building CXX object tests/CMakeFiles/test-save-load-state.dir/test-save-load-state.cpp.obj
+[549/699] Building CXX object tests/CMakeFiles/test-barrier.dir/test-barrier.cpp.obj
+[550/699] Building CXX object tests/CMakeFiles/test-quantize-fns.dir/test-quantize-fns.cpp.obj
+[551/699] Building CXX object tools/server/CMakeFiles/llama-server-impl.dir/server-models.cpp.obj
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tools/server/server-models.cpp:2:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/.\http.h:3:
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/../vendor\cpp-httplib/httplib.h:233:17: warning: extension used [-Wlanguage-extension-token]
+  233 | using ssize_t = __int64;
+      |                 ^
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tools/server/server-models.cpp:11:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/.\subproc.h:9:
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/../vendor\sheredom/subprocess.h:390:5: warning: anonymous structs are a GNU extension [-Wgnu-anonymous-struct]
+  390 |     struct {
+      |     ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/../vendor\sheredom/subprocess.h:390:5: warning: anonymous types declared in an anonymous union are an extension [-Wnested-anon-types]
+3 warnings generated.
+[552/699] Building CXX object tests/CMakeFiles/test-backend-sampler.dir/test-backend-sampler.cpp.obj
+[553/699] Building CXX object tests/CMakeFiles/test-col2im-1d.dir/test-col2im-1d.cpp.obj
+[554/699] Building CXX object tests/CMakeFiles/test-rope.dir/test-rope.cpp.obj
+[555/699] Building C object tests/CMakeFiles/test-c.dir/test-c.c.obj
+[556/699] Building CXX object tests/CMakeFiles/test-quantize-perf.dir/test-quantize-perf.cpp.obj
+[557/699] Building C object tests/CMakeFiles/test-mtmd-c-api.dir/test-mtmd-c-api.c.obj
+[558/699] Building CXX object tests/CMakeFiles/test-chat-auto-parser.dir/test-chat-auto-parser.cpp.obj
+[559/699] Building CXX object tests/CMakeFiles/test-alloc.dir/test-alloc.cpp.obj
+[560/699] Building CXX object tests/CMakeFiles/test-peg-parser.dir/peg-parser/test-unicode.cpp.obj
+[561/699] Building CXX object examples/batched/CMakeFiles/llama-batched.dir/batched.cpp.obj
+[562/699] Building CXX object tests/CMakeFiles/test-gguf.dir/test-gguf.cpp.obj
+[563/699] Building CXX object tests/CMakeFiles/test-chat-peg-parser.dir/test-chat-peg-parser.cpp.obj
+[564/699] Building CXX object tests/CMakeFiles/test-export-graph-ops.dir/test-export-graph-ops.cpp.obj
+[565/699] Building CXX object examples/eval-callback/CMakeFiles/llama-eval-callback.dir/eval-callback.cpp.obj
+[566/699] Building CXX object examples/embedding/CMakeFiles/llama-embedding.dir/embedding.cpp.obj
+[567/699] Building CXX object examples/gguf-hash/CMakeFiles/llama-gguf-hash.dir/gguf-hash.cpp.obj
+[568/699] Building CXX object examples/gguf/CMakeFiles/llama-gguf.dir/gguf.cpp.obj
+[569/699] Building CXX object tests/CMakeFiles/test-model-resolution.dir/test-model-resolution.cpp.obj
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/tests/test-model-resolution.cpp:9:
+In file included from C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/.\http.h:3:
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/common/../vendor\cpp-httplib/httplib.h:233:17: warning: extension used [-Wlanguage-extension-token]
+  233 | using ssize_t = __int64;
+      |                 ^
+1 warning generated.
+[570/699] Building CXX object examples/idle/CMakeFiles/llama-idle.dir/idle.cpp.obj
+[571/699] Building CXX object examples/lookup/CMakeFiles/llama-lookup.dir/lookup.cpp.obj
+[572/699] Building CXX object examples/debug/CMakeFiles/llama-debug.dir/debug.cpp.obj
+[573/699] Building CXX object examples/lookahead/CMakeFiles/llama-lookahead.dir/lookahead.cpp.obj
+[574/699] Building CXX object examples/lookup/CMakeFiles/llama-lookup-merge.dir/lookup-merge.cpp.obj
+[575/699] Building CXX object examples/lookup/CMakeFiles/llama-lookup-create.dir/lookup-create.cpp.obj
+[576/699] Building CXX object examples/lookup/CMakeFiles/llama-lookup-stats.dir/lookup-stats.cpp.obj
+[577/699] Building CXX object examples/simple/CMakeFiles/llama-simple.dir/simple.cpp.obj
+[578/699] Building CXX object examples/passkey/CMakeFiles/llama-passkey.dir/passkey.cpp.obj
+[579/699] Building CXX object examples/simple-chat/CMakeFiles/llama-simple-chat.dir/simple-chat.cpp.obj
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/examples/simple-chat/simple-chat.cpp:173:37: warning: 'strdup' is deprecated: The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _strdup. See online help for details. [-Wdeprecated-declarations]
+  173 |         messages.push_back({"user", strdup(user.c_str())});
+      |                                     ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\string.h:531:20: note: 'strdup' has been explicitly marked deprecated here
+  531 |     _Check_return_ _CRT_NONSTDC_DEPRECATE(_strdup)
+      |                    ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt.h:428:50: note: expanded from macro '_CRT_NONSTDC_DEPRECATE'
+  428 |         #define _CRT_NONSTDC_DEPRECATE(_NewName) _CRT_DEPRECATE_TEXT(             \
+      |                                                  ^
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\include\vcruntime.h:358:47: note: expanded from macro '_CRT_DEPRECATE_TEXT'
+  358 | #define _CRT_DEPRECATE_TEXT(_Text) __declspec(deprecated(_Text))
+      |                                               ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/examples/simple-chat/simple-chat.cpp:193:42: warning: 'strdup' is deprecated: The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _strdup. See online help for details. [-Wdeprecated-declarations]
+  193 |         messages.push_back({"assistant", strdup(response.c_str())});
+      |                                          ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\string.h:531:20: note: 'strdup' has been explicitly marked deprecated here
+  531 |     _Check_return_ _CRT_NONSTDC_DEPRECATE(_strdup)
+      |                    ^
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt.h:428:50: note: expanded from macro '_CRT_NONSTDC_DEPRECATE'
+  428 |         #define _CRT_NONSTDC_DEPRECATE(_NewName) _CRT_DEPRECATE_TEXT(             \
+      |                                                  ^
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\include\vcruntime.h:358:47: note: expanded from macro '_CRT_DEPRECATE_TEXT'
+  358 | #define _CRT_DEPRECATE_TEXT(_Text) __declspec(deprecated(_Text))
+      |                                               ^
+2 warnings generated.
+[580/699] Building CXX object examples/parallel/CMakeFiles/llama-parallel.dir/parallel.cpp.obj
+[581/699] Building CXX object examples/retrieval/CMakeFiles/llama-retrieval.dir/retrieval.cpp.obj
+[582/699] Building CXX object tests/CMakeFiles/test-jinja.dir/test-jinja.cpp.obj
+[583/699] Building CXX object tools/batched-bench/CMakeFiles/llama-batched-bench.dir/main.cpp.obj
+[584/699] Building CXX object examples/gen-docs/CMakeFiles/llama-gen-docs.dir/gen-docs.cpp.obj
+[585/699] Building CXX object examples/training/CMakeFiles/llama-finetune.dir/finetune.cpp.obj
+[586/699] Building CXX object examples/speculative-simple/CMakeFiles/llama-speculative-simple.dir/speculative-simple.cpp.obj
+[587/699] Building CXX object tools/llama-bench/CMakeFiles/llama-bench.dir/main.cpp.obj
+[588/699] Building CXX object tools/completion/CMakeFiles/llama-completion.dir/main.cpp.obj
+[589/699] Building CXX object tools/perplexity/CMakeFiles/llama-perplexity.dir/main.cpp.obj
+[590/699] Building CXX object tools/quantize/CMakeFiles/llama-quantize.dir/main.cpp.obj
+[591/699] Building CXX object tools/cli/CMakeFiles/llama-cli.dir/main.cpp.obj
+[592/699] Building CXX object pocs/vdot/CMakeFiles/llama-vdot.dir/vdot.cpp.obj
+[593/699] Building CXX object tools/server/CMakeFiles/llama-server.dir/main.cpp.obj
+[594/699] Building CXX object pocs/vdot/CMakeFiles/llama-q8dot.dir/q8dot.cpp.obj
+[595/699] Building CXX object examples/speculative/CMakeFiles/llama-speculative.dir/speculative.cpp.obj
+[596/699] Building CXX object examples/convert-llama2c-to-ggml/CMakeFiles/llama-convert-llama2c-to-ggml.dir/convert-llama2c-to-ggml.cpp.obj
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/examples/convert-llama2c-to-ggml/convert-llama2c-to-ggml.cpp:459:9: warning: extension used [-Wlanguage-extension-token]
+  459 |         __int64 ret = _ftelli64(fp);
+      |         ^
+C:/Users/qc_de/OneDrive/Documents/QMesh_AI/qmesh_npu/llama.cpp/examples/convert-llama2c-to-ggml/convert-llama2c-to-ggml.cpp:469:34: warning: extension used [-Wlanguage-extension-token]
+  469 |         int ret = _fseeki64(fp, (__int64) offset, whence);
+      |                                  ^
+2 warnings generated.
+[597/699] Building CXX object examples/diffusion/CMakeFiles/llama-diffusion-cli.dir/diffusion-cli.cpp.obj
+[598/699] Building CXX object tools/gguf-split/CMakeFiles/llama-gguf-split.dir/gguf-split.cpp.obj
+[599/699] Building CXX object tools/tts/CMakeFiles/llama-tts.dir/tts.cpp.obj
+[600/699] Building CXX object tools/fit-params/CMakeFiles/llama-fit-params.dir/main.cpp.obj
+[601/699] Building CXX object tools/mtmd/CMakeFiles/llama-mtmd-debug.dir/debug/mtmd-debug.cpp.obj
+[602/699] Building CXX object tools/tokenize/CMakeFiles/llama-tokenize.dir/tokenize.cpp.obj
+[603/699] Building CXX object app/CMakeFiles/llama-app.dir/__/license.cpp.obj
+[604/699] Building CXX object app/CMakeFiles/llama-app.dir/llama.cpp.obj
+[605/699] Linking CXX shared library bin\llama.dll
+[606/699] Linking CXX executable bin\llama-gguf-hash.exe
+[607/699] Linking CXX executable bin\llama-gguf.exe
+[608/699] Building CXX object tools/mtmd/CMakeFiles/llama-mtmd-cli.dir/mtmd-cli.cpp.obj
+[609/699] Building CXX object tools/cvector-generator/CMakeFiles/llama-cvector-generator.dir/cvector-generator.cpp.obj
+[610/699] Building CXX object tools/results/CMakeFiles/llama-results.dir/results.cpp.obj
+[611/699] Building CXX object tools/rpc/CMakeFiles/ggml-rpc-server.dir/rpc-server.cpp.obj
+[612/699] Building CXX object tools/export-lora/CMakeFiles/llama-export-lora.dir/export-lora.cpp.obj
+[613/699] Linking C executable bin\test-c.exe
+[614/699] Linking CXX executable bin\llama-simple.exe
+[615/699] Linking CXX executable bin\llama-simple-chat.exe
+[616/699] Building CXX object app/CMakeFiles/llama-app.dir/download.cpp.obj
+[617/699] Linking CXX executable bin\ggml-rpc-server.exe
+[618/699] Building CXX object tools/imatrix/CMakeFiles/llama-imatrix.dir/imatrix.cpp.obj
+[619/699] Building CXX object tests/CMakeFiles/test-backend-ops.dir/test-backend-ops.cpp.obj
+[620/699] Building CXX object tools/parser/CMakeFiles/llama-template-analysis.dir/template-analysis.cpp.obj
+[621/699] Linking CXX shared library bin\mtmd.dll
+[622/699] Linking CXX shared library bin\llama-common.dll
+[623/699] Linking CXX static library examples\diffusion\llama-diffusion.lib
+[624/699] Linking CXX static library tools\server\server-context.lib
+[625/699] Linking CXX shared library bin\llama-batched-bench-impl.dll
+[626/699] Linking CXX executable bin\test-recurrent-state-rollback.exe
+[627/699] Linking CXX shared library bin\llama-fit-params-impl.dll
+[628/699] Linking CXX executable bin\test-tokenizer-0.exe
+[629/699] Linking CXX executable bin\test-log.exe
+[630/699] Linking CXX shared library bin\llama-quantize-impl.dll
+[631/699] Linking CXX executable bin\test-thread-safety.exe
+[632/699] Linking CXX shared library bin\llama-completion-impl.dll
+[633/699] Linking CXX executable bin\test-arg-parser.exe
+[634/699] Linking CXX executable bin\test-opt.exe
+[635/699] Linking CXX shared library bin\llama-perplexity-impl.dll
+[636/699] Linking CXX executable bin\test-model-load-cancel.exe
+[637/699] Linking CXX executable bin\test-autorelease.exe
+[638/699] Linking CXX executable bin\test-state-restore-fragmented.exe
+[639/699] Linking CXX executable bin\test-save-load-state.exe
+[640/699] Linking CXX executable bin\test-barrier.exe
+[641/699] Linking CXX executable bin\test-quantize-fns.exe
+[642/699] Linking CXX executable bin\test-backend-sampler.exe
+[643/699] Linking CXX executable bin\test-quantize-perf.exe
+[644/699] Linking CXX executable bin\test-rope.exe
+[645/699] Linking CXX executable bin\test-col2im-1d.exe
+[646/699] Linking CXX shared library bin\llama-bench-impl.dll
+[647/699] Linking CXX executable bin\test-mtmd-c-api.exe
+[648/699] Linking CXX executable bin\test-alloc.exe
+[649/699] Linking CXX executable bin\test-chat-template.exe
+[650/699] Linking CXX executable bin\llama-batched.exe
+[651/699] Linking CXX executable bin\test-export-graph-ops.exe
+[652/699] Linking CXX executable bin\test-gguf.exe
+[653/699] Linking CXX executable bin\llama-eval-callback.exe
+[654/699] Linking CXX executable bin\llama-idle.exe
+[655/699] Linking CXX executable bin\llama-embedding.exe
+[656/699] Linking CXX executable bin\llama-lookahead.exe
+[657/699] Linking CXX executable bin\llama-lookup.exe
+[658/699] Linking CXX executable bin\llama-lookup-merge.exe
+[659/699] Linking CXX executable bin\llama-debug.exe
+[660/699] Linking CXX executable bin\llama-lookup-create.exe
+[661/699] Linking CXX executable bin\llama-lookup-stats.exe
+[662/699] Linking CXX executable bin\llama-passkey.exe
+[663/699] Linking CXX executable bin\llama-parallel.exe
+[664/699] Linking CXX executable bin\test-chat-peg-parser.exe
+[665/699] Linking CXX executable bin\llama-retrieval.exe
+[666/699] Linking CXX executable bin\llama-speculative-simple.exe
+[667/699] Linking CXX executable bin\llama-speculative.exe
+[668/699] Linking CXX executable bin\llama-finetune.exe
+[669/699] Linking CXX executable bin\llama-gen-docs.exe
+[670/699] Linking CXX executable bin\llama-q8dot.exe
+[671/699] Linking CXX executable bin\llama-vdot.exe
+[672/699] Linking CXX executable bin\llama-convert-llama2c-to-ggml.exe
+[673/699] Linking CXX executable bin\llama-diffusion-cli.exe
+[674/699] Linking CXX executable bin\llama-batched-bench.exe
+[675/699] Linking CXX executable bin\llama-bench.exe
+[676/699] Linking CXX executable bin\llama-completion.exe
+[677/699] Linking CXX executable bin\llama-perplexity.exe
+[678/699] Linking CXX executable bin\llama-gguf-split.exe
+[679/699] Linking CXX executable bin\llama-quantize.exe
+[680/699] Linking CXX executable bin\llama-tts.exe
+[681/699] Linking CXX executable bin\llama-tokenize.exe
+[682/699] Linking CXX executable bin\test-chat-auto-parser.exe
+[683/699] Linking CXX executable bin\llama-mtmd-cli.exe
+[684/699] Linking CXX executable bin\llama-mtmd-debug.exe
+[685/699] Linking CXX executable bin\llama-fit-params.exe
+[686/699] Linking CXX executable bin\test-model-resolution.exe
+[687/699] Linking CXX executable bin\llama-export-lora.exe
+[688/699] Linking CXX executable bin\llama-results.exe
+[689/699] Linking CXX executable bin\llama-cvector-generator.exe
+[690/699] Linking CXX executable bin\llama-imatrix.exe
+[691/699] Linking CXX executable bin\llama-template-analysis.exe
+[692/699] Linking CXX executable bin\test-peg-parser.exe
+[693/699] Linking CXX executable bin\test-jinja.exe
+[694/699] Linking CXX executable bin\test-backend-ops.exe
+[695/699] Linking CXX shared library bin\llama-server-impl.dll
+[696/699] Linking CXX executable bin\llama-server.exe
+[697/699] Linking CXX shared library bin\llama-cli-impl.dll
+[698/699] Linking CXX executable bin\llama-cli.exe
+[699/699] Linking CXX executable bin\llama.exe
+
+=== BUILD EXIT 0 in 4.78 min ===
+-- Install configuration: "Release"
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/ggml-cpu.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/ggml-cpu.dll
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/ggml-rpc.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/ggml-rpc.dll
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/ggml-opencl.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/ggml-opencl.dll
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/ggml-hexagon.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/ggml-hexagon.dll
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/libggml-htp-v73.so
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/libggml-htp-v75.so
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/libggml-htp-v79.so
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/libggml-htp-v81.so
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/libggml-htp.cat
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/ggml.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/ggml.dll
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-cpu.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-alloc.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-backend.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-blas.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-cann.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-cpp.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-cuda.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-opt.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-metal.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-rpc.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-virtgpu.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-sycl.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-vulkan.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-webgpu.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-zendnn.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/ggml-openvino.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/gguf.h
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/ggml-base.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/ggml-base.dll
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/cmake/ggml/ggml-config.cmake
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/cmake/ggml/ggml-version.cmake
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-tokenizer-0.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-recurrent-state-rollback.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-chat-peg-parser.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-jinja.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-chat-auto-parser.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-chat-template.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-log.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-peg-parser.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-thread-safety.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-arg-parser.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-model-resolution.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-opt.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-backend-ops.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-model-load-cancel.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-autorelease.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-backend-sampler.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-state-restore-fragmented.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-save-load-state.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-barrier.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-quantize-fns.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-quantize-perf.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-rope.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-col2im-1d.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-mtmd-c-api.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-gguf.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-alloc.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/test-export-graph-ops.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-batched.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-debug.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-embedding.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-eval-callback.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-gguf-hash.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-gguf.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-idle.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-lookahead.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-lookup.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-lookup-create.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-lookup-merge.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-lookup-stats.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-parallel.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-passkey.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-retrieval.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-simple.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-simple-chat.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-speculative.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-speculative-simple.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-gen-docs.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-finetune.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-diffusion-cli.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-convert-llama2c-to-ggml.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/llama-batched-bench-impl.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-batched-bench-impl.dll
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-batched-bench.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-gguf-split.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-imatrix.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/llama-bench-impl.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-bench-impl.dll
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-bench.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/llama-completion-impl.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-completion-impl.dll
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-completion.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/llama-perplexity-impl.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-perplexity-impl.dll
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-perplexity.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/llama-quantize-impl.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-quantize-impl.dll
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-quantize.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/llama-cli-impl.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-cli-impl.dll
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-cli.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/llama-server-impl.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-server-impl.dll
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-server.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-tokenize.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-template-analysis.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-tts.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/mtmd.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/mtmd.dll
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/mtmd-debug.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/mtmd.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/mtmd-helper.h
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-mtmd-cli.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/ggml-rpc-server.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-cvector-generator.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-export-lora.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/llama-fit-params-impl.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-fit-params-impl.dll
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-fit-params.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-results.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama.exe
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/llama.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama.dll
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/llama.h
+-- Up-to-date: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/include/llama-cpp.h
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/llama-common.lib
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/bin/llama-common.dll
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/cmake/llama/llama-config.cmake
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/cmake/llama/llama-version.cmake
+-- Installing: C:\Users\qc_de\OneDrive\Documents\QMesh_AI\qmesh_npu\pkg-hvx/lib/pkgconfig/llama.pc
+
+=== INSTALL EXIT 0 ===
