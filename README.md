@@ -1,4 +1,4 @@
-# QMesh — a private AI mesh across your own devices
+# QMesh — a private AI across your own devices
 
 QMesh turns the devices you already own into one private AI system. A chat app on
 your Android phone runs large language models three ways — **fully on the phone**
