@@ -232,7 +232,7 @@ Qwen3-4B-Instruct Q4_0, llama-bench pp128/tg32:
 (~449 vs ~363 t/s CPU same-session) while CPU wins decode — details and the
 HMX/OPPOLL tuning story in [`qmesh_npu/README.md`](qmesh_npu/README.md).
 
-At 4B the split trades speed for capability and privacy (~1 network round-trip
+At 4B, the split trades speed for capability and privacy (~1 network round-trip
 per token); its purpose is serving models the phone cannot hold at all, with
 the phone still owning tokenization, sampling, and the first layers.
 
@@ -242,15 +242,8 @@ the phone still owning tokenization, sampling, and the first layers.
   llama.cpp servers on `localhost` or the LAN; the adapter
   ([`Qmesh-App/src/lib/openaiModel.ts`](Qmesh-App/src/lib/openaiModel.ts)) is
   the only inference seam.
-- **Engine lifecycle**: Android forbids apps from exec'ing pushed binaries, so
-  the phone-side engines are started via `adb` (`phone_split.sh`), not by the
-  APK. Embedding the engine in the APK via JNI is the planned next step.
 - **Security**: ggml-RPC is unauthenticated — bind the worker only to a trusted
   LAN and scope firewall rules to the phone's IP (the setup commands above do).
-- **Known quirks** we hit and documented: aapt silently drops `_`-prefixed asset
-  dirs (Next's `_next/`!); llama-bench silently falls back to CPU-only when the
-  worker is unreachable; one llama-server per worker, ever. War stories in
-  [`STATUS.md`](STATUS.md) and [`FINDINGS.md`](split_rpc_validation/FINDINGS.md).
 
 ## Building from source
 
