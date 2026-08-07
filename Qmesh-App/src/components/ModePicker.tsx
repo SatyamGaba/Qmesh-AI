@@ -70,33 +70,11 @@ const DOT: Record<Reach, string> = {
   unknown: "bg-zinc-300",
 };
 
-/**
- * Backend badge. Deliberately says "reported by engine", not "verified":
- * llama-server exposes no device field, so this reflects the alias the
- * launcher chose, not something the app measured. See config.ts.
- */
-function BackendBadge({ status }: { status?: EngineStatus }) {
-  if (!status || status.reach !== "up" || status.backend === "unknown") return null;
-  const accel = status.backend !== "cpu";
-  return (
-    <span
-      title={
-        `Backend reported by engine: ${status.backend.toUpperCase()}` +
-        (status.buildInfo ? ` · build ${status.buildInfo}` : "") +
-        (status.modelId ? ` · ${status.modelId}` : "") +
-        "\n(reported by the engine's alias, not independently verified)"
-      }
-      className={cn(
-        "rounded px-1 py-px text-[10px] font-semibold uppercase tracking-wide",
-        accel
-          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300"
-          : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400",
-      )}
-    >
-      {status.backend}
-    </span>
-  );
-}
+// The backend badge (NPU/CPU/GPU) used to render here. It was dropped from the
+// picker: it reports the engine's `--alias`, not anything measured, so it read
+// as a hardware claim the app cannot actually make — "Remote NPU" next to the
+// laptop engine being the clearest case. probeBackend still returns the field
+// (config.ts) if it is ever wanted somewhere it can be explained.
 
 /**
  * Header control that shows the active engine mode and lets you switch between
@@ -115,7 +93,6 @@ export function ModePicker({ threadId }: { threadId?: string | null }) {
   const activeId = useActivePresetId();
   const presets = usePresets();
   const [reach, setReach] = useState<Record<string, Reach>>({});
-  const [status, setStatus] = useState<Record<string, EngineStatus>>({});
   const ref = useRef<HTMLDivElement>(null);
   const pinnedId = useLiveQuery(
     async () =>
@@ -145,7 +122,6 @@ export function ModePicker({ threadId }: { threadId?: string | null }) {
           const st = await probe(p);
           if (cancelled) return;
           setReach((r) => ({ ...r, [p.id]: st.reach }));
-          setStatus((s) => ({ ...s, [p.id]: st }));
         }),
       );
     })();
@@ -235,7 +211,6 @@ export function ModePicker({ threadId }: { threadId?: string | null }) {
                     <span className="text-sm font-medium text-foreground">
                       {p.label}
                     </span>
-                    <BackendBadge status={status[p.id]} />
                     {disabled && (
                       <span
                         className={cn(
