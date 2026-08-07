@@ -5,6 +5,7 @@ import { Menu, PenSquare, Settings } from "lucide-react";
 import { ChatRuntimeProvider } from "./ChatRuntimeProvider";
 import { HistorySidebar } from "./HistorySidebar";
 import { ModePicker } from "./ModePicker";
+import { ModelPicker } from "./ModelPicker";
 import { PrivacyBanner } from "./PrivacyBanner";
 import { SettingsSheet } from "./SettingsSheet";
 import { Thread } from "./Thread";
@@ -67,7 +68,13 @@ export function ChatApp() {
           <Menu className="size-5" />
         </button>
 
-        <ModePicker threadId={threadId} />
+        {/* Mode and model side by side: together they decide what answers the
+            next message, and a model the active mode can't hold is what greys
+            that mode out — so the cause sits next to the effect. */}
+        <div className="flex min-w-0 items-center gap-0.5">
+          <ModePicker threadId={threadId} />
+          <ModelPicker />
+        </div>
 
         <div className="flex items-center justify-self-end">
           <button

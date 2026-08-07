@@ -123,12 +123,16 @@ export const MODEL_OPTIONS = [
   {
     id: "qwen3-4b",
     label: "Qwen3 4B",
+    // `short` is what the header chip shows — the full label does not fit
+    // beside the mode picker on a phone. Keep it to a few characters.
+    short: "4B",
     hint: "2.2 GB — small enough for the phone, so every mode can serve it.",
     servedBy: ["local", "split", "remote"],
   },
   {
     id: "qwen3-30b-a3b",
     label: "Qwen3 30B-A3B",
+    short: "30B",
     hint: "17.4 GB, MoE — laptop-side only. Use Split or Remote; the phone cannot hold it.",
     servedBy: ["split", "remote"],
   },

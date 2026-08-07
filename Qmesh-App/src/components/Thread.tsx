@@ -15,10 +15,19 @@ import { cn } from "@/lib/cn";
 // text-part props MessagePrimitive.Parts passes to a Text component.
 const MarkdownText: TextMessagePartComponent = () => <MarkdownTextPrimitive />;
 
+// Self-contained prompts that produce something useful on the first tap. The
+// earlier set was all about the app itself ("offline apps", "without a
+// network"), which demos the premise but never the model.
+//
+// The first one carries an email address on purpose: it is the one-tap demo of
+// auto-privacy, since detectPii flags it and the chat is pinned to a private
+// engine before anything is sent. The address uses example.com — IANA reserves
+// that domain for documentation, so a shipped prompt can never name a real
+// person's inbox.
 const SUGGESTIONS = [
-  "Explain how on-device inference works",
-  "Write a haiku about offline apps",
-  "What can you do without a network?",
+  "Email jordan.lee@example.com to reschedule Friday's demo",
+  "Plan a 3-day trip to Tokyo on a budget",
+  "Explain how an NPU speeds up AI on a phone",
 ];
 
 /** ChatGPT-style message list + composer for the active thread. */
@@ -52,12 +61,12 @@ function EmptyState() {
   return (
     <div className="mx-auto flex h-full max-w-2xl flex-col items-center justify-center gap-6 text-center">
       <div>
-        <h2 className="text-xl font-semibold text-foreground">
-          On-device chat
-        </h2>
-        <p className="mt-1 text-sm text-zinc-500">
-          Runs and stores everything locally. Works offline.
-        </p>
+        {/* The product name lives here rather than in the header, which is
+            reserved for the two controls that decide where a message runs. */}
+        <h2 className="text-xl font-semibold text-foreground">Qmesh</h2>
+        {/* The pitch in three words. The laptop stands in for the cloud, so
+            this claims privacy, not locality. */}
+        <p className="mt-1 text-sm text-zinc-500">Big models, privately.</p>
       </div>
       <div className="flex w-full flex-col gap-2">
         {SUGGESTIONS.map((s) => (

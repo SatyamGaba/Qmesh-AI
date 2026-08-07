@@ -190,10 +190,9 @@ export function ModePicker({ threadId }: { threadId?: string | null }) {
             DOT[reach[effective.id] ?? "unknown"],
           )}
         />
-        Qmesh
-        <span className="text-xs font-normal text-zinc-500">
-          · {effective.label}
-        </span>
+        {/* The mode alone — the product name moved to the empty state, so the
+            header carries only what decides where the next message runs. */}
+        {effective.label}
         {pinned && <ShieldCheck className="size-3.5 text-emerald-600" />}
         {/* The selected mode can't serve the selected model — the next send
             will be refused, so say so before the user types it. */}
