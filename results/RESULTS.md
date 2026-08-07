@@ -24,6 +24,10 @@ through the same worker binary you deploy — entries do not hit across worker b
 
 ## 2. Energy efficiency — the mesh is a battery feature
 
+![Battery discharge comparison](energy/battery_discharge_comparison.png)
+
+![Projected battery runway](energy/battery_life_projection.png)
+
 1 Hz battery telemetry on the phone (`dumpsys battery`, V·I integral + coulomb-counter
 cross-check), fixed 512-token generations driven from the phone, screen on at fixed
 brightness, on battery. Data: [`energy/battery_merged.log`](energy/battery_merged.log) +
@@ -41,18 +45,38 @@ brightness, on battery. Data: [`energy/battery_merged.log`](energy/battery_merge
 token ~30 %** while tokens keep flowing at interactive rates — plus a ~4 GB smaller memory
 footprint on the handset.
 
-## 3. Latency engineering — radio power-save, quantified
+## 3. Latency & performance
 
-Wi-Fi power-save, not bandwidth, dominates interactive latency on the split
-(ggml-rpc makes multiple round-trips per token). Measured, same session:
+![Decode speed by mode + keepalive ablation](energy/performance_latency_chart.png)
 
-| Condition | Split decode | TTFT |
-|---|---:|---:|
-| Radio dozing (no keepalive) | **2.1–3.7 t/s** | up to 2.8 s |
-| 5 pps keepalive holding the radio | **10.3 t/s avg** | ~10 ms |
+![Time to a full 512-token response](energy/performance_response_time_graph.png)
 
-A single background ping gives a **~4× interactive speedup** — this mitigation ships in the
-demo runbook. Remote-mode SSE streaming suffers the same doze without it.
+All figures measured 2026-08-06, phone-driven requests (the exact path the app takes),
+server-log-confirmed token counts and timings:
+
+| Mode | Model | Decode | Prefill | TTFT | 512-token response |
+|---|---|---:|---:|---:|---:|
+| On-device CPU | 4B | 24.5 t/s bench · ~20 t/s interactive | 127 t/s | ≲0.3 s | **25 s** |
+| On-device NPU (HTP0) | 4B | 17.0 t/s | — ¹ | ≲0.1 s | 29 s |
+| Split via mesh, keepalive | 4B | 11.4 t/s | ~85 t/s | <0.1 s hot | 47 s |
+| Split via mesh, radio dozing | 4B | **2.1–3.7 t/s** | — | 1.4–2.8 s | ≈4 min ² |
+| Remote (laptop NPU) | 4B | ~11 t/s at the phone ³ | — | ≲0.1 s | 46 s |
+| **Split via mesh** | **30B-A3B** | **11.4 t/s** (87 ms/tok) | 6.4 t/s | ≈2.5 s | ≈47 s proj. |
+| Phone alone | 30B-A3B | **0 — never loads** | — | — | — |
+
+¹ NPU legs reused the prompt cache (1-token prefill) — no clean prefill figure.
+² Measured 192 tokens in 95 s; extrapolated to 512.
+³ NPU llama-server does ~15 t/s solo server-side; the experimental Hexagon backend, not the
+network, is the remote bottleneck (laptop *CPU* llama-server measured 37.5 t/s on 08-05).
+
+Two engineering takeaways:
+
+- **Wi-Fi power-save, not bandwidth, dominates split latency** (ggml-rpc makes multiple
+  round-trips per token; the doze rows above). A single 5 pps background ping restores ~4× of
+  interactive speed and ships in the demo runbook. Remote-mode SSE suffers the same doze.
+- **Model size is ~free on the mesh**: 30B-A3B decodes at the same ~11 t/s as 4B through the
+  split — the fixed per-token network cost, not model compute, sets the pace until the worker
+  saturates.
 
 ## 4. Resource utilization notes
 
@@ -63,6 +87,23 @@ demo runbook. Remote-mode SSE streaming suffers the same doze without it.
 - Experimental Hexagon backend today: decode-slower than CPU on both devices (17 vs 24 t/s
   phone; ~15 vs 37.5 t/s laptop) and no energy win yet (`OPPOLL` busy-polling) — but a 6.5×
   smaller phone RAM footprint with weights resident on the NPU. Tracked as roadmap.
+- **The mesh is a thermal feature, not just a battery one.** Battery-temp slopes during
+  generation: on-device CPU **+1.9 °C/min**, on-device NPU **+2.9 °C/min** — vs **0.0 °C/min
+  for split and remote** (the pack actually cooled 0.1 °C during the 104 s split window).
+  Sustained on-device chat marches toward exactly the hot/throttled state that produced the
+  bogus 10.6 t/s baseline we had to debunk; mesh modes can chat indefinitely at idle
+  temperatures. (Slopes from `battery_merged.log` temperature field, per marked window.)
+- **The phone's radio policy governs the *laptop's* utilization too.** During the radio-dozing
+  split the X Elite worker averaged **31.6 %** CPU (spiking to 86 %, i.e. mostly waiting on the
+  phone's radio); with the 5 pps keepalive it averaged **75.5 %** — the one-line keepalive
+  ~2.4×'s the utilization of the biggest compute in the mesh (idle floor 4.9 %;
+  `laptop_cpu_ka_windows.csv` / `laptop_cpu_kaon_remote.csv` sliced by run window).
+- **Temp-0 determinism holds within a backend, not across backends.** Same model, same prompt,
+  temperature 0: CPU and Hexagon builds produce different (both coherent) essays, first
+  diverging at character 304 — "climate change *imperatives*" vs "climate change *awareness*"
+  (fp accumulation-order differences; `stream_local_cpu_1.txt` vs `stream_local_npu_1.txt`).
+  QA implication: correctness must be validated per backend, and the app should not promise
+  bit-identical answers across modes.
 
 ## File map
 
