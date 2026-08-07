@@ -20,6 +20,11 @@ pkg-hvx/
 pkg-snapdragon/
 pkg-signed/
 build-*/
+# compiled from launch_demo.ps1 by build_launch_demo.ps1, which embeds
+# split_rpc_validation\bin\ggml-rpc-server-split.exe (base64 + sha256) so the
+# exe can re-materialize the worker if it goes missing. Always rebuild via the
+# build script -- plain Invoke-ps2exe leaves the placeholders unfilled.
+launch_demo.exe
 
 # --- third-party prebuilt binaries, re-downloadable ---------------------------
 b10150/

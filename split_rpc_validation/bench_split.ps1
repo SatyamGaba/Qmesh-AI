@@ -78,7 +78,13 @@ function Invoke-Bench {
     Write-Host "[bench] $Label" -ForegroundColor Cyan
     Write-Host "        $bin $($BenchArgs -join ' ')" -ForegroundColor DarkGray
 
+    # PS 5.1: 2>&1 on a native exe wraps each stderr line in an ErrorRecord;
+    # under ErrorActionPreference=Stop in a non-interactive host the FIRST
+    # stderr line (llama-bench's harmless "load_backend" notice) becomes a
+    # terminating error. Relax the preference for the native call only.
+    $eap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
     $out = & $bin @BenchArgs 2>&1 | ForEach-Object { "$_" }
+    $ErrorActionPreference = $eap
     $out | ForEach-Object { Write-Host "        $_" -ForegroundColor DarkGray }
 
     if ($LogDir) {
@@ -89,7 +95,11 @@ function Invoke-Bench {
     $row = [ordered]@{ Shape = $Label; Prefill = $null; Decode = $null }
     foreach ($line in $out) {
         # columns: ... | <test> | <t/s ± stddev> |
-        if ($line -match '\|\s*(pp|tg)(\d+)\s*\|\s*([\d\.]+)\s*±') {
+        # No ± anchor: llama-bench emits UTF-8, and under a non-interactive
+        # host PowerShell decodes it with the OEM codepage, turning ± into
+        # mojibake that a literal ± never matches. The leading number of the
+        # t/s cell is unambiguous on its own.
+        if ($line -match '\|\s*(pp|tg)(\d+)\s*\|\s*([\d\.]+)') {
             $val = [double]$Matches[3]
             if ($Matches[1] -eq 'pp') { $row.Prefill = $val } else { $row.Decode = $val }
         }

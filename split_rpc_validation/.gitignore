@@ -1,0 +1,4 @@
+# runtime scratch from validation runs (launch_demo -SplitValidation,
+# start_worker.ps1) -- regenerated on every run, never versioned
+worker*.log
+llama-server-*.log

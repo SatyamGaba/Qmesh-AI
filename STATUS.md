@@ -527,6 +527,21 @@ Two doc corrections this turns up:
   even though HTP0 is accepted. Cosmetic listing bug; do not use it to conclude the NPU
   is absent.
 
+### One-command demo bring-up (NEW, 2026-08-06)
+
+`qmesh_npu\launch_demo.ps1` (also compiled to `launch_demo.exe` via ps2exe — double-click
+launch, no execution-policy flags) starts the whole stack idempotently: laptop NPU engine +
+RPC worker (hvx/HTP0), both phone servers (`@npu` :8082, `@split` :8081), the QMesh app,
+and the telemetry dashboard. Health-checks each piece and only starts what's down;
+discovers the wireless-adb port via `adb mdns services`; warns about the rogue
+`0.0.0.0:50052` worker (open question #7). Verified: cold-path launch commands are the
+2026-08-06 restore recipes; skip paths + re-run all green. `-SplitValidation` instead runs
+`split_rpc_validation` (loopback worker on :50053 + `bench_split.ps1` sweep, no
+hotspot/phone needed) — verified from the exe, reproducing FINDINGS within ~2%
+(211.0/37.0, 121.2/33.5, 82.9/33.1). Two latent `bench_split.ps1` bugs fixed en route
+(both only bite non-interactive hosts): PS 5.1 NativeCommandError on llama-bench's first
+stderr line under EAP=Stop, and the `±` parse anchor mojibaked by the OEM codepage.
+
 ---
 
 ## Next steps (two concurrent tracks)

@@ -31,8 +31,10 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$bin = Join-Path $PSScriptRoot "bin\ggml-rpc-server.exe"
-if (-not (Test-Path $bin)) { Write-Error "ggml-rpc-server.exe not found in bin\"; exit 1 }
+# renamed from ggml-rpc-server.exe (2026-08-06) to disambiguate from the hvx
+# NPU worker of the same name -- this is the b10270 CPU validation worker
+$bin = Join-Path $PSScriptRoot "bin\ggml-rpc-server-split.exe"
+if (-not (Test-Path $bin)) { Write-Error "ggml-rpc-server-split.exe not found in bin\"; exit 1 }
 
 $rpcArgs = @("-H", $BindHost, "-p", "$Port", "-t", "$Threads")
 # Long form only: rpc-server has no -d shorthand for device selection.
