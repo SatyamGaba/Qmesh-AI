@@ -61,12 +61,30 @@ function Test-HttpOk([string]$url) {
     catch { return $false }
 }
 
+# Every adb call goes through this hard-timeout wrapper. Wireless adbd on the
+# phone half-hangs routinely; a bare `& $adb ...` then blocks forever and the
+# step deadlines (which are only checked BETWEEN calls) never fire -- one
+# launch was observed wedged for 12 minutes this way. Returns combined
+# stdout+stderr, or '' if the call had to be killed.
+function Invoke-Adb([string[]]$adbArgs, [int]$timeoutMs = 4000) {
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = $adb
+    $psi.Arguments = ($adbArgs | ForEach-Object { if ($_ -match '\s') { '"' + $_ + '"' } else { $_ } }) -join ' '
+    $psi.UseShellExecute = $false; $psi.CreateNoWindow = $true
+    $psi.RedirectStandardOutput = $true; $psi.RedirectStandardError = $true
+    $p = [System.Diagnostics.Process]::Start($psi)
+    $so = $p.StandardOutput.ReadToEndAsync()
+    $se = $p.StandardError.ReadToEndAsync()
+    if (-not $p.WaitForExit($timeoutMs)) { try { $p.Kill() } catch {} }
+    return ($so.Result + $se.Result)
+}
+
 # phone-side health probe, tolerant of transient adb hiccups during model load
 function Wait-PhoneHealth([int]$port, [int]$secs) {
     $deadline = (Get-Date).AddSeconds($secs)
     while ((Get-Date) -lt $deadline) {
         Start-Sleep -Seconds 3
-        $h = & $adb -s $Serial shell "curl -s -m 2 http://127.0.0.1:$port/health" 2>&1
+        $h = Invoke-Adb @('-s', $Serial, 'shell', "curl -s -m 2 http://127.0.0.1:$port/health")
         if ("$h" -match '"ok"') { return $true }
     }
     return $false
@@ -154,20 +172,20 @@ Step "phone adb link"
 # state alone means nothing
 function Connect-Phone([string]$try) {
     if (-not $try) { return $null }
-    & $adb connect $try 2>&1 | Out-Null
-    $e = & $adb -s $try shell "echo up" 2>&1
+    Invoke-Adb @('connect', $try) 6000 | Out-Null
+    $e = Invoke-Adb @('-s', $try, 'shell', 'echo up')
     if ("$e" -match 'up') { return $try }
-    & $adb disconnect $try 2>&1 | Out-Null   # drop the stale registration
+    Invoke-Adb @('disconnect', $try) | Out-Null   # drop the stale registration
     return $null
 }
 $link = Connect-Phone $Serial
 if (-not $link) {
-    $dev = (& $adb devices 2>&1) | Where-Object { "$_" -match "^$([regex]::Escape($PhoneIP)):(\d+)\s+device" }
-    if ($dev) { $link = Connect-Phone (("$dev" -split '\s+')[0]) }
+    $dev = (Invoke-Adb @('devices') 5000) -split "`r?`n" | Where-Object { "$_" -match "^$([regex]::Escape($PhoneIP)):(\d+)\s+device" }
+    if ($dev) { $link = Connect-Phone (("$($dev | Select-Object -First 1)" -split '\s+')[0]) }
 }
 if (-not $link) {
     # the Wireless-debugging port rotates; mDNS advertises the current one
-    foreach ($line in (& $adb mdns services 2>&1)) {
+    foreach ($line in ((Invoke-Adb @('mdns', 'services') 6000) -split "`r?`n")) {
         if ("$line" -match "_adb-tls-connect\._tcp\s+$([regex]::Escape($PhoneIP)):(\d+)") {
             $link = Connect-Phone "${PhoneIP}:$($Matches[1])"; break
         }
@@ -180,7 +198,7 @@ if (-not $link) {
 }
 $Serial = $link
 Ok "phone connected: $Serial"
-$m = & $adb -s $Serial shell "ls $PhoneModel 2>/dev/null" 2>&1
+$m = Invoke-Adb @('-s', $Serial, 'shell', "ls $PhoneModel 2>/dev/null")
 if ("$m" -notmatch [regex]::Escape($PhoneModel)) { Warn "model missing on phone: $PhoneModel"; $fail += 'phone-model' }
 
 # ---- 2. laptop NPU engine ---------------------------------------------------
@@ -203,17 +221,29 @@ $listen = Get-NetTCPConnection -State Listen -LocalPort $WorkerPort -LocalAddres
 if ($listen) {
     Ok "already listening"
 } else {
-    $p = Start-Process -FilePath "$hvx\ggml-rpc-server.exe" -WorkingDirectory $hvx -PassThru `
-         -ArgumentList '-H', $HotspotIP, '-p', "$WorkerPort", '-d', 'HTP0', '-c' `
-         -RedirectStandardOutput "$ScriptRoot\rpc_worker.out" -RedirectStandardError "$ScriptRoot\rpc_worker.err"
+    # the worker occasionally dies right after its startup banner (cause not
+    # yet pinned down -- seen 2026-08-07); one retry papers over the flake,
+    # and on real failure the stderr tail is printed instead of buried
     $up = $false
-    foreach ($i in 1..10) {
-        Start-Sleep -Seconds 2
-        if ($p.HasExited) { break }
-        if (Get-NetTCPConnection -State Listen -LocalPort $WorkerPort -LocalAddress $HotspotIP -ErrorAction SilentlyContinue) { $up = $true; break }
+    foreach ($attempt in 1..2) {
+        $p = Start-Process -FilePath "$hvx\ggml-rpc-server.exe" -WorkingDirectory $hvx -PassThru `
+             -ArgumentList '-H', $HotspotIP, '-p', "$WorkerPort", '-d', 'HTP0', '-c' `
+             -RedirectStandardOutput "$ScriptRoot\rpc_worker.out" -RedirectStandardError "$ScriptRoot\rpc_worker.err"
+        foreach ($i in 1..10) {
+            Start-Sleep -Seconds 2
+            if ($p.HasExited) { break }
+            if (Get-NetTCPConnection -State Listen -LocalPort $WorkerPort -LocalAddress $HotspotIP -ErrorAction SilentlyContinue) { $up = $true; break }
+        }
+        if ($up) { break }
+        if (-not $p.HasExited) { Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue }
+        if ($attempt -eq 1) { Warn "worker did not come up -- retrying once"; Start-Sleep -Seconds 2 }
     }
     if ($up) { $p.Id | Set-Content "$ScriptRoot\rpc_worker.pid"; Ok "started, pid $($p.Id)" }
-    else     { Warn "worker FAILED to listen (see rpc_worker.err)"; $fail += 'rpc-worker' }
+    else {
+        Warn "worker FAILED to listen after 2 attempts -- last stderr:"
+        Get-Content "$ScriptRoot\rpc_worker.err" -Tail 4 -ErrorAction SilentlyContinue | ForEach-Object { Warn "  $_" }
+        $fail += 'rpc-worker'
+    }
 }
 # ggml-rpc has unauthenticated-RCE advisories (STATUS open question #7):
 $wild = Get-NetTCPConnection -State Listen -LocalPort $WorkerPort -LocalAddress '0.0.0.0' -ErrorAction SilentlyContinue
@@ -228,7 +258,7 @@ if (Wait-PhoneHealth 8082 3) {
            "nohup ./bin/llama-server --device HTP0 -ngl 99 --load-mode none -m $PhoneModel " +
            "--host 127.0.0.1 --port 8082 --alias 'qwen3-4b@npu' -c 4096 -t 6 --sse-ping-interval 15 " +
            "--cors-origins '*' --no-cors-credentials > /data/local/tmp/server_8082.log 2>&1 < /dev/null &"
-    & $adb -s $Serial shell $cmd 2>&1 | Out-Null
+    Invoke-Adb @('-s', $Serial, 'shell', $cmd) 8000 | Out-Null
     if (Wait-PhoneHealth 8082 150) { Ok "started (HTP0, alias qwen3-4b@npu)" }
     else { Warn "phone NPU server FAILED (adb shell tail /data/local/tmp/server_8082.log)"; $fail += 'phone-npu' }
 }
@@ -245,7 +275,7 @@ if ($fail -contains 'rpc-worker') {
            "nohup ./bin/llama-server -ngl 32 --rpc ${HotspotIP}:$WorkerPort --load-mode none -m $PhoneModel " +
            "--host 127.0.0.1 --port 8081 --alias 'qwen3-4b@split' -c 4096 -t 6 --sse-ping-interval 15 " +
            "--cors-origins '*' --no-cors-credentials > /data/local/tmp/server_8081.log 2>&1 < /dev/null &"
-    & $adb -s $Serial shell $cmd 2>&1 | Out-Null
+    Invoke-Adb @('-s', $Serial, 'shell', $cmd) 8000 | Out-Null
     # slower: ships 32 layers (~1.1 GB) to the worker over Wi-Fi at load
     if (Wait-PhoneHealth 8081 240) { Ok "started (split 4/32, alias qwen3-4b@split)" }
     else { Warn "phone split server FAILED (adb shell tail /data/local/tmp/server_8081.log)"; $fail += 'phone-split' }
@@ -254,9 +284,9 @@ if ($fail -contains 'rpc-worker') {
 # ---- 6. QMesh app on the phone ---------------------------------------------
 if (-not $NoPwa) {
     Step "QMesh app (ai.qmesh.app)"
-    $pkg = & $adb -s $Serial shell "pm path ai.qmesh.app 2>/dev/null" 2>&1
+    $pkg = Invoke-Adb @('-s', $Serial, 'shell', 'pm path ai.qmesh.app 2>/dev/null')
     if ("$pkg" -match 'package:') {
-        & $adb -s $Serial shell "am start -n ai.qmesh.app/.MainActivity" 2>&1 | Out-Null
+        Invoke-Adb @('-s', $Serial, 'shell', 'am start -n ai.qmesh.app/.MainActivity') 6000 | Out-Null
         Ok "foregrounded on the phone"
     } else {
         Warn "APK not installed -- cd Qmesh-Android && ./build-apk.sh --install"
