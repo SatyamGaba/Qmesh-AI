@@ -80,6 +80,8 @@ Two engineering takeaways:
 
 ## 4. Resource utilization notes
 
+![What the raw logs revealed](energy/hidden_findings_slide.png)
+
 - Controlled phone baseline (battery 90 %, 28 °C, r=3): **126.8 pp / 24.5 tg** — resolves the
   earlier 10.6-vs-25.5 t/s discrepancy as a device-state artifact
   ([`energy/bench_local_cpu_pp128tg32.txt`](energy/bench_local_cpu_pp128tg32.txt)).
